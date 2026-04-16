@@ -65,9 +65,9 @@ const BookingPage: React.FC = () => {
   // ── Create Cashfree order via Backend Proxy ────────────────
   const createCashfreeOrder = async (): Promise<string> => {
     const orderId = `SC_${Date.now()}`;
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
     
-    const response = await fetch(`${apiUrl}/api/payments/create-order`, {
+    const response = await fetch(`${API_URL}/payments/create-order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
