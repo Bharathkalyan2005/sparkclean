@@ -1,0 +1,82 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>Frontend PRD - SparkClean</title>
+    <style>
+        body { font-family: 'Calibri', Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        h1 { color: #2c3e50; font-size: 24pt; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        h2 { color: #34495e; font-size: 18pt; margin-top: 20px; }
+        h3 { color: #2980b9; font-size: 14pt; }
+        ul, ol { margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        .highlight { background-color: #f1c40f; padding: 2px 4px; }
+    </style>
+</head>
+<body>
+
+    <h1>Product Requirements Document (PRD)</h1>
+    <h2>Project: SparkClean (Frontend)</h2>
+    <p><strong>Date:</strong> April 14, 2026</p>
+
+    <h2>1. Executive Summary</h2>
+    <p><strong>SparkClean</strong> is a modern, responsive single-page web application (SPA) designed for a professional cleaning service business. The frontend facilitates a seamless customer journey from browsing available cleaning services and combo packages to adding them to a cart and finalizing a booking. It also includes an administrative dashboard to monitor and manage booking operations.</p>
+
+    <h2>2. Technical Stack</h2>
+    <ul>
+        <li><strong>Framework:</strong> React (v19.x) bootstrapped via Create React App</li>
+        <li><strong>Language:</strong> TypeScript</li>
+        <li><strong>Styling:</strong> Tailwind CSS & PostCSS</li>
+        <li><strong>Animations:</strong> Framer Motion & GSAP</li>
+        <li><strong>State Management:</strong> Context API (CartContext)</li>
+        <li><strong>Forms & Validation:</strong> React Hook Form + Zod</li>
+        <li><strong>Data Visualization:</strong> Recharts (for Admin Dashboard)</li>
+        <li><strong>Backend/Auth Services:</strong> Supabase Integration</li>
+    </ul>
+
+    <h2>3. User Roles</h2>
+    <ol>
+        <li><strong>Guest User:</strong> Can view the homepage, browse services, read testimonials, and add items to the cart. Must log in or sign up to finalize bookings.</li>
+        <li><strong>Authenticated Customer:</strong> Can complete bookings, view cart details, and see a success confirmation post-checkout.</li>
+        <li><strong>Administrator:</strong> Has access to a secure admin dashboard to view business metrics, manage service areas, and review user bookings.</li>
+    </ol>
+
+    <h2>4. Core Application Flow & Pages</h2>
+    
+    <h3>4.1 Home Page (`HomePage.tsx`)</h3>
+    <ul>
+        <li><strong>Hero Section:</strong> Engaging landing area with calls to action and 3D scenes (`HeroScene.tsx`).</li>
+        <li><strong>Services Section:</strong> A module dynamically listing individual cleaning services fetched from data stores.</li>
+        <li><strong>Combos Section:</strong> Offers bundled cleaning packages for better deals.</li>
+        <li><strong>Informational Modules:</strong> `HowItWorks.tsx`, `WhySparkClean.tsx`, and `Testimonials.tsx`.</li>
+    </ul>
+
+    <h3>4.2 Booking Flow</h3>
+    <ul>
+        <li><strong>Cart System:</strong> (`CartSidebar.tsx` / `CartContext.tsx`) A slide-out sidebar that lets users review selected services, see the total cost, and proceed to booking.</li>
+        <li><strong>Auth Page (`AuthPage.tsx`):</strong> Supabase integration handling secure user logins and registrations.</li>
+        <li><strong>Booking Page (`BookingPage.tsx`):</strong> Zod-validated forms collecting user dates, address, and special instructions.</li>
+        <li><strong>Success Page (`SuccessPage.tsx`):</strong> A visually pleasing post-booking page using canvas-confetti for positive reinforcement.</li>
+    </ul>
+
+    <h3>4.3 Administrator Area</h3>
+    <ul>
+        <li><strong>Admin Page (`AdminPage.tsx`):</strong> Protected route that displays business metrics via Recharts and lists real-time booking statuses.</li>
+    </ul>
+
+    <h2>5. Key Functional Requirements</h2>
+    <ul>
+        <li><strong>Responsiveness:</strong> All components must be fully responsive across mobile, tablet, and desktop viewports using Tailwind utility classes.</li>
+        <li><strong>Performance:</strong> Implementation of suspense wrappers and a dedicated `LoadingScreen.tsx` for asynchronous chunk loading.</li>
+        <li><strong>Data Integrity:</strong> All form submissions must strictly adhere to frontend Zod schemas before interacting with Supabase integrations.</li>
+        <li><strong>Interactive UI:</strong> The application incorporates Framer Motion for smooth page transitions, interactive cart sliding, and GSAP/Three.js for the Hero scene to boost user engagement.</li>
+    </ul>
+
+    <h2>6. Future Considerations (V2)</h2>
+    <ul>
+        <li>Integration of Stripe or PayPal for direct in-app payments.</li>
+        <li>A dedicated "User Profile" page to view past booking history.</li>
+        <li>Real-time chat widget integration for customer support.</li>
+    </ul>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,26): error TS1139: Type parameter declaration expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,32): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,44): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,50): error TS1005: ')' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,64): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,83): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,85): error TS1434: Unexpected keyword or identifier.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,86): error TS1128: Declaration or statement expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(31,88): error TS1128: Declaration or statement expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(32,32): error TS1139: Type parameter declaration expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(32,38): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(32,50): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(33,9): error TS1005: ')' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(34,9): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(35,10): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(36,11): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(37,1): error TS1109: Expression expected.
+node_modules/@types/three/src/nodes/accessors/ReferenceNode.d.ts(37,3): error TS1128: Declaration or statement expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,25): error TS1139: Type parameter declaration expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,31): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,40): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,46): error TS1005: ')' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,64): error TS1109: Expression expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,79): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(22,81): error TS1128: Declaration or statement expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,32): error TS1139: Type parameter declaration expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,38): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,47): error TS1005: ',' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,53): error TS1005: ')' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,71): error TS1109: Expression expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,86): error TS1005: ';' expected.
+node_modules/@types/three/src/nodes/core/PropertyNode.d.ts(23,88): error TS1128: Declaration or statement expected.

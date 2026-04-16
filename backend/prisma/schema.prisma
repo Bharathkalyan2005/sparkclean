@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+enum Role {
+  CUSTOMER
+  ADMIN
+  CLEANER
+}
+
+enum Category {
+  INDIVIDUAL
+  COMBO
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CASHFREE
+  COD
+  UPI
+}
+
+enum NotificationType {
+  BOOKING
+  PAYMENT
+  REMINDER
+  PROMO
+}
+
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
+// --- MODELS ---
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  phone         String?        @unique
+  fullName      String
+  passwordHash  String
+  role          Role           @default(CUSTOMER)
+  city          String         @default("Visakhapatnam")
+  area          String?
+  avatarUrl     String?
+  isActive      Boolean        @default(true)
+  totalBookings Int            @default(0)
+  totalSpent    Decimal        @default(0) @db.Decimal(10, 2)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  bookings      Booking[]
+  notifications Notification[]
+  cleaner       Cleaner?
+  reviews       Review[]
+}
+
+model Cleaner {
+  id              String    @id
+  user            User      @relation(fields: [id], references: [id])
+  specializations String[]
+  areasCovered    String[]
+  isAvailable     Boolean   @default(true)
+  rating          Decimal   @default(5.0) @db.Decimal(3, 2)
+  totalJobs       Int       @default(0)
+  joinedDate      DateTime  @default(now())
+
+  assignedBookings Booking[]
+}
+
+model Service {
+  id              String   @id @default(cuid())
+  name            String
+  description     String?
+  price           Decimal  @db.Decimal(10, 2)
+  unit            String   @default("per visit")
+  category        Category
+  iconName        String?
+  durationMinutes Int?
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  bookingNumber   String        @unique
+  customer        User          @relation(fields: [customerId], references: [id])
+  customerId      String
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  address         String
+  area            String
+  city            String        @default("Visakhapatnam")
+  services        Json
+  subtotal        Decimal       @db.Decimal(10, 2)
+  discount        Decimal       @default(0) @db.Decimal(10, 2)
+  totalAmount     Decimal       @db.Decimal(10, 2)
+  paymentMethod   PaymentMethod?
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentId       String?
+  cashfreeOrderId String?
+  scheduledDate   DateTime
+  scheduledTime   String
+  status          BookingStatus @default(PENDING)
+  assignedCleaner Cleaner?      @relation(fields: [cleanerId], references: [id])
+  cleanerId       String?
+  notes           String?
+  promoCode       String?
+  invoiceUrl      String?
+  review          Review?
+
+  notifications   Notification[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model ContactMessage {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  message   String
+  isRead    Boolean   @default(false)
+  repliedAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  user      User             @relation(fields: [userId], references: [id])
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  booking   Booking?         @relation(fields: [bookingId], references: [id])
+  bookingId String?
+  createdAt DateTime         @default(now())
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  booking    Booking  @relation(fields: [bookingId], references: [id])
+  bookingId  String   @unique
+  customer   User     @relation(fields: [customerId], references: [id])
+  customerId String
+  rating     Int
+  comment    String?
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model PromoCode {
+  id            String       @id @default(cuid())
+  code          String       @unique
+  discountType  DiscountType
+  discountValue Decimal      @db.Decimal(10, 2)
+  minOrder      Decimal      @default(0) @db.Decimal(10, 2)
+  maxUses       Int          @default(100)
+  usedCount     Int          @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+}

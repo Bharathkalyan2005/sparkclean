@@ -1,0 +1,423 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --teal: #0AFFE6;
+  --teal-dark: #00CDB7;
+  --navy: #0A0A0A;
+  --navy-text: #A0A0A0;
+  --white: #FFFFFF;
+  --mint: #111111;
+  --mint-soft: #0F0F0F;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #0A0A0A;
+  color: #A0A0A0;
+  overflow-x: hidden;
+}
+
+/* ─── Glassmorphism — dark mode ─── */
+.glass {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(10, 255, 230, 0.18);
+  border-radius: 16px;
+}
+
+.glass-teal {
+  background: rgba(10, 255, 230, 0.08); /* super soft */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(10, 255, 230, 0.3);
+  border-radius: 16px;
+}
+
+.glass-dark {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(10, 255, 230, 0.15);
+}
+
+/* ─── Gradient text (teal) ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #0AFFE6 0%, #00CDB7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.teal-gradient-text {
+  background: linear-gradient(135deg, #0AFFE6, #00CDB7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Scroll progress bar ─── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0AFFE6, #00CDB7);
+  z-index: 99999;
+  transition: width 0.1s ease;
+}
+
+/* ─── Card hover glow ─── */
+.card-glow {
+  transition: all 0.35s ease;
+}
+.card-glow:hover {
+  box-shadow: 0 4px 40px rgba(10, 255, 230, 0.2), 0 20px 60px rgba(0, 0, 0, 0.06);
+  transform: translateY(-6px) scale(1.01);
+}
+
+/* ─── Teal CTA button ─── */
+.btn-teal {
+  background: #0AFFE6;
+  color: #000000;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 12px 28px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-teal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-teal:hover::after {
+  opacity: 1;
+}
+
+.btn-teal:hover {
+  box-shadow: 0 0 30px rgba(10, 255, 230, 0.45), 0 6px 20px rgba(0,0,0,0.1);
+  transform: scale(1.02);
+  filter: brightness(1.2);
+}
+
+/* ─── Ripple effect ─── */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(10, 22, 40, 0.15);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s, opacity 0.5s;
+  opacity: 0;
+}
+
+.ripple:active::after {
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+}
+
+/* ─── WhatsApp floating button ─── */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  animation: pulse-whatsapp 2s ease-in-out infinite;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@keyframes pulse-whatsapp {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+  50%       { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+}
+
+/* ─── Section headings ─── */
+.section-heading {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+/* ─── Testimonial stars ─── */
+.star-filled {
+  color: #FFD700;
+  fill: #FFD700;
+}
+
+/* ─── Combo card 3D tilt ─── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+/* ─── Service area pill ─── */
+.area-pill {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.area-pill:hover {
+  transform: scale(1.05);
+  background: rgba(10, 255, 230, 0.12);
+  border-color: #0AFFE6;
+  color: #00897B;
+}
+
+.area-pill.premium {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.08));
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+/* ─── Loading screen ─── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #FFFFFF;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ─── Progress bar booking ─── */
+.progress-step {
+  transition: all 0.3s ease;
+}
+
+.progress-step.active {
+  background: #0AFFE6;
+  color: #0A1628;
+}
+
+.progress-step.completed {
+  background: rgba(10, 255, 230, 0.25);
+  border-color: #0AFFE6;
+}
+
+/* ─── Custom scrollbar ─── */
+::-webkit-scrollbar {
+  width: 4px;
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0AFFE6;
+  border-radius: 2px;
+}
+
+/* ─── Input styles — dark mode ─── */
+.form-input {
+  background: #111111;
+  border: 1.5px solid rgba(10, 255, 230, 0.3);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #FFFFFF;
+  width: 100%;
+  transition: all 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0AFFE6;
+  box-shadow: 0 0 0 3px rgba(10, 255, 230, 0.15);
+  background: #0F0F0F;
+}
+
+.form-input::placeholder {
+  color: rgba(160, 160, 160, 0.5);
+}
+
+/* Select option backgrounds */
+.form-input option {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+/* ─── Input styles — light mode ─── */
+.form-input.light {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(10, 255, 230, 0.3);
+  color: #1A1A2E;
+  box-shadow: 0 2px 8px rgba(10, 255, 230, 0.05);
+}
+
+.form-input.light:focus {
+  border-color: #0AFFE6;
+  box-shadow: 0 0 0 3px rgba(10, 255, 230, 0.15);
+  background: #FAFAFA;
+}
+
+.form-input.light::placeholder {
+  color: rgba(74, 74, 106, 0.5);
+}
+
+.form-input.light option {
+  background: #FFFFFF;
+  color: #1A1A2E;
+}
+
+/* ─── Cart sidebar ─── */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 380px;
+  z-index: 8888;
+  overflow-y: auto;
+}
+
+@media (max-width: 640px) {
+  .cart-sidebar {
+    width: 100vw;
+  }
+}
+
+/* ─── Confetti container ─── */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+}
+
+/* ─── Animated connector line ─── */
+.connector-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: draw-line 1.5s ease forwards;
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ─── 3D combo card perspective container ─── */
+.perspective-container {
+  perspective: 1000px;
+}
+
+/* ─── Category tabs ─── */
+.category-tab {
+  cursor: pointer;
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(10, 255, 230, 0.25);
+  transition: all 0.3s;
+  font-size: 14px;
+  font-weight: 500;
+  color: #A0A0A0;
+  background: transparent;
+}
+
+.category-tab:hover {
+  border-color: #0AFFE6;
+  color: #FFFFFF;
+}
+
+.category-tab.active {
+  background: linear-gradient(135deg, #0AFFE6, #00CDB7);
+  color: #0A1628;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(10, 255, 230, 0.3);
+}
+
+/* ─── Hide scrollbar for testimonial carousel ─── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Section alternating backgrounds ─── */
+.section-black {
+  background: #0A0A0A;
+}
+
+.section-dark {
+  background: #111111;
+}
+
+/* ─── Card — dark with teal accent ─── */
+.card-light {
+  background: #161616;
+  border-left: 3px solid #0AFFE6;
+  border: 1px solid rgba(10, 255, 230, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  transition: all 0.3s ease;
+}
+
+.card-light:hover {
+  box-shadow: 0 8px 40px rgba(10, 255, 230, 0.4), 0 2px 12px rgba(0,0,0,0.8);
+  transform: translateY(-4px);
+  border-color: #0AFFE6;
+}
+
+/* ─── Section Divider & Noise Texture ─── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #0AFFE6, transparent);
+  opacity: 0.3;
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
