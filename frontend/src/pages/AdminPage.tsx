@@ -59,7 +59,7 @@ const AdminPage: React.FC = () => {
 
   const fetchBookings = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('bookings')
       .select('*')
       .order('created_at', { ascending: false });

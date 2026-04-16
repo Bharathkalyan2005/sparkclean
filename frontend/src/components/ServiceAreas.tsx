@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { SERVICE_AREAS } from '../data/services';
 import { useNavigate } from 'react-router-dom';
