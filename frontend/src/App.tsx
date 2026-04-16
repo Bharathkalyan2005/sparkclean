@@ -8,7 +8,6 @@ import BookingPage from './pages/BookingPage';
 import SuccessPage from './pages/SuccessPage';
 import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
-import ProfilePage from './pages/ProfilePage';
 // @ts-ignore
 import './index.css';
 

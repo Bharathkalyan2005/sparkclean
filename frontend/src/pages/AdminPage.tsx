@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import { formatIndianCurrency } from '../data/services';
 
 const ADMIN_EMAIL = 'admin@sparkclean.in';
-const ADMIN_PASSWORD = 'SparkAdmin@2026';
 
 type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 
@@ -40,7 +39,7 @@ const AdminPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: loginForm.email,
       password: loginForm.password,
     });

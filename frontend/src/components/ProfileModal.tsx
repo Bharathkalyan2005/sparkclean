@@ -90,7 +90,6 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
       });
 
       if (response.ok) {
-        const data = await response.json();
         toast.success('Profile updated successfully!');
         
         // Update local storage user details

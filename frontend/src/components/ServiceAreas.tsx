@@ -4,11 +4,9 @@ import { SERVICE_AREAS } from '../data/services';
 import { useNavigate } from 'react-router-dom';
 
 const ServiceAreas: React.FC = () => {
-  const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleAreaClick = (area: string) => {
-    setSelectedArea(area);
     // Navigate to booking with area pre-selected
     navigate(`/book?area=${encodeURIComponent(area)}`);
   };

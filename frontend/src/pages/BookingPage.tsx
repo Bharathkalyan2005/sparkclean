@@ -24,9 +24,6 @@ const getCashfreeInstance = async () => {
   return await window.Cashfree({ mode: 'production' });
 };
 
-const CASHFREE_CLIENT_ID = process.env.REACT_APP_CASHFREE_CLIENT_ID || '';
-const CASHFREE_SECRET = process.env.REACT_APP_CASHFREE_SECRET || '';
-
 const STEPS = ['Select Services', 'Your Details', 'Payment'];
 
 const BookingPage: React.FC = () => {
