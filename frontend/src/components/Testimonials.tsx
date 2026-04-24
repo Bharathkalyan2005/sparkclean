@@ -55,7 +55,7 @@ const Testimonials: React.FC = () => {
             <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>Customer Love</span>
           </div>
           <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
-            What Vizag Says <span className="teal-gradient-text">About Us</span>
+            What India Says <span className="teal-gradient-text">About Us</span>
           </h2>
         </motion.div>
 

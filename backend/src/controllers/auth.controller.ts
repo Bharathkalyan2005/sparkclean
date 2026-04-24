@@ -28,6 +28,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
   } catch (error) {
+    console.error("Register Error: ", error);
     res.status(500).json({ error: 'Server error during registration' });
   }
 };
@@ -38,6 +39,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       res.status(400).json({ error: 'Invalid email or password' });
+      return;
+    }
+
+    if (!user.passwordHash) {
+      res.status(400).json({ error: 'Please sign in with Google' });
       return;
     }
 
@@ -74,7 +80,7 @@ export const getMe = async (req: Request | any, res: Response): Promise<void> =>
 export const updateMe = async (req: Request | any, res: Response): Promise<void> => {
   try {
     const { fullName, phone, address } = req.body;
-    
+
     const updatedUser = await prisma.user.update({
       where: { id: req.user.id },
       data: {

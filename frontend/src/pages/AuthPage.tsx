@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -179,8 +180,40 @@ const AuthPage = () => {
     }
   };
 
+  const googleLoginInfo = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/auth/google`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ credential: tokenResponse.access_token })
+        });
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+          toast.error(result.error || 'Google login failed');
+          return;
+        }
+        
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        toast.success("Welcome! Redirecting...", {
+          style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' }
+        });
+        setTimeout(() => navigate('/'), 1500);
+      } catch (err) {
+        toast.error('Network error. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onError: () => toast.error('Google Sign-In Failed'),
+  });
+
   const handleGoogle = async () => {
-    toast.error("Google login currently disabled while migrating to custom API.");
+    googleLoginInfo();
   };
 
   const handleForgotPass = async (e: React.MouseEvent) => {
@@ -252,8 +285,8 @@ const AuthPage = () => {
             
             <div className="flex justify-between items-end">
               <div>
-                <p className="text-white/60 text-xs tracking-widest uppercase">Vizag's Cleanest Choice</p>
-                <p className="text-[#0AFFE6]/60 text-[10px] mt-1">Serving Vizag since 2026</p>
+                <p className="text-white/60 text-xs tracking-widest uppercase">India's Cleanest Choice</p>
+                <p className="text-[#0AFFE6]/60 text-[10px] mt-1">Serving India since 2026</p>
               </div>
               <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
                 <ChevronDown className="w-6 h-6 text-[#0AFFE6]" />
@@ -307,7 +340,7 @@ const AuthPage = () => {
               {isLogin ? 'Welcome back' : 'Create account'}
             </h2>
             <p className="text-[#A0A0A0] text-sm text-center mb-8">
-              {isLogin ? 'Book your next clean in seconds' : 'Join 500+ Vizag homeowners'}
+              {isLogin ? 'Book your next clean in seconds' : 'Join 500+ India homeowners'}
             </p>
 
             <AnimatePresence mode="wait">

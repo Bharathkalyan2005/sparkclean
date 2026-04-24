@@ -1,51 +1,89 @@
-import { Router } from 'express';
-import { authenticate, authorizeAdmin } from '../middleware/auth.middleware';
+﻿import express, { Router } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { authenticate } from '../middleware/auth.middleware';
+import { createCashfreeOrder, verifyCashfreeWebhook } from '../services/paymentService';
 
 const router = Router();
+const prisma = new PrismaClient();
 
-// /api/payments endpoints
+const sendBookingConfirmation = async (orderId: string) => {
+  console.log('Sending booking confirmation for order:', orderId);
+};
 
-router.post('/create-order', async (req, res) => {
-  const { order_id, order_amount, order_currency, customer_details, order_meta } = req.body;
-
+// POST /api/payments/create-order
+router.post('/create-order', authenticate, async (req: any, res: any) => {
   try {
-    const baseUrl = process.env.CASHFREE_ENV === 'PRODUCTION' 
-      ? 'https://api.cashfree.com/pg/orders' 
-      : 'https://sandbox.cashfree.com/pg/orders';
+    const { bookingId } = req.body;
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId }
+    });
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
 
-    const response = await fetch(baseUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-version': '2023-08-01',
-        'x-client-id': process.env.CASHFREE_APP_ID || '',
-        'x-client-secret': process.env.CASHFREE_SECRET_KEY || '',
-      },
-      body: JSON.stringify({
-        order_id,
-        order_amount,
-        order_currency,
-        customer_details,
-        order_meta,
-      }),
+    const order = await createCashfreeOrder({
+      bookingNumber : booking.bookingNumber,
+      totalAmount   : Number(booking.totalAmount),
+      customerName  : booking.customerName,
+      customerPhone : booking.customerPhone,
+      customerEmail : booking.customerEmail || '',
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Cashfree error:', errorData);
-      return res.status(response.status).json(errorData);
-    }
+    // Save cashfree order id
+    await prisma.booking.update({
+      where: { id: bookingId },
+      data : { cashfreeOrderId: order.order_id }
+    });
 
-    const data = await response.json();
-    return res.status(200).json(data);
+    res.json({ 
+      paymentSessionId: order.payment_session_id,
+      orderId         : order.order_id 
+    });
   } catch (error: any) {
-    console.error('Payment creation error:', error);
-    return res.status(500).json({ message: error.message || 'Internal server error' });
+    console.error('Payment creation error:', error?.response?.data || error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-router.post('/webhook', (req, res) => { res.send('Cashfree payment webhook'); });
-router.get('/:bookingId/status', authenticate, (req, res) => { res.send('Check payment status'); });
-router.post('/refund', authenticate, authorizeAdmin, (req, res) => { res.send('Process refund (admin)'); });
+// POST /api/payments/webhook  (Cashfree calls this)
+router.post('/webhook', express.raw({ type: '*/*' }), async (req: any, res: any) => {
+  try {
+    const signature = req.headers['x-webhook-signature'] as string;
+    const timestamp = req.headers['x-webhook-timestamp'] as string;
+    
+    // Incase body is already parsed by express.json in server.ts
+    const rawBody = Buffer.isBuffer(req.body) ? req.body.toString() : JSON.stringify(req.body);
+
+    // Verify it is really from Cashfree
+    const isValid = verifyCashfreeWebhook(rawBody, timestamp, signature);
+    if (!isValid) return res.status(400).json({ error: 'Invalid signature' });
+
+    const event = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? req.body : JSON.parse(rawBody);
+
+    if (event.type === 'PAYMENT_SUCCESS_WEBHOOK') {
+      const orderId = event.data.order.order_id;
+
+      await prisma.booking.updateMany({
+        where: { cashfreeOrderId: orderId },
+        data : {
+          paymentStatus: 'PAID',
+          status       : 'CONFIRMED',
+        }
+      });
+      await sendBookingConfirmation(orderId);
+    }
+
+    if (event.type === 'PAYMENT_FAILED_WEBHOOK') {
+      const orderId = event.data.order.order_id;
+      await prisma.booking.updateMany({
+        where: { cashfreeOrderId: orderId },
+        data : { paymentStatus: 'FAILED' }
+      });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    res.status(500).send('Webhook handling error');
+  }
+});
 
 export default router;

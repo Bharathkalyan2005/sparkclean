@@ -8,6 +8,7 @@ import {
   formatIndianCurrency, getNextNDates, formatDateDisplay
 } from '../data/services';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 // ── Cashfree type declarations ──────────────────────────────────
 declare global {
@@ -62,67 +63,64 @@ const BookingPage: React.FC = () => {
     ? selectedCombo.price
     : selectedServices.reduce((sum, s) => sum + s.price * (s.quantity || 1), 0);
 
-  // ── Create Cashfree order via Backend Proxy ────────────────
-  const createCashfreeOrder = async (): Promise<string> => {
-    const orderId = `SC_${Date.now()}`;
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-    
-    const response = await fetch(`${API_URL}/payments/create-order`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        order_id: orderId,
-        order_amount: total,
-        order_currency: 'INR',
-        customer_details: {
-          customer_id: `cust_${Date.now()}`,
-          customer_name: form.name,
-          customer_phone: form.phone,
-          customer_email: form.email || `${form.phone}@sparkclean.in`,
-        },
-        order_meta: {
-          notify_url: 'https://sparkclean.vercel.app/success',
-          return_url: `https://sparkclean.vercel.app/success?order_id=${orderId}&name=${encodeURIComponent(form.name)}`,
-        },
-      }),
-    });
-
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.message || 'Failed to create payment order');
-    }
-
-    const data = await response.json();
-    return data.payment_session_id;
-  };
-
   // ── Pay Online via Cashfree checkout modal ────────────────────
-  const handlePayOnline = async () => {
+  const handlePayment = async () => {
     setLoading(true);
     try {
-      const paymentSessionId = await createCashfreeOrder();
-      const cashfree = await getCashfreeInstance();
+      const token = 'fallback-guest-token';
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+      const bookingData = {
+        customerName: form.name,
+        customerPhone: form.phone,
+        customerEmail: form.email,
+        address: form.address,
+        area: form.area,
+        services: selectedCombo
+          ? [{ id: selectedCombo.id, name: selectedCombo.name, price: selectedCombo.price, unit: 'combo', category: 'Combo', icon_name: 'combo', is_active: true }]
+          : selectedServices,
+        totalAmount: total,
+        paymentMethod: 'CASHFREE',
+        scheduledDate: selectedDate,
+        scheduledTime: selectedTime,
+      };
+
+      // Step 1: Create booking in backend
+      const bookingRes = await axios.post(`${API_URL}/bookings`, bookingData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const { bookingId } = bookingRes.data;
+
+      // Step 2: Create Cashfree order
+      const paymentRes = await axios.post(`${API_URL}/payments/create-order`,
+        { bookingId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const { paymentSessionId, orderId } = paymentRes.data;
+
+      // Step 3: Open Cashfree checkout
+      const cashfree = await (window as any).Cashfree({
+        mode: process.env.REACT_APP_CASHFREE_ENV === 'PRODUCTION'
+          ? 'production' : 'sandbox'
+      });
 
       cashfree.checkout({
         paymentSessionId,
         redirectTarget: '_modal',
-      }).then(async (result: any) => {
+      }).then((result: any) => {
         if (result.error) {
-          toast.error(result.error.message || 'Payment failed. Try again or choose Pay at Doorstep.');
-          setLoading(false);
-          return;
+          toast.error('Payment failed. Try again.');
         }
         if (result.paymentDetails) {
-          // Payment successful
-          const paymentId = result.paymentDetails.paymentMessage || paymentSessionId;
-          await saveBooking('cashfree', 'paid', paymentId);
+          // Payment success — navigate to success page
+          navigate(`/success?order_id=${orderId || result.paymentDetails.paymentMessage}`);
         }
-        setLoading(false);
       });
+
     } catch (err: any) {
-      toast.error(err.message || 'Payment gateway unavailable. Try Pay at Doorstep.');
+      console.error('Payment Error:', err);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
@@ -195,7 +193,7 @@ const BookingPage: React.FC = () => {
 
   // ── Shared style tokens ──────────────────────────────────────
   const cardSelected = { border: '1.5px solid #0AFFE6', background: 'rgba(10,255,230,0.06)', borderRadius: 14 };
-  const cardDefault  = { border: '1.5px solid rgba(10,255,230,0.18)', background: '#FFFFFF', borderRadius: 14 };
+  const cardDefault = { border: '1.5px solid rgba(10,255,230,0.18)', background: '#FFFFFF', borderRadius: 14 };
 
   return (
     <div className="min-h-screen" style={{ background: '#F0FFFE' }}>
@@ -206,7 +204,7 @@ const BookingPage: React.FC = () => {
             onMouseEnter={e => (e.currentTarget.style.color = '#00897B')}
             onMouseLeave={e => (e.currentTarget.style.color = '#4A4A6A')}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             <span className="font-dm text-sm">Back to Home</span>
           </button>
@@ -231,7 +229,7 @@ const BookingPage: React.FC = () => {
                 >
                   {step > i + 1 ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   ) : i + 1}
                 </div>
@@ -292,7 +290,7 @@ const BookingPage: React.FC = () => {
                           style={{ background: isSelected ? '#0AFFE6' : 'transparent', borderColor: isSelected ? '#0AFFE6' : 'rgba(10,255,230,0.3)' }}>
                           {isSelected && (
                             <svg className="w-3 h-3" fill="none" stroke="#0A1628" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           )}
                         </div>
@@ -490,47 +488,29 @@ const BookingPage: React.FC = () => {
               {/* Payment Options */}
               <div className="space-y-3 mb-6">
                 <button
-                  onClick={handlePayOnline}
+                  onClick={handlePayment}
                   disabled={loading}
-                  className="btn-teal w-full py-4 flex items-center justify-center gap-3 text-base"
+                  className="w-full bg-[#0AFFE6] text-black font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-50"
                 >
                   {loading ? (
-                    <div className="w-5 h-5 border-2 rounded-full animate-spin"
-                      style={{ borderColor: 'rgba(10,22,40,0.3) transparent rgba(10,22,40,0.3) #0A1628' }}></div>
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      Processing...
+                    </span>
                   ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                    </svg>
+                    '✦ Pay ₹' + total + ' with Cashfree'
                   )}
-                  Pay Online ({formatIndianCurrency(total)}) — UPI, Cards, NetBanking &amp; Wallets
                 </button>
 
-                {/* Payment method icons */}
-                <div className="flex items-center justify-center gap-3 py-1">
-                  {['GPay', 'PhonePe', 'Paytm', 'Visa', 'Mastercard'].map(m => (
-                    <span key={m} className="text-xs font-dm px-2 py-0.5 rounded-full"
-                      style={{ background: 'rgba(10,255,230,0.08)', color: '#00897B', border: '1px solid rgba(10,255,230,0.2)' }}>{m}</span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-px" style={{ background: 'rgba(10,255,230,0.15)' }} />
-                  <span className="text-xs font-dm" style={{ color: '#8A8AAA' }}>or</span>
-                  <div className="flex-1 h-px" style={{ background: 'rgba(10,255,230,0.15)' }} />
-                </div>
-
+                {/* Also show COD option: */}
                 <button
                   onClick={handleCOD}
-                  disabled={loading}
-                  className="w-full py-4 rounded-xl font-dm font-semibold transition-all flex items-center justify-center gap-3"
-                  style={{ background: '#FFFFFF', border: '1.5px solid rgba(10,255,230,0.25)', color: '#4A4A6A' }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = '#0AFFE6')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(10,255,230,0.25)')}
+                  className="w-full border border-[#0AFFE6] text-[#0AFFE6] font-semibold py-4 rounded-xl mt-3 hover:bg-[#0AFFE6] hover:text-black transition-all"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
-                  💵 Pay at Doorstep (Cash)
+                  Pay at Doorstep (Cash on Service)
                 </button>
               </div>
 

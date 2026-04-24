@@ -25,3 +25,4 @@ yarn-error.log*
 # Zip files and extracted contents
 *.zip
 extracted_content/
+client_secret_*.json

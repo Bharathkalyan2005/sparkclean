@@ -54,7 +54,7 @@ const LoadingScreen: React.FC = () => {
 
             <div className="text-center">
               <h1 className="font-syne font-bold text-2xl" style={{ color: '#1A1A2E' }}>SparkClean</h1>
-              <p className="font-dm text-sm mt-0.5" style={{ color: '#00897B' }}>Vizag's Cleanest Choice</p>
+              <p className="font-dm text-sm mt-0.5" style={{ color: '#00897B' }}>India's Cleanest Choice</p>
             </div>
 
             {/* Progress bar */}

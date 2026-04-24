@@ -4,14 +4,7 @@ import gsap from 'gsap';
 
 
 const IMAGES = [
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0001.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0002.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0003.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0004.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0005.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0006.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0007.jpg',
-  '/images/slideshow/Futuristic_cleaning_transformati…_202604120728 (online-video-cutter.com) (1)_0008.jpg',
+  '/images/open-page.png',
 ];
 
 const Hero: React.FC = () => {
@@ -70,17 +63,13 @@ const Hero: React.FC = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: '#0A0A0A' }}>
-      {/* Slideshow Background */}
+      {/* Single Background Image */}
       <div className="absolute inset-0 z-0">
-        {IMAGES.map((src, idx) => (
-          <img
-            key={src}
-            src={src}
-            alt={`Slide ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out"
-            style={{ opacity: currentSlide === idx ? 1 : 0 }}
-          />
-        ))}
+        <img
+          src="/images/open-page.png"
+          alt="Clean Living Room"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </div>
 
       {/* Subtle radial overlay — keeps text readable */}
@@ -96,12 +85,12 @@ const Hero: React.FC = () => {
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
             style={{ background: 'rgba(10,255,230,0.12)', border: '1px solid rgba(10,255,230,0.35)' }}>
             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Serving Vizag</span>
+            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Serving India</span>
           </div>
 
           {/* Main Heading */}
           <h1 ref={headingRef} className="section-heading text-5xl md:text-7xl leading-tight mb-6 overflow-hidden text-white">
-            <span className="word inline-block mr-4">Vizag's</span>
+            <span className="word inline-block mr-4">India's</span>
             <span className="word inline-block mr-4" style={{ color: '#0AFFE6' }}>Cleanest</span>
             <br />
             <span className="word inline-block mr-4 text-white">Choice</span>
@@ -110,10 +99,8 @@ const Hero: React.FC = () => {
           <p ref={subRef} className="text-lg md:text-xl font-dm leading-relaxed mb-8 max-w-xl" style={{ color: '#A0A0A0' }}>
             Professional home cleaning services starting at{' '}
             <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
-            Trained staff, eco-friendly products, same-day booking for MVP Colony &amp; Madhurawada.
+            Trained staff, eco-friendly products, same-day booking across India.
           </p>
-
-          {/* CTAs */}
           <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
             <button
               onClick={() => navigate('/book')}
@@ -155,7 +142,7 @@ const Hero: React.FC = () => {
               { icon: '✦', label: '500+ Happy Customers' },
               { icon: '⚡', label: 'Same-Day Booking' },
               { icon: '🌿', label: 'Eco-Friendly Products' },
-              { icon: '📍', label: 'Vizag Local Team' },
+              { icon: '📍', label: 'Pan India Team' },
             ].map((badge, i) => (
               <div key={i} className="badge rounded-full px-4 py-2 flex items-center gap-2"
                 style={{

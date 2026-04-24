@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
               <SparkLogo />
               <div>
                 <span className="font-syne font-bold text-xl" style={{ color: '#FFFFFF' }}>SparkClean</span>
-                <div className="text-xs font-dm -mt-0.5" style={{ color: 'rgba(10,255,230,0.8)' }}>Vizag's Cleanest Choice</div>
+                <div className="text-xs font-dm -mt-0.5" style={{ color: 'rgba(10,255,230,0.8)' }}>India's Cleanest Choice</div>
               </div>
             </div>
             <p className="font-dm text-sm leading-relaxed mb-5" style={{ color: '#606060' }}>
@@ -117,7 +117,7 @@ const Footer: React.FC = () => {
       <div className="py-5" style={{ borderTop: '1px solid rgba(10,255,230,0.1)' }}>
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="font-dm text-sm text-center md:text-left" style={{ color: '#606060' }}>
-            Serving Vizag with <span style={{ color: '#0AFFE6' }}>❤</span> | © 2026 SparkClean by <span style={{ color: '#00CDB7' }}>VRC Pvt Ltd</span>
+            Serving India with <span style={{ color: '#0AFFE6' }}>❤</span> | © 2026 SparkClean by <span style={{ color: '#00CDB7' }}>VRC Pvt Ltd</span>
           </p>
           <p className="font-dm text-xs" style={{ color: '#606060' }}>
             All rights reserved. GST &amp; business compliant.

@@ -14,10 +14,12 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "axios": "^1.15.2",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
     "jimp": "^0.16.13",
     "jsonwebtoken": "^9.0.3",
     "prisma": "^5.20.0"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
 import { CartProvider } from './context/CartContext';
 import LoadingScreen from './components/LoadingScreen';
@@ -13,8 +14,9 @@ import './index.css';
 
 function App() {
   return (
-    <Router>
-      <CartProvider>
+    <GoogleOAuthProvider clientId="134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com">
+      <Router>
+        <CartProvider>
         <LoadingScreen />
         <Toaster
           position="top-center"
@@ -42,7 +44,8 @@ function App() {
           <Route path="/sparkadmin" element={<AdminPage />} />
         </Routes>
       </CartProvider>
-    </Router>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 
