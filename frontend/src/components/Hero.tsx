@@ -1,26 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
-
-const IMAGES = [
-  '/images/open-page.png',
-];
-
 const Hero: React.FC = () => {
   const navigate = useNavigate();
-  const [currentSlide, setCurrentSlide] = useState(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const badgesRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % IMAGES.length);
-    }, 4000); // 4 seconds per slide
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 1.6 });

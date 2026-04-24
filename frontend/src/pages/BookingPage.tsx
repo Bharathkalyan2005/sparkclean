@@ -18,12 +18,6 @@ declare global {
 }
 
 // Safe Cashfree loader — SDK is loaded via <script> in index.html
-const getCashfreeInstance = async () => {
-  if (!window.Cashfree) {
-    throw new Error('Cashfree SDK not loaded. Please refresh and try again.');
-  }
-  return await window.Cashfree({ mode: 'production' });
-};
 
 const STEPS = ['Select Services', 'Your Details', 'Payment'];
 
