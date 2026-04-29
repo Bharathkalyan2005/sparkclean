@@ -1,60 +1,42 @@
-import axios from 'axios';
-import crypto from 'crypto';
+import Razorpay from 'razorpay'
+import crypto from 'crypto'
 
-const CASHFREE_BASE = process.env.CASHFREE_BASE_URL || 'https://sandbox.cashfree.com/pg';
-const APP_ID        = process.env.CASHFREE_APP_ID;
-const SECRET_KEY    = process.env.CASHFREE_SECRET_KEY;
+const razorpay = new Razorpay({
+  key_id    : process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+})
 
-const cashfreeHeaders = {
-  'x-api-version'  : '2023-08-01',
-  'x-client-id'    : APP_ID,
-  'x-client-secret': SECRET_KEY,
-  'Content-Type'   : 'application/json',
-};
-
-// Create Cashfree Order
-export async function createCashfreeOrder(booking: {
-  bookingNumber : string;
-  totalAmount   : number;
-  customerName  : string;
-  customerPhone : string;
-  customerEmail : string;
+// Create Razorpay Order
+export async function createRazorpayOrder(booking: {
+  bookingNumber : string
+  totalAmount   : number
+  customerName  : string
+  customerPhone : string
+  customerEmail : string
 }) {
-  const response = await axios.post(
-    `${CASHFREE_BASE}/orders`,
-    {
-      order_id       : booking.bookingNumber,
-      order_amount   : booking.totalAmount,
-      order_currency : 'INR',
-      customer_details: {
-        customer_id   : booking.bookingNumber,
-        customer_name : booking.customerName,
-        customer_phone: booking.customerPhone,
-        customer_email: booking.customerEmail,
-      },
-      order_meta: {
-        return_url:
-          `${process.env.FRONTEND_URL}/success?order_id={order_id}`,
-        notify_url:
-          `${process.env.BACKEND_URL}/api/payments/webhook`,
-      },
-    },
-    { headers: cashfreeHeaders }
-  );
-  return response.data; // contains payment_session_id
+  const order = await razorpay.orders.create({
+    amount  : booking.totalAmount * 100, // paise
+    currency: 'INR',
+    receipt : booking.bookingNumber,
+    notes   : {
+      customerName : booking.customerName,
+      customerPhone: booking.customerPhone,
+      customerEmail: booking.customerEmail,
+    }
+  })
+  return order // contains order.id
 }
 
-// Verify Webhook Signature
-export function verifyCashfreeWebhook(
-  rawBody   : string,
-  timestamp : string,
-  signature : string
+// Verify Razorpay Payment Signature
+export function verifyRazorpaySignature(
+  razorpay_order_id  : string,
+  razorpay_payment_id: string,
+  razorpay_signature : string
 ): boolean {
-  if (!SECRET_KEY) return false;
-  const signedPayload = timestamp + rawBody;
-  const expectedSig = crypto
-    .createHmac('sha256', SECRET_KEY)
-    .update(signedPayload)
-    .digest('base64');
-  return expectedSig === signature;
+  const body = razorpay_order_id + "|" + razorpay_payment_id
+  const expectedSignature = crypto
+    .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+    .update(body)
+    .digest('hex')
+  return expectedSignature === razorpay_signature
 }

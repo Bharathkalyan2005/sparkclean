@@ -9,6 +9,7 @@ import BookingPage from './pages/BookingPage';
 import SuccessPage from './pages/SuccessPage';
 import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
+import AuthCallbackPage from './pages/AuthCallbackPage';
 // @ts-ignore
 import './index.css';
 
@@ -39,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route path="/book" element={<BookingPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/sparkadmin" element={<AdminPage />} />

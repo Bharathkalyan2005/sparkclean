@@ -10,14 +10,14 @@ import {
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-// ── Cashfree type declarations ──────────────────────────────────
+// ── Razorpay type declarations ──────────────────────────────────
 declare global {
   interface Window {
-    Cashfree: any;
+    Razorpay: any;
   }
 }
 
-// Safe Cashfree loader — SDK is loaded via <script> in index.html
+// Safe Razorpay loader — SDK is loaded via <script> in index.html
 
 const STEPS = ['Select Services', 'Your Details', 'Payment'];
 
@@ -57,67 +57,100 @@ const BookingPage: React.FC = () => {
     ? selectedCombo.price
     : selectedServices.reduce((sum, s) => sum + s.price * (s.quantity || 1), 0);
 
-  // ── Pay Online via Cashfree checkout modal ────────────────────
-  const handlePayment = async () => {
-    setLoading(true);
-    try {
-      const token = 'fallback-guest-token';
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  // ── Pay Online via Razorpay checkout modal ────────────────────
+const handlePayment = async () => {
+  setLoading(true)
+  try {
+    const token = 'fallback-guest-token';
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-      const bookingData = {
-        customerName: form.name,
-        customerPhone: form.phone,
-        customerEmail: form.email,
-        address: form.address,
-        area: form.area,
-        services: selectedCombo
-          ? [{ id: selectedCombo.id, name: selectedCombo.name, price: selectedCombo.price, unit: 'combo', category: 'Combo', icon_name: 'combo', is_active: true }]
-          : selectedServices,
-        totalAmount: total,
-        paymentMethod: 'CASHFREE',
-        scheduledDate: selectedDate,
-        scheduledTime: selectedTime,
-      };
+    const bookingData = {
+      customerName: form.name,
+      customerPhone: form.phone,
+      customerEmail: form.email,
+      address: form.address,
+      area: form.area,
+      services: selectedCombo
+        ? [{ id: selectedCombo.id, name: selectedCombo.name, price: selectedCombo.price, unit: 'combo', category: 'Combo', icon_name: 'combo', is_active: true }]
+        : selectedServices,
+      totalAmount: total,
+      paymentMethod: 'RAZORPAY',
+      scheduledDate: selectedDate,
+      scheduledTime: selectedTime,
+    };
 
-      // Step 1: Create booking in backend
-      const bookingRes = await axios.post(`${API_URL}/bookings`, bookingData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const { bookingId } = bookingRes.data;
+    // Step 1: Create booking
+    const bookingRes = await axios.post(
+      `${API_URL}/bookings`,
+      bookingData,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const { bookingId } = bookingRes.data
 
-      // Step 2: Create Cashfree order
-      const paymentRes = await axios.post(`${API_URL}/payments/create-order`,
-        { bookingId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const { paymentSessionId, orderId } = paymentRes.data;
+    // Step 2: Create Razorpay order
+    const orderRes = await axios.post(
+      `${API_URL}/payments/create-order`,
+      { bookingId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const {
+      orderId, amount, currency,
+      keyId, customerName,
+      customerPhone, customerEmail,
+      bookingNumber
+    } = orderRes.data
 
-      // Step 3: Open Cashfree checkout
-      const cashfree = await (window as any).Cashfree({
-        mode: process.env.REACT_APP_CASHFREE_ENV === 'PRODUCTION'
-          ? 'production' : 'sandbox'
-      });
-
-      cashfree.checkout({
-        paymentSessionId,
-        redirectTarget: '_modal',
-      }).then((result: any) => {
-        if (result.error) {
-          toast.error('Payment failed. Try again.');
+    // Step 3: Open Razorpay checkout
+    const options = {
+      key         : keyId,
+      amount      : amount,
+      currency    : currency,
+      name        : 'SparkClean',
+      description : `Booking ${bookingNumber}`,
+      order_id    : orderId,
+      prefill: {
+        name   : customerName,
+        email  : customerEmail,
+        contact: customerPhone,
+      },
+      theme: {
+        color: '#0AFFE6'
+      },
+      handler: async (response: any) => {
+        // Step 4: Verify payment on backend
+        await axios.post(
+          `${API_URL}/payments/verify`,
+          {
+            razorpay_order_id  : response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature : response.razorpay_signature,
+            bookingId,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        // Step 5: Go to success page
+        navigate(`/success?booking=${bookingId}`)
+      },
+      modal: {
+        ondismiss: () => {
+          toast.error('Payment cancelled')
+          setLoading(false)
         }
-        if (result.paymentDetails) {
-          // Payment success — navigate to success page
-          navigate(`/success?order_id=${orderId || result.paymentDetails.paymentMessage}`);
-        }
-      });
-
-    } catch (err: any) {
-      console.error('Payment Error:', err);
-      toast.error('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
+      }
     }
-  };
+
+    const rzp = new (window as any).Razorpay(options)
+    rzp.on('payment.failed', (response: any) => {
+      toast.error('Payment failed: ' + response.error.description)
+      setLoading(false)
+    })
+    rzp.open()
+
+  } catch (err) {
+    toast.error('Something went wrong. Please try again.')
+    setLoading(false)
+  }
+}
 
   const handleCOD = async () => {
     setLoading(true);
@@ -126,7 +159,7 @@ const BookingPage: React.FC = () => {
   };
 
   const saveBooking = async (
-    method: 'cashfree' | 'cod',
+    method: 'razorpay' | 'cod',
     status: 'paid' | 'pending',
     paymentId?: string
   ) => {
@@ -165,7 +198,7 @@ const BookingPage: React.FC = () => {
       `📅 Date: ${formatDateDisplay(selectedDate)} at ${selectedTime}\n` +
       `📍 Area: ${form.area}\n` +
       `💰 Total: ${formatIndianCurrency(total)}\n` +
-      `💳 Payment: ${method === 'cod' ? 'Pay at Doorstep' : 'Online Paid via Cashfree'}\n\n` +
+      `💳 Payment: ${method === 'cod' ? 'Pay at Doorstep' : 'Online Paid via Razorpay'}\n\n` +
       `Please confirm my booking. Thank you!`
     );
     window.open(`https://wa.me/919392420643?text=${waMsg}`, '_blank');
@@ -495,7 +528,7 @@ const BookingPage: React.FC = () => {
                       Processing...
                     </span>
                   ) : (
-                    '✦ Pay ₹' + total + ' with Cashfree'
+                    '✦ Pay ₹' + total + ' with Razorpay'
                   )}
                 </button>
 
@@ -509,7 +542,7 @@ const BookingPage: React.FC = () => {
               </div>
 
               <p className="text-center text-xs font-dm" style={{ color: '#8A8AAA' }}>
-                🔒 Secure payments powered by Cashfree. We'll send a WhatsApp confirmation instantly.
+                🔒 Secure payments powered by Razorpay. We'll send a WhatsApp confirmation instantly.
               </p>
 
               <button onClick={() => setStep(2)} className="mt-4 w-full text-sm font-dm transition-colors" style={{ color: '#8A8AAA' }}
@@ -526,3 +559,4 @@ const BookingPage: React.FC = () => {
 };
 
 export default BookingPage;
+

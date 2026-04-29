@@ -14,7 +14,7 @@ export interface Booking {
   area: string;
   services: Service[];
   total_price: number;
-  payment_method: 'cashfree' | 'cod';
+  payment_method: 'razorpay' | 'cod';
   payment_status: 'pending' | 'paid' | 'failed';
   payment_id?: string;
   scheduled_date: string;

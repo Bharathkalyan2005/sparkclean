@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
+import passport from './config/passport';
 import servicesRoutes from './routes/services.route';
 import authRoutes from './routes/auth.route';
 import bookingRoutes from './routes/booking.route';
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 // Routes
 app.use('/api/services', servicesRoutes);

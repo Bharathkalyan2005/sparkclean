@@ -1,7 +1,8 @@
 ﻿import express, { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate } from '../middleware/auth.middleware';
-import { createCashfreeOrder, verifyCashfreeWebhook } from '../services/paymentService';
+import { createRazorpayOrder, verifyRazorpaySignature } from '../services/paymentService';
+import crypto from 'crypto';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -14,12 +15,13 @@ const sendBookingConfirmation = async (orderId: string) => {
 router.post('/create-order', authenticate, async (req: any, res: any) => {
   try {
     const { bookingId } = req.body;
+
     const booking = await prisma.booking.findUnique({
       where: { id: bookingId }
     });
-    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    if (!booking) return res.status(404).json({ error: 'Not found' });
 
-    const order = await createCashfreeOrder({
+    const order = await createRazorpayOrder({
       bookingNumber : booking.bookingNumber,
       totalAmount   : Number(booking.totalAmount),
       customerName  : booking.customerName,
@@ -27,15 +29,21 @@ router.post('/create-order', authenticate, async (req: any, res: any) => {
       customerEmail : booking.customerEmail || '',
     });
 
-    // Save cashfree order id
+    // Save razorpay order id to booking
     await prisma.booking.update({
       where: { id: bookingId },
-      data : { cashfreeOrderId: order.order_id }
+      data : { cashfreeOrderId: order.id } // reuse field
     });
 
-    res.json({ 
-      paymentSessionId: order.payment_session_id,
-      orderId         : order.order_id 
+    res.json({
+      orderId      : order.id,
+      amount       : order.amount,
+      currency     : order.currency,
+      keyId        : process.env.RAZORPAY_KEY_ID,
+      customerName : booking.customerName,
+      customerPhone: booking.customerPhone,
+      customerEmail: booking.customerEmail,
+      bookingNumber: booking.bookingNumber,
     });
   } catch (error: any) {
     console.error('Payment creation error:', error?.response?.data || error);
@@ -43,47 +51,93 @@ router.post('/create-order', authenticate, async (req: any, res: any) => {
   }
 });
 
-// POST /api/payments/webhook  (Cashfree calls this)
-router.post('/webhook', express.raw({ type: '*/*' }), async (req: any, res: any) => {
+// POST /api/payments/verify
+router.post('/verify', authenticate, async (req: any, res: any) => {
   try {
-    const signature = req.headers['x-webhook-signature'] as string;
-    const timestamp = req.headers['x-webhook-timestamp'] as string;
-    
-    // Incase body is already parsed by express.json in server.ts
-    const rawBody = Buffer.isBuffer(req.body) ? req.body.toString() : JSON.stringify(req.body);
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      bookingId
+    } = req.body;
 
-    // Verify it is really from Cashfree
-    const isValid = verifyCashfreeWebhook(rawBody, timestamp, signature);
-    if (!isValid) return res.status(400).json({ error: 'Invalid signature' });
+    const isValid = verifyRazorpaySignature(
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    );
 
-    const event = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? req.body : JSON.parse(rawBody);
-
-    if (event.type === 'PAYMENT_SUCCESS_WEBHOOK') {
-      const orderId = event.data.order.order_id;
-
-      await prisma.booking.updateMany({
-        where: { cashfreeOrderId: orderId },
-        data : {
-          paymentStatus: 'PAID',
-          status       : 'CONFIRMED',
-        }
-      });
-      await sendBookingConfirmation(orderId);
+    if (!isValid) {
+      return res.status(400).json({ error: 'Invalid payment signature' });
     }
 
-    if (event.type === 'PAYMENT_FAILED_WEBHOOK') {
-      const orderId = event.data.order.order_id;
-      await prisma.booking.updateMany({
-        where: { cashfreeOrderId: orderId },
-        data : { paymentStatus: 'FAILED' }
-      });
-    }
+    // Update booking as paid
+    await prisma.booking.update({
+      where: { id: bookingId },
+      data : {
+        paymentStatus: 'PAID',
+        paymentId    : razorpay_payment_id,
+        status       : 'CONFIRMED',
+      }
+    });
 
-    res.json({ success: true });
+    // Send WhatsApp + Email confirmation
+    await sendBookingConfirmation(bookingId);
+
+    res.json({ success: true, paymentId: razorpay_payment_id });
   } catch (error) {
-    console.error('Webhook error:', error);
-    res.status(500).send('Webhook handling error');
+    console.error('Payment verification error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// POST /api/payments/webhook
+router.post('/webhook', 
+  express.raw({ type: 'application/json' }), 
+  async (req: any, res: any) => {
+    try {
+      const signature = req.headers['x-razorpay-signature'] as string;
+      const body = Buffer.isBuffer(req.body) ? req.body.toString() : JSON.stringify(req.body);
+
+      const expectedSig = crypto
+        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+        .update(body)
+        .digest('hex');
+
+      if (expectedSig !== signature) {
+        return res.status(400).json({ error: 'Invalid signature' });
+      }
+
+      const event = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? req.body : JSON.parse(body);
+
+      if (event.event === 'payment.captured') {
+        const orderId   = event.payload.payment.entity.order_id;
+        const paymentId = event.payload.payment.entity.id;
+
+        await prisma.booking.updateMany({
+          where: { cashfreeOrderId: orderId },
+          data : {
+            paymentStatus: 'PAID',
+            paymentId    : paymentId,
+            status       : 'CONFIRMED',
+          }
+        });
+      }
+
+      if (event.event === 'payment.failed') {
+        const orderId = event.payload.payment.entity.order_id;
+        await prisma.booking.updateMany({
+          where: { cashfreeOrderId: orderId },
+          data : { paymentStatus: 'FAILED' }
+        });
+      }
+
+      res.json({ received: true });
+    } catch (error) {
+      console.error('Webhook handling error:', error);
+      res.status(500).send('Webhook handling error');
+    }
+  }
+);
 
 export default router;
