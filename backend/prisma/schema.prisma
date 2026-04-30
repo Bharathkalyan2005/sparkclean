@@ -36,7 +36,7 @@ enum PaymentStatus {
 }
 
 enum PaymentMethod {
-  CASHFREE
+  RAZORPAY
   COD
   UPI
 }
