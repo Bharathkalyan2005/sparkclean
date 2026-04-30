@@ -1,0 +1,965 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T09:39:24.351Z",
+  "workspaceRoot": "spark clean",
+  "stats": {
+    "filesIndexed": 57,
+    "edgesIndexed": 53
+  },
+  "nodes": [
+    {
+      "id": "client_secret_134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com.json",
+      "path": "client_secret_134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com.json",
+      "lang": "json",
+      "summary": "{\"web\":{\"client_id\":\"134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com\",\"project_id\":\"quickware-auth\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://oauth2.googleapis.com/token\",\"auth_prov",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/package-lock.json",
+      "path": "backend/package-lock.json",
+      "lang": "json",
+      "summary": "{ \"name\": \"backend\", \"version\": \"1.0.0\", \"lockfileVersion\": 3, \"requires\": true, \"packages\": {",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/package.json",
+      "path": "backend/package.json",
+      "lang": "json",
+      "summary": "{ \"name\": \"backend\", \"version\": \"1.0.0\", \"description\": \"\", \"main\": \"src/server.ts\", \"scripts\": {",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/tsconfig.json",
+      "path": "backend/tsconfig.json",
+      "lang": "json",
+      "summary": "{ \"compilerOptions\": { \"target\": \"es2022\", \"module\": \"commonjs\", \"outDir\": \"./dist\", \"rootDir\": \"./src\", \"esModuleInterop\": true, \"forceConsistentCasingInFileNames\": true, \"strict\": true, \"skipLibCheck\": true } }",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/DOCUMENTATION.md",
+      "path": "frontend/DOCUMENTATION.md",
+      "lang": "md",
+      "summary": "# SparkClean Platform Documentation Welcome to the comprehensive documentation for the **SparkClean** service booking platform. SparkClean is a modern, 3D-animated, full-stack web application tailored for a home cleaning business based in V",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/package-lock.json",
+      "path": "frontend/package-lock.json",
+      "lang": "json",
+      "summary": "{ \"name\": \"sparkclean\", \"version\": \"0.1.0\", \"lockfileVersion\": 3, \"requires\": true, \"packages\": {",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/package.json",
+      "path": "frontend/package.json",
+      "lang": "json",
+      "summary": "{ \"name\": \"sparkclean\", \"version\": \"0.1.0\", \"private\": true, \"dependencies\": { \"@headlessui/react\": \"^2.2.9\",",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/postcss.config.js",
+      "path": "frontend/postcss.config.js",
+      "lang": "js",
+      "summary": "module.exports = { plugins: { tailwindcss: {}, autoprefixer: {}, }, }",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/README.md",
+      "path": "frontend/README.md",
+      "lang": "md",
+      "summary": "# Getting Started with Create React App This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). ## Available Scripts In the project directory, you can run: ### `npm start` Runs the app in the dev",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/tailwind.config.js",
+      "path": "frontend/tailwind.config.js",
+      "lang": "js",
+      "summary": "/** @type {import('tailwindcss').Config} */ module.exports = { content: [ \"./src/**/*.{js,jsx,ts,tsx}\", ], theme: {",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/tsconfig.json",
+      "path": "frontend/tsconfig.json",
+      "lang": "json",
+      "summary": "{ \"compilerOptions\": { \"target\": \"es2015\", \"downlevelIteration\": true, \"lib\": [ \"dom\",",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/vercel.json",
+      "path": "frontend/vercel.json",
+      "lang": "json",
+      "summary": "{ \"rewrites\": [ { \"source\": \"/(.*)\", \"destination\": \"/index.html\" }",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/src/server.ts",
+      "path": "backend/src/server.ts",
+      "lang": "ts",
+      "summary": "import express from 'express'; import cors from 'cors'; import dotenv from 'dotenv'; import { PrismaClient } from '@prisma/client'; import passport from './config/passport'; import servicesRoutes from './routes/services.route';",
+      "imports": [
+        "express",
+        "cors",
+        "dotenv",
+        "@prisma/client",
+        "./config/passport",
+        "./routes/services.route",
+        "./routes/auth.route",
+        "./routes/booking.route",
+        "./routes/admin.route",
+        "./routes/payment.route"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/public/index.html",
+      "path": "frontend/public/index.html",
+      "lang": "html",
+      "summary": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <link rel=\"icon\" href=\"%PUBLIC_URL%/favicon.ico\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/public/manifest.json",
+      "path": "frontend/public/manifest.json",
+      "lang": "json",
+      "summary": "{ \"short_name\": \"React App\", \"name\": \"Create React App Sample\", \"icons\": [ { \"src\": \"favicon.ico\",",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/App.css",
+      "path": "frontend/src/App.css",
+      "lang": "css",
+      "summary": ".App { text-align: center; } .App-logo { height: 40vmin; pointer-events: none;",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/App.test.tsx",
+      "path": "frontend/src/App.test.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { render, screen } from '@testing-library/react'; import App from './App'; test('renders learn react link', () => { render(<App />); const linkElement = screen.getByText(/learn react/i);",
+      "imports": [
+        "react",
+        "@testing-library/react",
+        "./App"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/App.tsx",
+      "path": "frontend/src/App.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { Toaster } from 'react-hot-toast'; import { CartProvider } from './cont",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@react-oauth/google",
+        "react-hot-toast",
+        "./context/CartContext",
+        "./components/LoadingScreen",
+        "./pages/HomePage",
+        "./pages/BookingPage",
+        "./pages/SuccessPage",
+        "./pages/AdminPage",
+        "./pages/AuthPage",
+        "./pages/AuthCallbackPage"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/index.css",
+      "path": "frontend/src/index.css",
+      "lang": "css",
+      "summary": "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap'); @tailwind base; @tailwind components; @tai",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/index.tsx",
+      "path": "frontend/src/index.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import ReactDOM from 'react-dom/client'; // @ts-ignore import './index.css'; import App from './App'; import reportWebVitals from './reportWebVitals';",
+      "imports": [
+        "react",
+        "react-dom/client",
+        "./App",
+        "./reportWebVitals"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/react-app-env.d.ts",
+      "path": "frontend/src/react-app-env.d.ts",
+      "lang": "ts",
+      "summary": "/// <reference types=\"react-scripts\" /> declare module '*.css'; declare module '*.svg';",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/reportWebVitals.ts",
+      "path": "frontend/src/reportWebVitals.ts",
+      "lang": "ts",
+      "summary": "import { ReportHandler } from 'web-vitals'; const reportWebVitals = (onPerfEntry?: ReportHandler) => { if (onPerfEntry && onPerfEntry instanceof Function) { import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => { getCLS",
+      "imports": [
+        "web-vitals"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/setupTests.ts",
+      "path": "frontend/src/setupTests.ts",
+      "lang": "ts",
+      "summary": "// jest-dom adds custom jest matchers for asserting on DOM nodes. // allows you to do things like: // expect(element).toHaveTextContent(/react/i) // learn more: https://github.com/testing-library/jest-dom import '@testing-library/jest-dom';",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/src/config/passport.ts",
+      "path": "backend/src/config/passport.ts",
+      "lang": "ts",
+      "summary": "import passport from 'passport' import { Strategy as GoogleStrategy } from 'passport-google-oauth20' import { PrismaClient } from '@prisma/client' import jwt from 'jsonwebtoken' const prisma = new PrismaClient() passport.use(new GoogleStrat",
+      "imports": [
+        "passport",
+        "passport-google-oauth20",
+        "@prisma/client",
+        "jsonwebtoken"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/controllers/auth.controller.ts",
+      "path": "backend/src/controllers/auth.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import bcrypt from 'bcrypt'; import jwt from 'jsonwebtoken'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); export const register = async (req: Request, res: Re",
+      "imports": [
+        "express",
+        "bcrypt",
+        "jsonwebtoken",
+        "@prisma/client"
+      ],
+      "exports": [
+        "register",
+        "login",
+        "getMe",
+        "updateMe"
+      ]
+    },
+    {
+      "id": "backend/src/controllers/services.controller.ts",
+      "path": "backend/src/controllers/services.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); // @desc Get all active services // @route GET /api/services // @access Public",
+      "imports": [
+        "express",
+        "@prisma/client"
+      ],
+      "exports": [
+        "getAllServices",
+        "getComboServices"
+      ]
+    },
+    {
+      "id": "backend/src/middleware/auth.middleware.ts",
+      "path": "backend/src/middleware/auth.middleware.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response, NextFunction } from 'express'; import jwt from 'jsonwebtoken'; interface AuthRequest extends Request { user?: any; } export const authenticate = (req: AuthRequest, res: Response, next: NextFunction): void => {",
+      "imports": [
+        "express",
+        "jsonwebtoken"
+      ],
+      "exports": [
+        "authenticate",
+        "authorizeAdmin"
+      ]
+    },
+    {
+      "id": "backend/src/routes/admin.route.ts",
+      "path": "backend/src/routes/admin.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express'; import { authenticate, authorizeAdmin } from '../middleware/auth.middleware'; const router = Router(); // /api/admin endpoints router.get('/stats', authenticate, authorizeAdmin, (req, res) => { res.send('Da",
+      "imports": [
+        "express",
+        "../middleware/auth.middleware"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/auth.route.ts",
+      "path": "backend/src/routes/auth.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express'; import { register, login, getMe, updateMe } from '../controllers/auth.controller'; import { authenticate } from '../middleware/auth.middleware'; import passport from '../config/passport'; import jwt from 'j",
+      "imports": [
+        "express",
+        "../controllers/auth.controller",
+        "../middleware/auth.middleware",
+        "../config/passport",
+        "jsonwebtoken"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/booking.route.ts",
+      "path": "backend/src/routes/booking.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; const router = Router(); const prisma = new PrismaClient(); router.post('/', async (req, res) => ",
+      "imports": [
+        "express",
+        "@prisma/client",
+        "../middleware/auth.middleware"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/payment.route.ts",
+      "path": "backend/src/routes/payment.route.ts",
+      "lang": "ts",
+      "summary": "import express, { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; import { createRazorpayOrder, verifyRazorpaySignature } from '../services/paymentService",
+      "imports": [
+        "express",
+        "@prisma/client",
+        "../middleware/auth.middleware",
+        "../services/paymentService",
+        "crypto"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/services.route.ts",
+      "path": "backend/src/routes/services.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express'; import { getAllServices, getComboServices } from '../controllers/services.controller'; const router = Router(); // Define /api/services routes based on PRD requirements router.get('/', getAllServices); rout",
+      "imports": [
+        "express",
+        "../controllers/services.controller"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/services/paymentService.ts",
+      "path": "backend/src/services/paymentService.ts",
+      "lang": "ts",
+      "summary": "import Razorpay from 'razorpay' import crypto from 'crypto' const razorpay = new Razorpay({ key_id : process.env.RAZORPAY_KEY_ID!, key_secret: process.env.RAZORPAY_KEY_SECRET!, })",
+      "imports": [
+        "razorpay",
+        "crypto"
+      ],
+      "exports": [
+        "verifyRazorpaySignature"
+      ]
+    },
+    {
+      "id": "frontend/src/components/CartSidebar.tsx",
+      "path": "frontend/src/components/CartSidebar.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import { useCart } from '../context/CartContext'; import { formatIndianCurrency } from '../da",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom",
+        "../context/CartContext",
+        "../data/services"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/CombosSection.tsx",
+      "path": "frontend/src/components/CombosSection.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useRef } from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import { COMBOS } from '../data/services'; const ComboCard: React.FC<{ combo: typeof COMBOS[0]; index: number }> ",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom",
+        "../data/services"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Contact.tsx",
+      "path": "frontend/src/components/Contact.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState } from 'react'; import { motion } from 'framer-motion'; import { supabase } from '../lib/supabase'; import toast from 'react-hot-toast'; const Contact: React.FC = () => { const [form, setForm] = useState({ name: '',",
+      "imports": [
+        "react",
+        "framer-motion",
+        "../lib/supabase",
+        "react-hot-toast"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Footer.tsx",
+      "path": "frontend/src/components/Footer.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES, SERVICE_AREAS } from '../data/services'; const SparkLogo = () => ( <img src=\"/logo-primary-cropped.png\" alt=\"SparkClean Logo\" className=\"h-8 w-auto\" /> )",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../data/services"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Hero.tsx",
+      "path": "frontend/src/components/Hero.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useRef } from 'react'; import { useNavigate } from 'react-router-dom'; import gsap from 'gsap'; const Hero: React.FC = () => { const navigate = useNavigate(); const headingRef = useRef<HTMLHeadingElement>(null);",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "gsap"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/HeroScene.tsx",
+      "path": "frontend/src/components/HeroScene.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useRef } from 'react'; import * as THREE from 'three'; import gsap from 'gsap'; const HeroScene: React.FC = () => { const mountRef = useRef<HTMLDivElement>(null); useEffect(() => {",
+      "imports": [
+        "react",
+        "three",
+        "gsap"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/HowItWorks.tsx",
+      "path": "frontend/src/components/HowItWorks.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { motion } from 'framer-motion'; const steps = [ { number: '01', title: 'Book Online',",
+      "imports": [
+        "react",
+        "framer-motion"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/LoadingScreen.tsx",
+      "path": "frontend/src/components/LoadingScreen.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useState } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; const LoadingScreen: React.FC = () => { const [visible, setVisible] = useState(true); useEffect(() => { const timer = setTimeout(()",
+      "imports": [
+        "react",
+        "framer-motion"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Navbar.tsx",
+      "path": "frontend/src/components/Navbar.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { Link, useNavigate } from 'react-router-dom'; import { motion, AnimatePresence } from 'framer-motion'; import { useCart } from '../context/CartContext'; import { User as UserIcon }",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "framer-motion",
+        "../context/CartContext",
+        "lucide-react",
+        "./ProfileModal"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/ProfileModal.tsx",
+      "path": "frontend/src/components/ProfileModal.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { User, Phone, MapPin, Loader2, Save, X, LogOut, Shield } from 'lucide-react'; import toast from 'react-hot-toast'; import {",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "react-hot-toast",
+        "react-router-dom"
+      ],
+      "exports": [
+        "ProfileModal"
+      ]
+    },
+    {
+      "id": "frontend/src/components/ServiceAreas.tsx",
+      "path": "frontend/src/components/ServiceAreas.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; const CITIES_DATA = [ { name: 'Bengaluru, Karnataka',",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/ServicesSection.tsx",
+      "path": "frontend/src/components/ServicesSection.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useCart } from '../context/CartContext'; import { SERVICES } from '../data/services'; import { Service } from '../lib/supabase'; type",
+      "imports": [
+        "react",
+        "framer-motion",
+        "../context/CartContext",
+        "../data/services",
+        "../lib/supabase"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Testimonials.tsx",
+      "path": "frontend/src/components/Testimonials.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { TESTIMONIALS } from '../data/services'; const StarRating: React.FC<{ rating: number }> = ({ rating }) => ( <div className=",
+      "imports": [
+        "react",
+        "framer-motion",
+        "../data/services"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/WhySparkClean.tsx",
+      "path": "frontend/src/components/WhySparkClean.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { motion } from 'framer-motion'; const features = [ { icon: ( <svg className=\"w-7 h-7\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+      "imports": [
+        "react",
+        "framer-motion"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/context/CartContext.tsx",
+      "path": "frontend/src/context/CartContext.tsx",
+      "lang": "tsx",
+      "summary": "import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'; import { Service } from '../lib/supabase'; interface CartItem extends Service { quantity: number; } interface CartContextType {",
+      "imports": [
+        "react",
+        "../lib/supabase"
+      ],
+      "exports": [
+        "CartProvider",
+        "useCart"
+      ]
+    },
+    {
+      "id": "frontend/src/data/services.ts",
+      "path": "frontend/src/data/services.ts",
+      "lang": "ts",
+      "summary": "// Static services data (also seeded to Supabase) export const SERVICES = [ { id: 'svc-1', name: 'Bathroom Cleaning', price: 249,",
+      "imports": [],
+      "exports": [
+        "SERVICES",
+        "COMBOS",
+        "SERVICE_AREAS",
+        "TESTIMONIALS",
+        "TIME_SLOTS",
+        "formatIndianCurrency",
+        "getNextNDates",
+        "formatDateDisplay"
+      ]
+    },
+    {
+      "id": "frontend/src/lib/supabase.ts",
+      "path": "frontend/src/lib/supabase.ts",
+      "lang": "ts",
+      "summary": "import { createClient } from '@supabase/supabase-js'; const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'https://placeholder.supabase.co'; const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'placeholder-key'; export ",
+      "imports": [
+        "@supabase/supabase-js"
+      ],
+      "exports": [
+        "supabase"
+      ]
+    },
+    {
+      "id": "frontend/src/pages/AdminPage.tsx",
+      "path": "frontend/src/pages/AdminPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import { supabase, Booking } from '../lib/supabase'; import { BarChart, Bar, XAxis, YAxis, Cartesian",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom",
+        "../lib/supabase",
+        "react-hot-toast",
+        "../data/services",
+        "recharts"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/pages/AuthCallbackPage.tsx",
+      "path": "frontend/src/pages/AuthCallbackPage.tsx",
+      "lang": "tsx",
+      "summary": "import { useEffect } from 'react' import { useNavigate, useSearchParams } from 'react-router-dom' export default function AuthCallbackPage() { const [searchParams] = useSearchParams() const navigate = useNavigate() useEffect(() => {",
+      "imports": [
+        "react",
+        "react-router-dom"
+      ],
+      "exports": [
+        "AuthCallbackPage"
+      ]
+    },
+    {
+      "id": "frontend/src/pages/AuthPage.tsx",
+      "path": "frontend/src/pages/AuthPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { useForm } from 'react-hook-form'; import { zodResolver } from '",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@react-oauth/google",
+        "react-hook-form",
+        "@hookform/resolvers/zod",
+        "zod",
+        "react-router-dom",
+        "react-hot-toast",
+        "lucide-react"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/pages/BookingPage.tsx",
+      "path": "frontend/src/pages/BookingPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useNavigate, useSearchParams } from 'react-router-dom'; import { supabase, Booking } from '../lib/supabase'; import { useC",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-router-dom",
+        "../lib/supabase",
+        "../context/CartContext",
+        "react-hot-toast",
+        "axios",
+        "../data/services"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/pages/HomePage.tsx",
+      "path": "frontend/src/pages/HomePage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect } from 'react'; import Navbar from '../components/Navbar'; import Hero from '../components/Hero'; import ServicesSection from '../components/ServicesSection'; import CombosSection from '../components/CombosSection'",
+      "imports": [
+        "react",
+        "../components/Navbar",
+        "../components/Hero",
+        "../components/ServicesSection",
+        "../components/CombosSection",
+        "../components/HowItWorks",
+        "../components/WhySparkClean",
+        "../components/ServiceAreas",
+        "../components/Testimonials",
+        "../components/Contact",
+        "../components/Footer",
+        "../components/CartSidebar"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/pages/ProfilePage.tsx",
+      "path": "frontend/src/pages/ProfilePage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; import { User, Phone, MapPin, Loader2, Save, ArrowLeft } from 'lucide-react'; import toast from 'rea",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "framer-motion",
+        "lucide-react",
+        "react-hot-toast"
+      ],
+      "exports": [
+        "ProfilePage"
+      ]
+    },
+    {
+      "id": "frontend/src/pages/SuccessPage.tsx",
+      "path": "frontend/src/pages/SuccessPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link } from 'react-router-dom'; import { motion } from 'framer-motion'; // Simple CSS confetti const Confetti: React.FC = () => { const colors = ['#0AFFE6', '#FFD",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "framer-motion"
+      ],
+      "exports": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/config/passport.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/services.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/auth.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/booking.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/admin.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/payment.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.test.tsx",
+      "to": "frontend/src/App.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/components/LoadingScreen.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/HomePage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/BookingPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/SuccessPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/AdminPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/AuthPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/AuthCallbackPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/index.tsx",
+      "to": "frontend/src/App.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/index.tsx",
+      "to": "frontend/src/reportWebVitals.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/admin.route.ts",
+      "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/auth.route.ts",
+      "to": "backend/src/controllers/auth.controller.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/auth.route.ts",
+      "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/auth.route.ts",
+      "to": "backend/src/config/passport.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/booking.route.ts",
+      "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/payment.route.ts",
+      "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/payment.route.ts",
+      "to": "backend/src/services/paymentService.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/services.route.ts",
+      "to": "backend/src/controllers/services.controller.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/CartSidebar.tsx",
+      "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/CartSidebar.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/CombosSection.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Contact.tsx",
+      "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Footer.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Navbar.tsx",
+      "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Navbar.tsx",
+      "to": "frontend/src/components/ProfileModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServicesSection.tsx",
+      "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServicesSection.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServicesSection.tsx",
+      "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Testimonials.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/context/CartContext.tsx",
+      "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/AdminPage.tsx",
+      "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/AdminPage.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/BookingPage.tsx",
+      "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/BookingPage.tsx",
+      "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/BookingPage.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/Navbar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/Hero.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/ServicesSection.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/CombosSection.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/HowItWorks.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/WhySparkClean.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/ServiceAreas.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/Testimonials.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/Contact.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/Footer.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/HomePage.tsx",
+      "to": "frontend/src/components/CartSidebar.tsx",
+      "type": "imports"
+    }
+  ]
+}
