@@ -55,6 +55,27 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Global error handler
+import { Request, Response, NextFunction } from 'express';
+app.use((
+  err: any, 
+  req: Request, 
+  res: Response, 
+  next: NextFunction
+): void | Response<any, Record<string, any>> => {
+  console.error('=== GLOBAL ERROR ===');
+  console.error('URL   :', req.url);
+  console.error('Method:', req.method);
+  console.error('Error :', err.message);
+  console.error('Stack :', err.stack);
+
+  res.status(500).json({
+    error  : 'Internal server error',
+    message: err.message,
+    path   : req.url
+  });
+});
+
 // Graceful shutdown for Prisma connection
 process.on('SIGINT', async () => {
     await prisma.$disconnect();

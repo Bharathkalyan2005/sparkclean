@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-30T09:39:24.351Z",
+  "generatedAt": "2026-04-30T09:51:58.623Z",
   "workspaceRoot": "spark clean",
   "stats": {
     "filesIndexed": 57,
@@ -275,7 +275,7 @@
       "id": "backend/src/middleware/auth.middleware.ts",
       "path": "backend/src/middleware/auth.middleware.ts",
       "lang": "ts",
-      "summary": "import { Request, Response, NextFunction } from 'express'; import jwt from 'jsonwebtoken'; interface AuthRequest extends Request { user?: any; } export const authenticate = (req: AuthRequest, res: Response, next: NextFunction): void => {",
+      "summary": "import { Request, Response, NextFunction } from 'express'; import jwt from 'jsonwebtoken'; interface AuthRequest extends Request { user?: any; } export const authenticate = (",
       "imports": [
         "express",
         "jsonwebtoken"
@@ -314,7 +314,7 @@
       "id": "backend/src/routes/booking.route.ts",
       "path": "backend/src/routes/booking.route.ts",
       "lang": "ts",
-      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; const router = Router(); const prisma = new PrismaClient(); router.post('/', async (req, res) => ",
+      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; const router = Router(); const prisma = new PrismaClient(); const generateBookingNumber = async (",
       "imports": [
         "express",
         "@prisma/client",
