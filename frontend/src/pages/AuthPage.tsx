@@ -4,7 +4,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Check, ChevronDown } from 'lucide-react';
 import api from '../lib/axiosInstance';
@@ -102,8 +102,6 @@ const AuthPage = () => {
     resolver: zodResolver(signupSchema),
     defaultValues: { fullName: '', phone: '', email: '', password: '', confirmPassword: '', terms: false }
   });
-
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
   const onLogin = async (data: LoginFormValues) => {
     setIsLoading(true);
