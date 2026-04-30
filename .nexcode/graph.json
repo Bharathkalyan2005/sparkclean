@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-30T09:51:58.623Z",
+  "generatedAt": "2026-04-30T10:00:58.394Z",
   "workspaceRoot": "spark clean",
   "stats": {
-    "filesIndexed": 57,
-    "edgesIndexed": 53
+    "filesIndexed": 58,
+    "edgesIndexed": 55
   },
   "nodes": [
     {
@@ -570,6 +570,16 @@
       ]
     },
     {
+      "id": "frontend/src/lib/axiosInstance.ts",
+      "path": "frontend/src/lib/axiosInstance.ts",
+      "lang": "ts",
+      "summary": "import axios from 'axios'; const api = axios.create({ baseURL: process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com', headers: { 'Content-Type': 'application/json', }",
+      "imports": [
+        "axios"
+      ],
+      "exports": []
+    },
+    {
       "id": "frontend/src/lib/supabase.ts",
       "path": "frontend/src/lib/supabase.ts",
       "lang": "ts",
@@ -624,7 +634,8 @@
         "zod",
         "react-router-dom",
         "react-hot-toast",
-        "lucide-react"
+        "lucide-react",
+        "../lib/axiosInstance"
       ],
       "exports": []
     },
@@ -640,7 +651,7 @@
         "../lib/supabase",
         "../context/CartContext",
         "react-hot-toast",
-        "axios",
+        "../lib/axiosInstance",
         "../data/services"
       ],
       "exports": []
@@ -892,6 +903,11 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/pages/AuthPage.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/pages/BookingPage.tsx",
       "to": "frontend/src/lib/supabase.ts",
       "type": "imports"
@@ -899,6 +915,11 @@
     {
       "from": "frontend/src/pages/BookingPage.tsx",
       "to": "frontend/src/context/CartContext.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/BookingPage.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {

@@ -8,7 +8,7 @@ import {
   formatIndianCurrency, getNextNDates, formatDateDisplay
 } from '../data/services';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import api from '../lib/axiosInstance';
 
 // ── Razorpay type declarations ──────────────────────────────────
 declare global {
@@ -25,6 +25,31 @@ const BookingPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { items: cartItems, clearCart } = useCart();
+
+  useEffect(() => {
+    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
+    if (!token) {
+      toast.error('Please login to book a service');
+      navigate('/auth?redirect=/book');
+      return;
+    }
+    
+    // Verify token is not expired
+    try {
+      const decoded = JSON.parse(atob(token.split('.')[1]));
+      const isExpired = decoded.exp * 1000 < Date.now();
+      if (isExpired) {
+        localStorage.removeItem('sparkclean_token');
+        localStorage.removeItem('token');
+        toast.error('Session expired. Please login again.');
+        navigate('/auth?redirect=/book');
+      }
+    } catch (e) {
+      localStorage.removeItem('sparkclean_token');
+      localStorage.removeItem('token');
+      navigate('/auth');
+    }
+  }, []);
 
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState<typeof cartItems>([]);
@@ -61,7 +86,6 @@ const BookingPage: React.FC = () => {
 const handlePayment = async () => {
   setLoading(true)
   try {
-    const token = 'fallback-guest-token';
     const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
     const bookingData = {
@@ -80,25 +104,17 @@ const handlePayment = async () => {
     };
 
     // Step 1: Create booking
-    const bookingRes = await axios.post(
-      `${API_URL}/bookings`,
-      bookingData,
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
-    const { bookingId } = bookingRes.data
+    const bookingRes = await api.post('/bookings', bookingData);
+    const { bookingId } = bookingRes.data;
 
     // Step 2: Create Razorpay order
-    const orderRes = await axios.post(
-      `${API_URL}/payments/create-order`,
-      { bookingId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
+    const orderRes = await api.post('/payments/create-order', { bookingId });
     const {
       orderId, amount, currency,
       keyId, customerName,
       customerPhone, customerEmail,
       bookingNumber
-    } = orderRes.data
+    } = orderRes.data;
 
     // Step 3: Open Razorpay checkout
     const options = {
@@ -118,18 +134,14 @@ const handlePayment = async () => {
       },
       handler: async (response: any) => {
         // Step 4: Verify payment on backend
-        await axios.post(
-          `${API_URL}/payments/verify`,
-          {
+        await api.post('/payments/verify', {
             razorpay_order_id  : response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature : response.razorpay_signature,
             bookingId,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
+        });
         // Step 5: Go to success page
-        navigate(`/success?booking=${bookingId}`)
+        navigate(`/success?booking=${bookingId}`);
       },
       modal: {
         ondismiss: () => {

@@ -4,9 +4,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Check, ChevronDown } from 'lucide-react';
+import api from '../lib/axiosInstance';
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -107,32 +108,32 @@ const AuthPage = () => {
   const onLogin = async (data: LoginFormValues) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, password: data.password })
+      const response = await api.post(`/auth/login`, {
+        email: data.email, 
+        password: data.password 
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        if (result.error?.includes('Invalid')) {
-             loginForm.setError('password', { message: 'Incorrect password or email. Try again.' });
-        } else {
-             loginForm.setError('email', { message: result.error || 'Login failed' });
-        }
-        setShakeLogin(true);
-        setTimeout(() => setShakeLogin(false), 500);
+      const result = response.data;
+      
+      localStorage.setItem('sparkclean_token', result.token);
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('user', JSON.stringify(result.user));
+      
+      toast.success("Welcome back! Redirecting...", {
+        style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' }
+      });
+      
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirect = searchParams.get('redirect') || '/';
+      setTimeout(() => navigate(redirect), 1500);
+      
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.error || 'Network error.';
+      if (errorMsg.includes('Invalid')) {
+           loginForm.setError('password', { message: 'Incorrect password or email. Try again.' });
       } else {
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('user', JSON.stringify(result.user));
-        toast.success("Welcome back! Redirecting...", {
-          style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' }
-        });
-        setTimeout(() => navigate('/'), 1500);
+           loginForm.setError('email', { message: errorMsg });
       }
-    } catch (err) {
-      loginForm.setError('root', { message: 'Network error. Please ensure backend is running.' });
       setShakeLogin(true);
       setTimeout(() => setShakeLogin(false), 500);
     } finally {
@@ -143,36 +144,35 @@ const AuthPage = () => {
   const onSignup = async (data: SignupFormValues) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          fullName: data.fullName,
-          phone: data.phone
-        })
+      const response = await api.post(`/auth/register`, {
+        email: data.email,
+        password: data.password,
+        fullName: data.fullName,
+        phone: data.phone
       });
 
-      const result = await response.json();
+      const result = response.data;
 
-      if (!response.ok) {
-        if (result.error?.includes('already in use')) {
-          signupForm.setError('email', { message: 'Account exists. Try logging in.' });
-        } else {
-          signupForm.setError('root', { message: result.error || 'Registration failed' });
-        }
-        setShakeSignup(true);
-        setTimeout(() => setShakeSignup(false), 500);
-      } else {
-        toast.success("Account created! Please log in.", {
-          style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' },
-          duration: 4000
-        });
-        setTimeout(() => setIsLogin(true), 2000);
+      // If backend actually logs in after register, save token. Otherwise just show success.
+      if (result.token) {
+        localStorage.setItem('sparkclean_token', result.token);
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
       }
-    } catch (err) {
-      signupForm.setError('root', { message: 'Network error. Please ensure backend is running.' });
+
+      toast.success("Account created! Please log in.", {
+        style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' },
+        duration: 4000
+      });
+      setTimeout(() => setIsLogin(true), 2000);
+      
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.error || 'Registration failed';
+      if (errorMsg.includes('already in use')) {
+        signupForm.setError('email', { message: 'Account exists. Try logging in.' });
+      } else {
+        signupForm.setError('root', { message: errorMsg });
+      }
       setShakeSignup(true);
       setTimeout(() => setShakeSignup(false), 500);
     } finally {
