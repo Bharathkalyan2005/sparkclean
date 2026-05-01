@@ -2,89 +2,115 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const TrackingPage: React.FC = () => {
-  const [query, setQuery]       = useState('')
-  const [booking, setBooking]   = useState<any>(null)
-  const [loading, setLoading]   = useState(false)
-  const [error, setError]       = useState('')
-  const [notFound, setNotFound] = useState(false)
-  const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking')
+  const [query, setQuery]         = useState('');
+  const [booking, setBooking]     = useState<any>(null);
+  const [loading, setLoading]     = useState(false);
+  const [error, setError]         = useState('');
+  const [notFound, setNotFound]   = useState(false);
+  const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
   // Check URL params on load
   useEffect(() => {
-    const API_URL = process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'
-
-    fetch(`${API_URL}/api/health`)
-      .then(r => r.json())
-      .then(() => setApiStatus('online'))
-      .catch(() => setApiStatus('offline'))
-
-    const params = new URLSearchParams(window.location.search)
-    const id = params.get('id')
-    if (id) {
-      setQuery(id)
-      handleTrack(id)  // auto-track if ID in URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    
+    // Only auto-track if ID exists and is valid
+    if (id && id !== 'N/A' && id.trim() !== '') {
+      setQuery(id);
+      handleTrack(id);
     }
-  }, [])
+    // Do NOT set query if no ID in URL
+  }, []);
+
+  // Server health check & wake-up
+  useEffect(() => {
+    const BASE_URL = process.env.REACT_APP_API_URL 
+      || 'https://sparkclean-x3ze.onrender.com';
+
+    // Silent wake-up ping
+    fetch(`${BASE_URL}/api/health`)
+      .then(r => r.json())
+      .then(data => {
+        console.log('Server status:', data.status);
+        setApiStatus('online');
+      })
+      .catch(() => {
+        // Retry after 5 seconds if asleep/offline
+        setTimeout(() => {
+          fetch(`${BASE_URL}/api/health`)
+            .then(() => setApiStatus('online'))
+            .catch(() => setApiStatus('offline'));
+        }, 5000);
+      });
+  }, []);
 
   const handleTrack = async (searchQuery?: string) => {
-    const trackQuery = (searchQuery || query).trim()
+    const trackQuery = (searchQuery || query).trim();
     
-    if (!trackQuery) {
-      setError('Please enter a Booking ID or Phone Number')
-      return
+    // Reject empty or N/A values
+    if (!trackQuery || trackQuery === 'N/A') {
+      setError('Please enter your Booking ID or Phone Number');
+      return;
     }
 
-    setLoading(true)
-    setError('')
-    setBooking(null)
-    setNotFound(false)
+    // Reject if too short
+    if (trackQuery.length < 5) {
+      setError('Please enter a valid Booking ID (e.g. SC-20260501-XXXXX)');
+      return;
+    }
 
-    const BASE_URL = process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'
+    setLoading(true);
+    setError('');
+    setBooking(null);
+    setNotFound(false);
+
+    const BASE_URL = process.env.REACT_APP_API_URL 
+      || 'https://sparkclean-x3ze.onrender.com';
 
     try {
-      const isPhone = /^\d{10}$/.test(trackQuery)
-      let url    : string
-      let method : string = 'GET'
-      let body   : string | undefined
+      const isPhone = /^\d{10}$/.test(trackQuery);
+      let url    : string;
+      let method : string = 'GET';
+      let body   : string | undefined;
 
       if (isPhone) {
-        url    = `${BASE_URL}/api/bookings/track-by-phone`
-        method = 'POST'
-        body   = JSON.stringify({ phone: trackQuery })
+        url    = `${BASE_URL}/api/bookings/track-by-phone`;
+        method = 'POST';
+        body   = JSON.stringify({ phone: trackQuery });
       } else {
-        const bookingId = trackQuery.toUpperCase()
-        url = `${BASE_URL}/api/bookings/track/${bookingId}`
+        const bookingId = trackQuery.toUpperCase();
+        url = `${BASE_URL}/api/bookings/track/${bookingId}`;
       }
 
-      console.log('Fetching:', url)
+      console.log('Fetching:', url);
 
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body,
-      })
+      });
 
-      console.log('Response status:', response.status)
+      console.log('Response status:', response.status);
 
       if (response.status === 404) {
-        setNotFound(true)
-        setError('No booking found. Check your ID.')
-        return
+        setNotFound(true);
+        setError('No booking found. Check your ID.');
+        return;
       }
 
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({}))
-        setError(errData.error || `Server error: ${response.status}`)
-        return
+        const errData = await response.json().catch(() => ({}));
+        setError(errData.error || `Server error: ${response.status}`);
+        return;
       }
 
-      const data = await response.json()
-      console.log('Booking data:', data)
+      const data = await response.json();
+      console.log('Booking data:', data);
 
-      setBooking(data.bookings ? data.bookings[0] : data)
+      setBooking(data.bookings ? data.bookings[0] : data);
 
     } catch (err: any) {
-      console.error('Fetch error:', err)
+      console.error('Fetch error:', err);
       
       // Show specific error
       if (err.message?.includes('fetch')) {
@@ -92,14 +118,14 @@ const TrackingPage: React.FC = () => {
           'Cannot connect to server. ' +
           'Please wait 30 seconds and retry ' +
           '(server may be starting up).'
-        )
+        );
       } else {
-        setError('Something went wrong. Please try again.')
+        setError('Something went wrong. Please try again.');
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen pt-32 pb-24" style={{ background: '#0A0A0A' }}>
@@ -124,7 +150,7 @@ const TrackingPage: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* Show status banner */}
+        {/* ONLY show banner if offline (NOT checking): */}
         {apiStatus === 'offline' && (
           <div style={{
             background   : 'rgba(239,68,68,0.1)',
@@ -137,20 +163,45 @@ const TrackingPage: React.FC = () => {
             fontSize     : '14px',
             color        : '#FCA5A5',
           }}>
-            ⚠️ Server is waking up... 
+            ⚠️ Server is starting up...
             Please wait 30 seconds and try again.
           </div>
         )}
 
+        {/* Show subtle loader while checking: */}
         {apiStatus === 'checking' && (
-          <div style={{
+          <p style={{
             textAlign  : 'center',
-            color      : '#A0A0A0',
-            fontSize   : '13px',
-            marginBottom: '16px',
+            color      : 'rgba(255,255,255,0.3)',
+            fontSize   : '12px',
+            marginBottom: '12px',
           }}>
-            🔄 Connecting to server...
-          </div>
+            Connecting...
+          </p>
+        )}
+
+        {/* Show green dot when online: */}
+        {apiStatus === 'online' && (
+          <p style={{
+            textAlign  : 'center',
+            color      : '#22C55E',
+            fontSize   : '12px',
+            marginBottom: '12px',
+            display    : 'flex',
+            alignItems : 'center',
+            justifyContent: 'center',
+            gap        : '6px',
+          }}>
+            <span style={{
+              width       : '8px',
+              height      : '8px',
+              borderRadius: '50%',
+              background  : '#22C55E',
+              display     : 'inline-block',
+              animation   : 'pulse 2s infinite',
+            }} />
+            Server Online
+          </p>
         )}
 
         {/* Search Bar */}
@@ -180,14 +231,16 @@ const TrackingPage: React.FC = () => {
 
           {/* Input */}
           <input
-            type        ="text"
-            value       ={query}
-            onChange    ={e => {
+            type       ="text"
+            value      ={query}
+            onChange   ={e => {
               setQuery(e.target.value)
               setError('')
+              setNotFound(false)
             }}
-            onKeyDown   ={e => e.key === 'Enter' && handleTrack()}
-            placeholder ="Enter Booking ID (SC-20260501-XXXXX) or Phone"
+            onKeyDown  ={e => e.key === 'Enter' && handleTrack()}
+            placeholder="e.g. SC-20260501-MRRHU4 or 9876543210"
+            autoFocus
             style={{
               flex       : 1,
               background : 'transparent',
