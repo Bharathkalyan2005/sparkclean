@@ -123,7 +123,7 @@ const AuthPage = () => {
       
       const searchParams = new URLSearchParams(window.location.search);
       const redirect = searchParams.get('redirect') || '/';
-      setTimeout(() => navigate(redirect), 1500);
+      setTimeout(() => navigate(redirect), 800);
       
     } catch (err: any) {
       const errorMsg = err.response?.data?.error || 'Network error.';
@@ -444,7 +444,10 @@ const AuthPage = () => {
 
             <button
                 onClick={() => {
-                  window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
+                  const params = new URLSearchParams(window.location.search);
+                  const redirect = params.get('redirect') || '/';
+                  localStorage.setItem('auth_redirect', redirect);
+                  window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
                 }}
                 style={{
                   width          : '100%',

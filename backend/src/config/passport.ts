@@ -46,7 +46,9 @@ passport.use(new GoogleStrategy({
 
       return done(null, user)
     } catch (err) {
-      return done(err)
+      console.error('Google Auth DB Error:', err)
+      // Return false for user to trigger passport's failureRedirect instead of throwing a 500
+      return done(null, false, { message: 'Database connection failed' } as any)
     }
   }
 ))

@@ -27,6 +27,7 @@ export interface Service {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
   unit: string;
   category: string;
   icon_name: string;
@@ -42,6 +43,7 @@ export interface Combo {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
   includes: string[];
   badge_text: string;
   is_popular: boolean;

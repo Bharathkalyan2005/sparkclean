@@ -21,6 +21,32 @@ declare global {
 
 const STEPS = ['Select Services', 'Your Details', 'Payment'];
 
+const areas = [
+  // ── BENGALURU ──
+  { name: "Koramangala",     city: "Bengaluru", premium: true  },
+  { name: "Indiranagar",     city: "Bengaluru", premium: true  },
+  { name: "Whitefield",      city: "Bengaluru", premium: false },
+  { name: "HSR Layout",      city: "Bengaluru", premium: false },
+  { name: "Marathahalli",    city: "Bengaluru", premium: false },
+  { name: "BTM Layout",      city: "Bengaluru", premium: false },
+  { name: "Jayanagar",       city: "Bengaluru", premium: false },
+  { name: "Electronic City", city: "Bengaluru", premium: false },
+  { name: "Bannerghatta",    city: "Bengaluru", premium: false },
+  { name: "Hebbal",          city: "Bengaluru", premium: false },
+
+  // ── MUMBAI ──
+  { name: "Bandra",          city: "Mumbai",    premium: true  },
+  { name: "Andheri",         city: "Mumbai",    premium: true  },
+  { name: "Powai",           city: "Mumbai",    premium: false },
+  { name: "Thane",           city: "Mumbai",    premium: false },
+  { name: "Navi Mumbai",     city: "Mumbai",    premium: false },
+  { name: "Juhu",            city: "Mumbai",    premium: false },
+  { name: "Borivali",        city: "Mumbai",    premium: false },
+  { name: "Worli",           city: "Mumbai",    premium: false },
+  { name: "Malad",           city: "Mumbai",    premium: false },
+  { name: "Kandivali",       city: "Mumbai",    premium: false },
+];
+
 const BookingPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -47,7 +73,7 @@ const BookingPage: React.FC = () => {
     } catch (e) {
       localStorage.removeItem('sparkclean_token');
       localStorage.removeItem('token');
-      navigate('/auth');
+      navigate('/auth?redirect=/book');
     }
   }, [navigate]);
 
@@ -513,14 +539,54 @@ const handleCODBooking = async () => {
 
                 <div>
                   <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Area *</label>
-                  <select value={form.area} onChange={e => setForm({ ...form, area: e.target.value })}
-                    className="form-input light" required>
+                  <select
+                    value={form.area}
+                    onChange={e => {
+                      const selectedArea = areas.find(
+                        a => a.name === e.target.value
+                      )
+                      setForm({
+                        ...form,
+                        area: e.target.value,
+                        city: selectedArea?.city || 'India'
+                      })
+                    }}
+                    style={{
+                      width        : '100%',
+                      padding      : '14px 16px',
+                      background   : 'white',
+                      border       : '2px solid #e2e8f0',
+                      borderRadius : '12px',
+                      fontSize     : '15px',
+                      color        : '#1a1a2e',
+                      cursor       : 'pointer',
+                      outline      : 'none',
+                    }}
+                    required
+                  >
                     <option value="" disabled>Select your area</option>
-                    {SERVICE_AREAS.map(area => (
-                      <option key={area.name} value={area.name}>
-                        {area.premium ? `⭐ ${area.name}` : area.name}
-                      </option>
-                    ))}
+                  
+                    <optgroup label="📍 Bengaluru, Karnataka">
+                      {areas
+                        .filter(a => a.city === 'Bengaluru')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
+                  
+                    <optgroup label="📍 Mumbai, Maharashtra">
+                      {areas
+                        .filter(a => a.city === 'Mumbai')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
                   </select>
                 </div>
 

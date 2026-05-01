@@ -81,13 +81,61 @@ const ComboCard: React.FC<{ combo: typeof COMBOS[0]; index: number }> = ({ combo
           {combo.badge_text}
         </span>
 
-        {/* Price */}
-        <div className="flex items-end gap-2 my-5">
-          <div className="font-syne font-bold text-5xl" style={{ color: '#FFFFFF' }}>
-            ₹{combo.price}
+        {/* LIMITED OFFER Badge */}
+        {combo.originalPrice && (
+          <div style={{
+            position   : 'absolute',
+            top        : '12px',
+            right      : '12px',
+            background : 'linear-gradient(135deg, #0AFFE6, #088C7A)',
+            color      : '#000000',
+            fontSize   : '10px',
+            fontWeight : '700',
+            padding    : '3px 10px',
+            borderRadius: '20px',
+            letterSpacing: '0.5px',
+            zIndex: 10
+          }}>
+            LIMITED OFFER
           </div>
-          <div className="text-sm font-dm pb-2" style={{ color: '#A0A0A0' }}>/ visit</div>
-        </div>
+        )}
+
+        {/* Price */}
+        {combo.originalPrice ? (
+          <div className="my-5">
+            <div className="flex items-center gap-3">
+              <span style={{ textDecoration: 'line-through', color: 'rgba(255,255,255,0.35)', fontSize: '20px' }}>
+                ₹{combo.originalPrice}
+              </span>
+              <div className="flex items-end gap-2">
+                <div className="font-syne font-bold text-5xl" style={{ color: '#FFFFFF' }}>
+                  ₹{combo.price}
+                </div>
+                <div className="text-sm font-dm pb-2" style={{ color: '#A0A0A0' }}>/ visit</div>
+              </div>
+            </div>
+            <div style={{
+              background   : 'rgba(255,165,0,0.15)',
+              border       : '1px solid rgba(255,165,0,0.4)',
+              borderRadius : '20px',
+              padding      : '3px 12px',
+              fontSize     : '11px',
+              fontWeight   : '700',
+              color        : '#FFA500',
+              display      : 'inline-block',
+              marginTop    : '8px',
+            }}>
+              🎉 SAVE ₹{combo.originalPrice - combo.price} — BEST VALUE!
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-end gap-2 my-5">
+            <div className="font-syne font-bold text-5xl" style={{ color: '#FFFFFF' }}>
+              ₹{combo.price}
+            </div>
+            <div className="text-sm font-dm pb-2" style={{ color: '#A0A0A0' }}>/ visit</div>
+          </div>
+        )}
 
         {/* Included services */}
         <ul className="space-y-3 mb-8">

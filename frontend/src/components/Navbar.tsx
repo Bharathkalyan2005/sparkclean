@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { User as UserIcon } from 'lucide-react';
 import ProfileModal from './ProfileModal';
+import toast from 'react-hot-toast';
 
 const SparkLogo = () => (
   <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className="h-8 w-auto" />
@@ -154,7 +155,15 @@ const Navbar: React.FC = () => {
           )}
           
           <button
-            onClick={() => navigate('/book')}
+            onClick={() => {
+              const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token')
+              if (!token) {
+                toast.error('Please login to book a service')
+                navigate('/auth?redirect=/book')
+                return
+              }
+              navigate('/book')
+            }}
             className="btn-teal text-sm px-5 py-2.5 hidden md:block ripple ml-2"
           >
             Book Now
@@ -224,7 +233,16 @@ const Navbar: React.FC = () => {
             )}
 
             <button
-              onClick={() => { navigate('/book'); setMenuOpen(false); }}
+              onClick={() => {
+                setMenuOpen(false);
+                const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token')
+                if (!token) {
+                  toast.error('Please login to book a service')
+                  navigate('/auth?redirect=/book')
+                  return
+                }
+                navigate('/book');
+              }}
               className="btn-teal text-sm py-3 text-center"
             >
               Book Now

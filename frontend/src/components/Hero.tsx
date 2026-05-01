@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
+import LoginPromptModal from './LoginPromptModal';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -66,6 +68,7 @@ const Hero: React.FC = () => {
       }} />
 
       {/* Content */}
+      <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
       <div className="relative z-20 max-w-7xl mx-auto px-4 pt-24 pb-16">
         <div className="max-w-3xl">
           {/* Badge */}
@@ -85,12 +88,20 @@ const Hero: React.FC = () => {
 
           <p ref={subRef} className="text-lg md:text-xl font-dm leading-relaxed mb-8 max-w-xl" style={{ color: '#A0A0A0' }}>
             Professional home cleaning services starting at{' '}
+            <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.9em' }}>₹249</span>{' '}
             <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
             Trained staff, eco-friendly products, same-day booking across India.
           </p>
           <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
             <button
-              onClick={() => navigate('/book')}
+              onClick={() => {
+                const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+                if (!token) {
+                  setShowLoginModal(true);
+                  return;
+                }
+                navigate('/book');
+              }}
               className="btn-teal text-base px-8 py-4 ripple flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

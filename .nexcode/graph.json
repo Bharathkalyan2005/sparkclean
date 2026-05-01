@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-01T04:31:27.011Z",
+  "generatedAt": "2026-05-01T05:32:04.278Z",
   "workspaceRoot": "spark clean",
   "stats": {
     "filesIndexed": 61,
-    "edgesIndexed": 56
+    "edgesIndexed": 55
   },
   "nodes": [
     {
@@ -564,7 +564,7 @@
       "id": "frontend/src/data/services.ts",
       "path": "frontend/src/data/services.ts",
       "lang": "ts",
-      "summary": "// Static services data (also seeded to Supabase) export const SERVICES = [ { id: 'svc-1', name: 'Bathroom Cleaning', price: 249,",
+      "summary": "// Static services data (also seeded to Supabase) export const SERVICES = [ { id: 'svc-1', name: 'Bathroom Cleaning', price: 149,",
       "imports": [],
       "exports": [
         "SERVICES",
@@ -659,12 +659,11 @@
       "id": "frontend/src/pages/BookingPage.tsx",
       "path": "frontend/src/pages/BookingPage.tsx",
       "lang": "tsx",
-      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useNavigate, useSearchParams } from 'react-router-dom'; import { supabase, Booking } from '../lib/supabase'; import { useC",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useNavigate, useSearchParams } from 'react-router-dom'; import { useCart } from '../context/CartContext'; import { SERVICE",
       "imports": [
         "react",
         "framer-motion",
         "react-router-dom",
-        "../lib/supabase",
         "../context/CartContext",
         "react-hot-toast",
         "../lib/axiosInstance",
@@ -930,11 +929,6 @@
     {
       "from": "frontend/src/pages/AuthPage.tsx",
       "to": "frontend/src/lib/axiosInstance.ts",
-      "type": "imports"
-    },
-    {
-      "from": "frontend/src/pages/BookingPage.tsx",
-      "to": "frontend/src/lib/supabase.ts",
       "type": "imports"
     },
     {

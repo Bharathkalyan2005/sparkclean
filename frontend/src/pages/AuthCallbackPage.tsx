@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 export default function AuthCallbackPage() {
   const [searchParams] = useSearchParams()
@@ -10,6 +11,10 @@ export default function AuthCallbackPage() {
     const name  = searchParams.get('name')
     const error = searchParams.get('error')
 
+    // Get redirect URL saved before Google login
+    const redirect  = localStorage.getItem('auth_redirect') 
+                      || '/'
+
     if (error) {
       navigate('/auth?error=Google login failed')
       return
@@ -18,10 +23,25 @@ export default function AuthCallbackPage() {
     if (token) {
       // Save token to localStorage
       localStorage.setItem('sparkclean_token', token)
+      localStorage.setItem('token', token)
       if (name) localStorage.setItem('sparkclean_name', name)
 
-      // Redirect to home or booking
-      navigate('/')
+      try {
+        const decoded = JSON.parse(atob(token.split('.')[1]));
+        localStorage.setItem('user', JSON.stringify({
+          id: decoded.userId,
+          email: decoded.email,
+          fullName: decoded.name,
+          role: decoded.role
+        }));
+      } catch (e) {
+        console.error('Failed to parse token payload', e);
+      }
+
+      localStorage.removeItem('auth_redirect') // cleanup
+      
+      toast.success('Logged in with Google! 🎉')
+      setTimeout(() => navigate(redirect), 800)
     }
   }, [navigate, searchParams])
 

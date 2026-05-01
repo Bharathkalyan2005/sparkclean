@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
 import { SERVICES } from '../data/services';
 import { Service } from '../lib/supabase';
+import LoginPromptModal from './LoginPromptModal';
 
 type IconProps = { name: string };
 
@@ -92,16 +94,25 @@ const CategoryFilter: React.FC<{ active: string; onChange: (cat: string) => void
 
 const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ service, onClick }) => {
   const { addItem, items } = useCart();
-  const [quantity, setQuantity] = useState(1);
   const isIroning = service.id === 'svc-9';
+  const [quantity, setQuantity] = useState(isIroning ? 5 : 1);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const inCart = items.some(i => i.id === service.id);
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+    if (!token) {
+      setShowLoginModal(true);
+      return;
+    }
     addItem(service, isIroning ? quantity : 1);
+    toast.success(`${service.name} added to cart!`);
   };
 
   return (
+    <>
+    <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     <motion.div
       onClick={onClick}
       initial={{ opacity: 0, y: 30 }}
@@ -116,6 +127,25 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
         style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(10,255,230,0.07) 0%, transparent 70%)' }}
       />
 
+      {/* LIMITED OFFER Badge */}
+      {service.originalPrice && (
+        <div style={{
+          position   : 'absolute',
+          top        : '12px',
+          right      : '12px',
+          background : 'linear-gradient(135deg, #0AFFE6, #088C7A)',
+          color      : '#000000',
+          fontSize   : '10px',
+          fontWeight : '700',
+          padding    : '3px 10px',
+          borderRadius: '20px',
+          letterSpacing: '0.5px',
+          zIndex: 10
+        }}>
+          LIMITED OFFER
+        </div>
+      )}
+
       {/* Icon */}
       <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
         style={{ background: 'rgba(10,255,230,0.1)', border: '1.5px solid rgba(10,255,230,0.25)', color: '#0AFFE6' }}>
@@ -127,41 +157,97 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       <p className="text-xs font-dm mb-4" style={{ color: '#A0A0A0' }}>{service.unit}</p>
 
       {/* Price */}
-      <div className="flex items-end gap-1 mb-5">
-        <span className="font-syne font-bold text-3xl text-teal-400">
-          {service.id === 'svc-9' ? '₹1' : `₹${service.price}`}
-        </span>
-        {service.id === 'svc-9' && <span className="text-sm font-dm pb-1" style={{ color: '#A0A0A0' }}>/cloth</span>}
-      </div>
+      {service.originalPrice ? (
+        <div className="flex items-center gap-2 mt-2 mb-5">
+          {/* Original price crossed out */}
+          <span style={{
+            textDecoration : 'line-through',
+            color          : 'rgba(255,255,255,0.35)',
+            fontSize       : '14px',
+          }}>
+            ₹{service.originalPrice}
+          </span>
+
+          {/* New discounted price */}
+          <span style={{
+            color      : '#0AFFE6',
+            fontSize   : '28px',
+            fontWeight : '700',
+          }}>
+            ₹{service.price}
+          </span>
+          {service.id === 'svc-9' && (
+            <span style={{ color: '#22C55E', fontSize: '11px' }}>
+              /cloth
+            </span>
+          )}
+
+          {/* Save badge */}
+          <span style={{
+            background   : 'rgba(34,197,94,0.15)',
+            color        : '#22C55E',
+            border       : '1px solid rgba(34,197,94,0.3)',
+            borderRadius : '20px',
+            padding      : '2px 8px',
+            fontSize     : '11px',
+            fontWeight   : '600',
+            marginLeft   : '4px'
+          }}>
+            Save ₹{service.originalPrice - service.price}{service.id === 'svc-9' ? ' per cloth' : ''}
+          </span>
+        </div>
+      ) : (
+        <div className="flex items-end gap-1 mt-2 mb-5">
+          <span className="font-syne font-bold text-3xl text-teal-400">
+            {service.id === 'svc-9' ? '₹10' : `₹${service.price}`}
+          </span>
+          {service.id === 'svc-9' && <span className="text-sm font-dm pb-1" style={{ color: '#A0A0A0' }}>/cloth</span>}
+        </div>
+      )}
 
       {/* Ironing quantity */}
       {isIroning && (
-        <div className="flex items-center gap-3 mb-4" onClick={e => e.stopPropagation()}>
-          <button
-            onClick={(e) => { e.stopPropagation(); setQuantity(Math.max(1, quantity - 5)); }}
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
-            style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
-          >-</button>
-          <input
-            type="number"
-            value={quantity}
-            onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-            className="w-16 text-center form-input py-1.5 text-sm"
-            min={1}
-            onClick={e => e.stopPropagation()}
-          />
-          <button
-            onClick={(e) => { e.stopPropagation(); setQuantity(quantity + 5); }}
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
-            style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
-          >+</button>
-          <span className="text-xs font-dm" style={{ color: '#A0A0A0' }}>clothes</span>
+        <div className="mb-4">
+          <div className="flex items-center gap-3" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={(e) => { e.stopPropagation(); if (quantity > 1) setQuantity(q => q - 1); }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
+              style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
+            >-</button>
+            <input
+              type="number"
+              value={quantity}
+              onChange={e => {
+                let val = parseInt(e.target.value);
+                if (isNaN(val)) val = 1;
+                setQuantity(Math.min(50, Math.max(1, val)));
+              }}
+              className="w-16 text-center form-input py-1.5 text-sm"
+              min={1}
+              max={50}
+              onClick={e => e.stopPropagation()}
+            />
+            <button
+              onClick={(e) => { e.stopPropagation(); if (quantity < 50) setQuantity(q => q + 1); }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
+              style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
+            >+</button>
+            <span className="text-xs font-dm" style={{ color: '#A0A0A0' }}>clothes</span>
+          </div>
+          <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>
+            Min 1 • Max 50 cloths
+          </p>
         </div>
       )}
 
       {/* Total for ironing */}
       {isIroning && (
-        <p className="text-teal-400 text-sm font-semibold mb-4">Total: ₹{quantity}</p>
+        <div style={{ marginBottom: '16px' }}>
+          <span style={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 600 }}>Total: </span>
+          <span style={{ color: '#0AFFE6', fontWeight: 700, fontSize: '16px' }}>
+            ₹{quantity * 10}
+          </span>
+        </div>
       )}
 
       {/* Add to cart */}
@@ -187,6 +273,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
         )}
       </button>
     </motion.div>
+    </>
   );
 };
 
@@ -229,6 +316,22 @@ const ServicesSection: React.FC = () => {
         </motion.div>
 
         <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+
+        <div style={{
+          background     : 'linear-gradient(135deg, rgba(10,255,230,0.1), rgba(10,255,230,0.05))',
+          border         : '1px solid rgba(10,255,230,0.3)',
+          borderRadius   : '12px',
+          padding        : '12px 24px',
+          textAlign      : 'center',
+          marginBottom   : '32px',
+          display        : 'flex',
+          alignItems     : 'center',
+          justifyContent : 'center'
+        }}>
+          <span style={{ color: '#0AFFE6', fontWeight: 600, fontSize: '15px' }}>
+            🎉 FLAT ₹100 OFF ON ALL CLEANING SERVICES! LIMITED TIME OFFER.
+          </span>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(service => (
@@ -325,7 +428,7 @@ const ServicesSection: React.FC = () => {
                         <p className="text-sm text-gray-400 font-dm mb-1">Starting at</p>
                         <div className="flex items-end gap-1">
                           <span className="font-syne font-bold text-2xl text-teal-400">
-                            {selectedService.id === 'svc-9' ? '₹1' : `₹${selectedService.price}`}
+                            {selectedService.id === 'svc-9' ? '₹10' : `₹${selectedService.price}`}
                           </span>
                           <span className="text-sm font-dm pb-1 text-gray-400">
                             {selectedService.id === 'svc-9' ? '/cloth' : selectedService.unit}
