@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import api from '../lib/axiosInstance';
 import toast from 'react-hot-toast';
 import { Search, MapPin, Calendar, Clock, CreditCard, User, ChevronRight } from 'lucide-react';
+import { formatIndianCurrency } from '../data/services';
 
 const STATUS_COLORS: Record<string, { color: string; label: string }> = {
   PENDING: { color: '#F59E0B', label: 'Booking Received' },

@@ -11,7 +11,6 @@ import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import TrackingPage from './pages/TrackingPage';
-import ProtectedRoute from './components/ProtectedRoute';
 // @ts-ignore
 import './index.css';
 
