@@ -7,9 +7,17 @@ const TrackingPage: React.FC = () => {
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState('')
   const [notFound, setNotFound] = useState(false)
+  const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking')
 
   // Check URL params on load
   useEffect(() => {
+    const API_URL = process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'
+
+    fetch(`${API_URL}/api/health`)
+      .then(r => r.json())
+      .then(() => setApiStatus('online'))
+      .catch(() => setApiStatus('offline'))
+
     const params = new URLSearchParams(window.location.search)
     const id = params.get('id')
     if (id) {
@@ -31,49 +39,63 @@ const TrackingPage: React.FC = () => {
     setBooking(null)
     setNotFound(false)
 
+    const BASE_URL = process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'
+
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001'
-
-      // Detect if phone number or booking ID
       const isPhone = /^\d{10}$/.test(trackQuery)
-
-      let response
+      let url    : string
+      let method : string = 'GET'
+      let body   : string | undefined
 
       if (isPhone) {
-        // Track by phone
-        response = await fetch(`${API_URL}/api/bookings/track-by-phone`, {
-          method : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body   : JSON.stringify({ phone: trackQuery })
-        })
+        url    = `${BASE_URL}/api/bookings/track-by-phone`
+        method = 'POST'
+        body   = JSON.stringify({ phone: trackQuery })
       } else {
-        // Track by booking ID
         const bookingId = trackQuery.toUpperCase()
-        response = await fetch(
-          `${API_URL}/api/bookings/track/${bookingId}`
-        )
+        url = `${BASE_URL}/api/bookings/track/${bookingId}`
       }
 
-      const data = await response.json()
+      console.log('Fetching:', url)
 
-      console.log('Track response:', data)
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      })
 
-      if (!response.ok) {
+      console.log('Response status:', response.status)
+
+      if (response.status === 404) {
         setNotFound(true)
-        setError(data.error || 'Booking not found')
+        setError('No booking found. Check your ID.')
         return
       }
 
-      // Handle both single booking and array
-      if (data.bookings) {
-        setBooking(data.bookings[0]) // show latest
-      } else {
-        setBooking(data)
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        setError(errData.error || `Server error: ${response.status}`)
+        return
       }
 
+      const data = await response.json()
+      console.log('Booking data:', data)
+
+      setBooking(data.bookings ? data.bookings[0] : data)
+
     } catch (err: any) {
-      console.error('Track error:', err)
-      setError('Connection failed. Please try again.')
+      console.error('Fetch error:', err)
+      
+      // Show specific error
+      if (err.message?.includes('fetch')) {
+        setError(
+          'Cannot connect to server. ' +
+          'Please wait 30 seconds and retry ' +
+          '(server may be starting up).'
+        )
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -102,6 +124,36 @@ const TrackingPage: React.FC = () => {
           </motion.p>
         </div>
 
+        {/* Show status banner */}
+        {apiStatus === 'offline' && (
+          <div style={{
+            background   : 'rgba(239,68,68,0.1)',
+            border       : '1px solid rgba(239,68,68,0.3)',
+            borderRadius : '12px',
+            padding      : '12px 20px',
+            textAlign    : 'center',
+            maxWidth     : '600px',
+            margin       : '0 auto 24px',
+            fontSize     : '14px',
+            color        : '#FCA5A5',
+          }}>
+            ⚠️ Server is waking up... 
+            Please wait 30 seconds and try again.
+          </div>
+        )}
+
+        {apiStatus === 'checking' && (
+          <div style={{
+            textAlign  : 'center',
+            color      : '#A0A0A0',
+            fontSize   : '13px',
+            marginBottom: '16px',
+          }}>
+            🔄 Connecting to server...
+          </div>
+        )}
+
+        {/* Search Bar */}
         <div style={{
           display      : 'flex',
           gap          : '0',
@@ -170,16 +222,37 @@ const TrackingPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Error Message */}
+        {/* Error Message with Retry */}
         {error && (
-          <p style={{
-            color     : '#EF4444',
-            textAlign : 'center',
-            marginTop : '12px',
-            fontSize  : '14px',
+          <div style={{
+            textAlign    : 'center',
+            marginTop    : '20px',
+            padding      : '20px',
+            background   : 'rgba(239,68,68,0.05)',
+            border       : '1px solid rgba(239,68,68,0.2)',
+            borderRadius : '12px',
+            maxWidth     : '500px',
+            margin       : '20px auto 0',
           }}>
-            ⚠️ {error}
-          </p>
+            <p style={{ color: '#FCA5A5', fontSize: '14px' }}>
+              ⚠️ {error}
+            </p>
+            <button
+              onClick={() => handleTrack()}
+              style={{
+                marginTop    : '12px',
+                padding      : '8px 20px',
+                background   : 'transparent',
+                border       : '1px solid rgba(239,68,68,0.4)',
+                color        : '#FCA5A5',
+                borderRadius : '8px',
+                cursor       : 'pointer',
+                fontSize     : '13px',
+              }}
+            >
+              🔄 Retry
+            </button>
+          </div>
         )}
 
         {/* Not Found State */}
