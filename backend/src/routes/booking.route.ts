@@ -140,9 +140,11 @@ const rateLimiter = (req: any, res: any, next: any) => {
 router.get('/track/:bookingNumber', rateLimiter, async (req, res) => {
   try {
     const { bookingNumber } = req.params;
+    console.log('=== TRACKING REQUEST ===');
+    console.log('Booking Number:', bookingNumber);
 
     const booking = await prisma.booking.findUnique({
-      where : { bookingNumber },
+      where : { bookingNumber: bookingNumber.trim().toUpperCase() },
       select: {
         bookingNumber  : true,
         customerName   : true,
@@ -161,6 +163,8 @@ router.get('/track/:bookingNumber', rateLimiter, async (req, res) => {
         // DO NOT expose: address, email, paymentId
       }
     });
+
+    console.log('Booking found:', !!booking);
 
     if (!booking) {
       return res.status(404).json({
