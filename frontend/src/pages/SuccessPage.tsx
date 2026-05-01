@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 // Simple CSS confetti
@@ -43,6 +43,7 @@ const Confetti: React.FC = () => {
 
 const SuccessPage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(true);
 
   const [booking, setBooking] = useState<any>(null);
@@ -109,12 +110,48 @@ const SuccessPage: React.FC = () => {
           <h1 className="font-syne font-bold text-3xl mb-2" style={{ color: '#1A1A2E' }}>Booking Confirmed! 🎉</h1>
           <p className="font-dm text-lg mb-6" style={{ color: '#00897B' }}>Thank you, {name}!</p>
 
-          <div className="rounded-xl p-4 mb-6"
-            style={{ background: 'rgba(10,255,230,0.08)', border: '1.5px solid rgba(10,255,230,0.25)' }}>
-            <p className="text-xs font-dm" style={{ color: '#8A8AAA' }}>Booking ID</p>
-            <p className="font-syne font-bold text-xl" style={{ color: '#0AFFE6' }}>
-              {typeof bookingId === 'string' ? bookingId.substring(0, 16) : bookingId}
+          <div style={{
+            background   : 'rgba(10,255,230,0.06)',
+            border       : '1px solid rgba(10,255,230,0.25)',
+            borderRadius : '16px',
+            padding      : '20px',
+            textAlign    : 'center',
+            marginBottom : '24px',
+          }}>
+            <p style={{ color: '#A0A0A0', fontSize: '14px' }} className="font-dm">
+              Your Booking ID
             </p>
+            <p style={{
+              color        : '#0AFFE6',
+              fontSize     : '24px',
+              fontWeight   : '700',
+              fontFamily   : 'monospace',
+              letterSpacing: '2px',
+              margin       : '8px 0',
+            }}>
+              {booking?.bookingNumber || (typeof bookingId === 'string' ? bookingId.substring(0, 16) : bookingId)}
+            </p>
+            <p style={{ color: '#A0A0A0', fontSize: '13px' }} className="font-dm">
+              Save this ID to track your booking
+            </p>
+
+            <button
+              onClick={() => navigate(`/track?id=${booking?.bookingNumber || bookingId}`)}
+              className="font-dm"
+              style={{
+                marginTop    : '16px',
+                padding      : '10px 24px',
+                background   : 'transparent',
+                border       : '1px solid #0AFFE6',
+                color        : '#0AFFE6',
+                borderRadius : '10px',
+                cursor       : 'pointer',
+                fontSize     : '14px',
+                fontWeight   : '600',
+              }}
+            >
+              Track This Booking →
+            </button>
           </div>
 
           <div className="font-dm text-sm space-y-2 mb-8 text-left" style={{ color: '#4A4A6A' }}>
@@ -139,7 +176,7 @@ const SuccessPage: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href={`https://wa.me/919392420643?text=Hi%20SparkClean%2C%20My%20booking%20ID%20is%20${booking?.bookingNumber || bookingId.substring(0, 16)}`}
+              href={`https://wa.me/919392420643?text=Track%20your%20booking:%20https://sparkclean-orcin.vercel.app/track?id=${booking?.bookingNumber || (typeof bookingId === 'string' ? bookingId.substring(0, 16) : bookingId)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 py-3 rounded-xl font-dm font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90"

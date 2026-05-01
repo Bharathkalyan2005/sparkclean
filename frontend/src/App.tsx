@@ -10,6 +10,8 @@ import SuccessPage from './pages/SuccessPage';
 import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
+import TrackingPage from './pages/TrackingPage';
+import ProtectedRoute from './components/ProtectedRoute';
 // @ts-ignore
 import './index.css';
 
@@ -41,6 +43,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
+          <Route path="/track" element={<TrackingPage />} />
           <Route path="/book" element={<BookingPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/sparkadmin" element={<AdminPage />} />

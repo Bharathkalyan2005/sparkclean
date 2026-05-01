@@ -1,4 +1,4 @@
-﻿import { Router } from 'express';
+import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate } from '../middleware/auth.middleware';
 
@@ -106,6 +106,115 @@ router.post('/', authenticate, async (req, res) => {
       message: error.message,
       code   : error.code,
     });
+  }
+});
+
+// Simple in-memory rate limiter (max 10 per hour per IP)
+const trackRateLimits = new Map<string, { count: number, resetAt: number }>();
+
+const rateLimiter = (req: any, res: any, next: any) => {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+  
+  if (!trackRateLimits.has(ip)) {
+    trackRateLimits.set(ip, { count: 1, resetAt: now + 3600000 }); // 1 hour
+    return next();
+  }
+
+  const record = trackRateLimits.get(ip)!;
+  if (now > record.resetAt) {
+    trackRateLimits.set(ip, { count: 1, resetAt: now + 3600000 });
+    return next();
+  }
+
+  if (record.count >= 10) {
+    return res.status(429).json({ error: 'Too many tracking requests. Please try again later.' });
+  }
+
+  record.count += 1;
+  next();
+};
+
+// PUBLIC route — no auth needed
+// GET /api/bookings/track/:bookingNumber
+router.get('/track/:bookingNumber', rateLimiter, async (req, res) => {
+  try {
+    const { bookingNumber } = req.params;
+
+    const booking = await prisma.booking.findUnique({
+      where : { bookingNumber },
+      select: {
+        bookingNumber  : true,
+        customerName   : true,
+        customerPhone  : true,  // only last 4 digits in response
+        area           : true,
+        city           : true,
+        services       : true,
+        totalAmount    : true,
+        paymentMethod  : true,
+        paymentStatus  : true,
+        scheduledDate  : true,
+        scheduledTime  : true,
+        status         : true,
+        createdAt      : true,
+        updatedAt      : true,
+        // DO NOT expose: address, email, paymentId
+      }
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        error: 'Booking not found. Check your Booking ID.'
+      });
+    }
+
+    // Mask phone number for security
+    // Show only last 4 digits: XXXXXX4321
+    const maskedPhone = 'XXXXXX' + booking.customerPhone.slice(-4);
+
+    res.json({
+      ...booking,
+      customerPhone: maskedPhone,
+    });
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Track by phone number
+// POST /api/bookings/track-by-phone
+router.post('/track-by-phone', rateLimiter, async (req, res) => {
+  try {
+    const { phone } = req.body;
+
+    const bookings = await prisma.booking.findMany({
+      where : { customerPhone: phone },
+      select: {
+        bookingNumber : true,
+        services      : true,
+        totalAmount   : true,
+        scheduledDate : true,
+        scheduledTime : true,
+        status        : true,
+        paymentStatus : true,
+        area          : true,
+        createdAt     : true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take   : 5,  // last 5 bookings
+    });
+
+    if (!bookings.length) {
+      return res.status(404).json({
+        error: 'No bookings found for this number.'
+      });
+    }
+
+    res.json({ bookings });
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 });
 

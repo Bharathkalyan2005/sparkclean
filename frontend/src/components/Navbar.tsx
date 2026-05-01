@@ -97,6 +97,15 @@ const Navbar: React.FC = () => {
               {link.label}
             </button>
           ))}
+          <a 
+            href="/track"
+            className="text-sm font-medium font-dm transition-colors"
+            style={{ color: '#A0A0A0', textDecoration: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+            onMouseLeave={e => e.currentTarget.style.color = '#A0A0A0'}
+          >
+            Track Order
+          </a>
         </div>
 
         {/* Right Actions */}
@@ -201,6 +210,15 @@ const Navbar: React.FC = () => {
                 {link.label}
               </button>
             ))}
+            
+            <a 
+              href="/track"
+              onClick={() => setMenuOpen(false)}
+              className="text-left text-sm font-medium font-dm transition-colors"
+              style={{ color: '#A0A0A0', textDecoration: 'none' }}
+            >
+              Track Order
+            </a>
             
             {user ? (
               <div className="flex flex-col gap-4 border-t border-[rgba(10,255,230,0.15)] pt-4 mt-2">
