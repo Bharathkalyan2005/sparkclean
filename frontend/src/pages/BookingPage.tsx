@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { supabase, Booking } from '../lib/supabase';
 import { useCart } from '../context/CartContext';
 import {
   SERVICES, COMBOS, SERVICE_AREAS, TIME_SLOTS,
@@ -121,7 +120,6 @@ const handlePayment = async () => {
     const {
       orderId,
       amount,
-      currency,
       keyId,
       customerName,
       customerPhone,
@@ -201,6 +199,7 @@ const handlePayment = async () => {
             bookingId,
           })
 
+          clearCart();
           toast.success('Payment successful! 🎉')
           navigate(`/success?booking=${bookingId}`)
 
@@ -216,7 +215,7 @@ const handlePayment = async () => {
     const rzp = new (window as any).Razorpay(options)
 
     rzp.on('payment.failed', (response: any) => {
-      const { code, description, reason } = response.error
+      const { code, description } = response.error
       console.error('Payment failed:', code, description)
 
       // Show specific error to user
@@ -272,6 +271,7 @@ const handleCODBooking = async () => {
     })
 
     const { bookingId } = bookingRes.data
+    clearCart();
     navigate(`/success?booking=${bookingId}`)
 
   } catch (error: any) {
@@ -280,6 +280,7 @@ const handleCODBooking = async () => {
   }
 }
 
+  /*
   const saveBooking = async (
     method: 'razorpay' | 'cod',
     status: 'paid' | 'pending',
@@ -327,6 +328,7 @@ const handleCODBooking = async () => {
 
     navigate(`/success?id=${bookingId}&name=${encodeURIComponent(form.name)}`);
   };
+  */
 
   const toggleService = (service: typeof SERVICES[0]) => {
     setSelectedCombo(null);
