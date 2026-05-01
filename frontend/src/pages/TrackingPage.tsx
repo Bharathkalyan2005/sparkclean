@@ -32,7 +32,7 @@ const TrackingPage: React.FC = () => {
     setNotFound(false)
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001'
 
       // Detect if phone number or booking ID
       const isPhone = /^\d{10}$/.test(trackQuery)
