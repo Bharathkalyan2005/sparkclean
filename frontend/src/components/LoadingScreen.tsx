@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from './Logo';
 
 const LoadingScreen: React.FC = () => {
   const [visible, setVisible] = useState(true);
@@ -26,35 +27,17 @@ const LoadingScreen: React.FC = () => {
             className="flex flex-col items-center gap-4"
           >
             <div className="relative">
-              <svg width="72" height="72" viewBox="0 0 36 36" fill="none">
-                <defs>
-                  <linearGradient id="loadGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#0AFFE6"/>
-                    <stop offset="1" stopColor="#00CDB7"/>
-                  </linearGradient>
-                </defs>
-                <motion.polygon
-                  points="18,2 20.5,14 32,14 22.5,21.5 26,33 18,26 10,33 13.5,21.5 4,14 15.5,14"
-                  fill="url(#loadGrad)"
-                  initial={{ opacity: 0, rotate: 0 }}
-                  animate={{ opacity: 0.9, rotate: 360 }}
-                  transition={{ duration: 1.5, ease: 'easeInOut' }}
-                />
-                <polygon
-                  points="18,8 19.2,13.5 24,13 19.8,16.5 21.5,22 18,18.5 14.5,22 16.2,16.5 12,13 16.8,13.5"
-                  fill="#0AFFE6"
-                />
-              </svg>
+              <img src="/logo-primary-cropped.png" alt="SparkClean" className="w-16 h-auto relative z-10 animate-pulse" />
               {/* Shimmer ring */}
               <div
                 className="absolute inset-0 rounded-full border-2 border-teal-400/30 animate-spin"
-                style={{ width: '80px', height: '80px', top: '-4px', left: '-4px' }}
+                style={{ width: '80px', height: '80px', top: '-8px', left: '-8px' }}
               />
             </div>
 
-            <div className="text-center">
-              <h1 className="font-syne font-bold text-2xl" style={{ color: '#1A1A2E' }}>SparkClean</h1>
-              <p className="font-dm text-sm mt-0.5" style={{ color: '#00897B' }}>India's Cleanest Choice</p>
+            <div className="text-center mt-2">
+              <h1 className="font-syne font-bold text-2xl text-white">SparkClean</h1>
+              <p className="font-dm text-sm mt-0.5" style={{ color: '#00CDB7' }}>India's Cleanest Choice</p>
             </div>
 
             {/* Progress bar */}

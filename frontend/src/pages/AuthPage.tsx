@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Check, ChevronDown } from 'lucide-react';
 import api from '../lib/axiosInstance';
+import Logo from '../components/Logo';
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -225,9 +226,8 @@ const AuthPage = () => {
 
         <div className="relative z-20 flex-1 flex flex-col justify-between p-12 lg:p-20">
           <div>
-            <div className="flex items-center gap-2 mb-16">
-              <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className="h-8 w-auto" />
-              <span className="text-white font-bold tracking-wider text-xl font-['Syne']">SparkClean</span>
+            <div className="mb-16">
+              <Logo />
             </div>
             
             <motion.h1 
@@ -273,8 +273,7 @@ const AuthPage = () => {
         <div className="w-full max-w-md z-10 relative">
           
           <div className="md:hidden flex flex-col items-center justify-center mb-10">
-            <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className="h-10 w-auto mb-2" />
-            <span className="text-white font-bold tracking-wider text-xl font-['Syne']">SparkClean</span>
+            <Logo className="flex-col !gap-2" imageClassName="h-10 w-auto" />
           </div>
 
           {/* Form Card */}

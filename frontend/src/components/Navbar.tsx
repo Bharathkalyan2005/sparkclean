@@ -5,10 +5,7 @@ import { useCart } from '../context/CartContext';
 import { User as UserIcon } from 'lucide-react';
 import ProfileModal from './ProfileModal';
 import toast from 'react-hot-toast';
-
-const SparkLogo = () => (
-  <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className="h-8 w-auto" />
-);
+import Logo from './Logo';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -82,13 +79,8 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group mt-2">
-          <SparkLogo />
-          <div>
-            <span className="font-['Syne'] font-bold tracking-wider text-xl transition-colors group-hover:opacity-80" style={{ color: '#FFFFFF' }}>
-              SparkClean
-            </span>
-          </div>
+        <Link to="/" className="group mt-2">
+          <Logo textClassName="font-['Syne'] font-bold tracking-wider text-xl transition-colors group-hover:opacity-80 text-white" />
         </Link>
 
         {/* Desktop Nav */}

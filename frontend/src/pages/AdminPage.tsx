@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import toast from 'react-hot-toast';
 import { formatIndianCurrency } from '../data/services';
+import Logo from '../components/Logo';
 
 const ADMIN_EMAIL = 'admin@sparkclean.in';
 
@@ -154,9 +155,8 @@ const AdminPage: React.FC = () => {
           animate={{ scale: 1, opacity: 1 }}
           className="glass rounded-3xl p-10 w-full max-w-md"
         >
-          <div className="text-center mb-8">
-            <div className="text-5xl mb-4">✦</div>
-            <h1 className="font-syne font-bold text-2xl text-white">SparkClean Admin</h1>
+          <div className="flex flex-col items-center mb-8">
+            <Logo className="flex-col !gap-1" imageClassName="h-10 w-auto" textClassName="font-syne font-bold text-2xl text-white" />
             <p className="text-white/40 font-dm text-sm mt-1">Management Dashboard</p>
           </div>
 
@@ -203,11 +203,8 @@ const AdminPage: React.FC = () => {
       <div className="glass-dark border-b border-white/10 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-teal-400 text-2xl font-bold">✦</span>
-            <div>
-              <span className="font-syne font-bold text-white">SparkClean</span>
-              <span className="text-white/40 text-sm font-dm ml-2">Admin</span>
-            </div>
+            <Logo imageClassName="h-6 w-auto" textClassName="font-syne font-bold text-white" />
+            <span className="text-white/40 text-sm font-dm -ml-1">Admin</span>
           </div>
           <div className="flex items-center gap-4">
             <button onClick={fetchBookings} className="glass px-4 py-2 rounded-lg text-white/60 hover:text-white text-sm font-dm transition-colors">

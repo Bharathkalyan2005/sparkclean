@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SERVICES, SERVICE_AREAS } from '../data/services';
-
-const SparkLogo = () => (
-  <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className="h-8 w-auto" />
-);
+import Logo from './Logo';
 
 const Footer: React.FC = () => {
   const scrollTo = (id: string) => {
@@ -19,12 +16,8 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <SparkLogo />
-              <div>
-                <span className="font-syne font-bold text-xl" style={{ color: '#FFFFFF' }}>SparkClean</span>
-                <div className="text-xs font-dm -mt-0.5" style={{ color: 'rgba(10,255,230,0.8)' }}>India's Cleanest Choice</div>
-              </div>
+            <div className="mb-4">
+              <Logo subText="India's Cleanest Choice" />
             </div>
             <p className="font-dm text-sm leading-relaxed mb-5" style={{ color: '#606060' }}>
               Visakhapatnam's most trusted home cleaning service. Trained staff, transparent pricing, instant booking.
