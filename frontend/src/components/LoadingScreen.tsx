@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Logo from './Logo';
 
 const LoadingScreen: React.FC = () => {
   const [visible, setVisible] = useState(true);

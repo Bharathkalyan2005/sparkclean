@@ -8,7 +8,6 @@ import {
 } from '../data/services';
 import toast from 'react-hot-toast';
 import api from '../lib/axiosInstance';
-import config from '../lib/config';
 
 // ── Razorpay type declarations ──────────────────────────────────
 declare global {

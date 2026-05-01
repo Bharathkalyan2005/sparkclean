@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 const TrackingPage: React.FC = () => {
@@ -9,42 +9,7 @@ const TrackingPage: React.FC = () => {
   const [notFound, setNotFound]   = useState(false);
   const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking');
 
-  // Check URL params on load
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    
-    // Only auto-track if ID exists and is valid
-    if (id && id !== 'N/A' && id.trim() !== '') {
-      setQuery(id);
-      handleTrack(id);
-    }
-    // Do NOT set query if no ID in URL
-  }, []);
-
-  // Server health check & wake-up
-  useEffect(() => {
-    const BASE_URL = process.env.REACT_APP_API_URL 
-      || 'https://sparkclean-x3ze.onrender.com';
-
-    // Silent wake-up ping
-    fetch(`${BASE_URL}/api/health`)
-      .then(r => r.json())
-      .then(data => {
-        console.log('Server status:', data.status);
-        setApiStatus('online');
-      })
-      .catch(() => {
-        // Retry after 5 seconds if asleep/offline
-        setTimeout(() => {
-          fetch(`${BASE_URL}/api/health`)
-            .then(() => setApiStatus('online'))
-            .catch(() => setApiStatus('offline'));
-        }, 5000);
-      });
-  }, []);
-
-  const handleTrack = async (searchQuery?: string) => {
+  const handleTrack = useCallback(async (searchQuery?: string) => {
     const trackQuery = (searchQuery || query).trim();
     
     // Reject empty or N/A values
@@ -125,7 +90,42 @@ const TrackingPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [query]);
+
+  // Check URL params on load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    
+    // Only auto-track if ID exists and is valid
+    if (id && id !== 'N/A' && id.trim() !== '') {
+      setQuery(id);
+      handleTrack(id);
+    }
+    // Do NOT set query if no ID in URL
+  }, [handleTrack]);
+
+  // Server health check & wake-up
+  useEffect(() => {
+    const BASE_URL = process.env.REACT_APP_API_URL 
+      || 'https://sparkclean-x3ze.onrender.com';
+
+    // Silent wake-up ping
+    fetch(`${BASE_URL}/api/health`)
+      .then(r => r.json())
+      .then(data => {
+        console.log('Server status:', data.status);
+        setApiStatus('online');
+      })
+      .catch(() => {
+        // Retry after 5 seconds if asleep/offline
+        setTimeout(() => {
+          fetch(`${BASE_URL}/api/health`)
+            .then(() => setApiStatus('online'))
+            .catch(() => setApiStatus('offline'));
+        }, 5000);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen pt-32 pb-24" style={{ background: '#0A0A0A' }}>
