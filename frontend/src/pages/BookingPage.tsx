@@ -9,6 +9,7 @@ import {
 } from '../data/services';
 import toast from 'react-hot-toast';
 import api from '../lib/axiosInstance';
+import config from '../lib/config';
 
 // ── Razorpay type declarations ──────────────────────────────────
 declare global {
@@ -60,11 +61,13 @@ const BookingPage: React.FC = () => {
     phone: '',
     address: '',
     area: searchParams.get('area') || '',
+    city: 'India',
     email: '',
   });
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [loading, setLoading] = useState(false);
+  const [bookingStep, setBookingStep] = useState<'idle' | 'creating' | 'payment' | 'verifying'>('idle');
 
   const nextDates = getNextNDates(7);
 
@@ -85,88 +88,197 @@ const BookingPage: React.FC = () => {
   // ── Pay Online via Razorpay checkout modal ────────────────────
 const handlePayment = async () => {
   setLoading(true)
+  setBookingStep('creating')
   try {
-    const bookingData = {
-      customerName: form.name,
-      customerPhone: form.phone,
-      customerEmail: form.email,
-      address: form.address,
-      area: form.area,
-      services: selectedCombo
+    // Step 1: Create booking
+    const bookingRes = await api.post('/bookings', {
+      customerName  : form.name,
+      customerPhone : form.phone,
+      customerEmail : form.email,
+      address       : form.address,
+      area          : form.area,
+      city          : form.city || 'India',
+      services      : selectedCombo
         ? [{ id: selectedCombo.id, name: selectedCombo.name, price: selectedCombo.price, unit: 'combo', category: 'Combo', icon_name: 'combo', is_active: true }]
         : selectedServices,
-      totalAmount: total,
-      paymentMethod: 'RAZORPAY',
-      scheduledDate: selectedDate,
-      scheduledTime: selectedTime,
-    };
+      subtotal      : total || 0,
+      discount      : 0,
+      totalAmount   : total,
+      paymentMethod : 'RAZORPAY',
+      scheduledDate : selectedDate,
+      scheduledTime : selectedTime,
+      notes         : '',
+    })
 
-    // Step 1: Create booking
-    const bookingRes = await api.post('/bookings', bookingData);
-    const { bookingId } = bookingRes.data;
+    const { bookingId, bookingNumber } = bookingRes.data
+    console.log('✅ Booking created:', bookingNumber)
 
     // Step 2: Create Razorpay order
-    const orderRes = await api.post('/payments/create-order', { bookingId });
-    const {
-      orderId, amount, currency,
-      keyId, customerName,
-      customerPhone, customerEmail,
-      bookingNumber
-    } = orderRes.data;
+    const orderRes = await api.post('/payments/create-order', {
+      bookingId
+    })
 
-    // Step 3: Open Razorpay checkout
+    const {
+      orderId,
+      amount,
+      currency,
+      keyId,
+      customerName,
+      customerPhone,
+      customerEmail,
+    } = orderRes.data
+
+    console.log('✅ Razorpay order:', orderId)
+
+    // Step 3: Check Razorpay is loaded
+    if (!(window as any).Razorpay) {
+      toast.error('Payment gateway not loaded. Refresh and try again.')
+      setLoading(false)
+      return
+    }
+
+    // Step 4: Open Razorpay checkout
+    setBookingStep('payment')
     const options = {
       key         : keyId,
       amount      : amount,
-      currency    : currency,
+      currency    : 'INR',
       name        : 'SparkClean',
-      description : `Booking ${bookingNumber}`,
-      order_id    : orderId,
+      description : `Booking #${bookingNumber}`,
+      
+      // Only add image in production
+      ...(config.razorpayMode === 'live' && {
+        image: `${config.frontendUrl}/logo-primary-cropped.png`
+      }),
+
+      order_id: orderId,
+      
       prefill: {
         name   : customerName,
-        email  : customerEmail,
+        email  : customerEmail  || '',
         contact: customerPhone,
       },
-      theme: {
-        color: '#0AFFE6'
+      
+      notes: {
+        booking_number: bookingNumber,
+        area          : form.area,
+        address       : form.address,
       },
+
+      theme: {
+        color    : '#0AFFE6',
+        hide_topbar: false,
+      },
+
+      retry: {
+        enabled: true,
+        max_count: 3,
+      },
+
+      modal: {
+        confirm_close : true,
+        animation     : true,
+        backdropclose : false,
+        escape        : false,
+        handleback    : true,
+        ondismiss     : () => {
+          console.log('Razorpay modal closed')
+          setLoading(false)
+          setBookingStep('idle')
+        }
+      },
+
       handler: async (response: any) => {
-        // Step 4: Verify payment on backend
-        await api.post('/payments/verify', {
+        try {
+          setLoading(true)
+          setBookingStep('verifying')
+          console.log('Payment success:', response)
+
+          await api.post('/payments/verify', {
             razorpay_order_id  : response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature : response.razorpay_signature,
             bookingId,
-        });
-        // Step 5: Go to success page
-        navigate(`/success?booking=${bookingId}`);
-      },
-      modal: {
-        ondismiss: () => {
-          toast.error('Payment cancelled')
+          })
+
+          toast.success('Payment successful! 🎉')
+          navigate(`/success?booking=${bookingId}`)
+
+        } catch (err) {
+          console.error('Verification failed:', err)
+          toast.error('Payment done but verification failed. Contact support.')
           setLoading(false)
+          setBookingStep('idle')
         }
       }
     }
 
     const rzp = new (window as any).Razorpay(options)
+
     rzp.on('payment.failed', (response: any) => {
-      toast.error('Payment failed: ' + response.error.description)
+      const { code, description, reason } = response.error
+      console.error('Payment failed:', code, description)
+
+      // Show specific error to user
+      const errorMessages: Record<string, string> = {
+        'BAD_REQUEST_ERROR'    : 'Invalid payment details. Please retry.',
+        'GATEWAY_ERROR'        : 'Bank gateway error. Please try another method.',
+        'NETWORK_ERROR'        : 'Network issue. Check connection and retry.',
+        'SERVER_ERROR'         : 'Payment server error. Please retry.',
+      }
+
+      toast.error(
+        errorMessages[code] || 
+        description || 
+        'Payment failed. Please try again.'
+      )
       setLoading(false)
+      setBookingStep('idle')
     })
+
     rzp.open()
 
-  } catch (err) {
-    toast.error('Something went wrong. Please try again.')
+  } catch (error: any) {
+    console.error('Payment error:', error)
+    toast.error(
+      error.response?.data?.message || 
+      'Something went wrong'
+    )
     setLoading(false)
+    setBookingStep('idle')
   }
 }
 
-  const handleCOD = async () => {
-    setLoading(true);
-    await saveBooking('cod', 'pending');
-    setLoading(false);
-  };
+const handleCODBooking = async () => {
+  setLoading(true)
+  try {
+    const bookingRes = await api.post('/bookings', {
+      customerName  : form.name,
+      customerPhone : form.phone,
+      customerEmail : form.email,
+      address       : form.address,
+      area          : form.area,
+      city          : form.city || 'India',
+      services      : selectedCombo
+        ? [{ id: selectedCombo.id, name: selectedCombo.name, price: selectedCombo.price, unit: 'combo', category: 'Combo', icon_name: 'combo', is_active: true }]
+        : selectedServices,
+      subtotal      : total || 0,
+      discount      : 0,
+      totalAmount   : total,
+      paymentMethod : 'COD',
+      scheduledDate : selectedDate,
+      scheduledTime : selectedTime,
+      notes         : '',
+    })
+
+    const { bookingId } = bookingRes.data
+    navigate(`/success?booking=${bookingId}`)
+
+  } catch (error: any) {
+    toast.error('Booking failed. Try again.')
+    setLoading(false)
+  }
+}
 
   const saveBooking = async (
     method: 'razorpay' | 'cod',
@@ -524,28 +636,48 @@ const handlePayment = async () => {
 
               {/* Payment Options */}
               <div className="space-y-3 mb-6">
+                {/* Razorpay Button */}
                 <button
                   onClick={handlePayment}
                   disabled={loading}
-                  className="w-full bg-[#0AFFE6] text-black font-bold py-4 rounded-xl hover:brightness-110 transition-all disabled:opacity-50"
+                  className="w-full bg-[#0AFFE6] text-black 
+                            font-bold py-4 rounded-xl text-base
+                            hover:brightness-110 transition-all
+                            disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      <svg className="animate-spin h-5 w-5" 
+                          viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10"
+                          stroke="currentColor" strokeWidth="4"
+                          className="opacity-25"/>
+                        <path fill="currentColor" className="opacity-75"
+                          d="M4 12a8 8 0 018-8v8z"/>
                       </svg>
-                      Processing...
+                      {
+                        {
+                          idle      : `✦ Pay ₹${total} with Razorpay`,
+                          creating  : 'Creating booking...',
+                          payment   : 'Opening payment...',
+                          verifying : 'Verifying payment...'
+                        }[bookingStep]
+                      }
                     </span>
                   ) : (
-                    '✦ Pay ₹' + total + ' with Razorpay'
+                    `✦ Pay ₹${total} with Razorpay`
                   )}
                 </button>
 
-                {/* Also show COD option: */}
+                {/* COD Button */}
                 <button
-                  onClick={handleCOD}
-                  className="w-full border border-[#0AFFE6] text-[#0AFFE6] font-semibold py-4 rounded-xl mt-3 hover:bg-[#0AFFE6] hover:text-black transition-all"
+                  onClick={handleCODBooking}
+                  disabled={loading}
+                  className="w-full border border-[#0AFFE6] 
+                            text-[#0AFFE6] font-semibold py-4 
+                            rounded-xl mt-3 hover:bg-[#0AFFE6] 
+                            hover:text-black transition-all
+                            disabled:opacity-50"
                 >
                   Pay at Doorstep (Cash on Service)
                 </button>

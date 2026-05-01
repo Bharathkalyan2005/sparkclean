@@ -81,8 +81,39 @@ router.post('/verify', authenticate, async (req: any, res: any) => {
       }
     });
 
-    // Send WhatsApp + Email confirmation
-    await sendBookingConfirmation(bookingId);
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId }
+    });
+
+    if (booking) {
+      // Format WhatsApp message
+      const services = (booking.services as any[])
+        .map((s: any) => `${s.name} x${s.quantity || 1}`)
+        .join(', ');
+
+      const waMessage = encodeURIComponent(
+`Hi ${booking.customerName}! ✦
+
+Your SparkClean booking is CONFIRMED!
+
+Booking ID : ${booking.bookingNumber}
+Services   : ${services}
+Date       : ${new Date(booking.scheduledDate).toLocaleDateString('en-IN')}
+Time       : ${booking.scheduledTime}
+Address    : ${booking.address}, ${booking.area}
+Total Paid : ₹${booking.totalAmount}
+
+Our team will arrive on time.
+Questions? Call: 9392420643
+
+Thank you for choosing SparkClean! ✦`);
+
+      // Log WhatsApp link (send via Twilio in production)
+      console.log(
+        `WhatsApp confirmation for ${booking.customerPhone}:`,
+        `https://wa.me/91${booking.customerPhone}?text=${waMessage}`
+      );
+    }
 
     res.json({ success: true, paymentId: razorpay_payment_id });
   } catch (error) {

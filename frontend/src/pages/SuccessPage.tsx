@@ -45,6 +45,21 @@ const SuccessPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [showConfetti, setShowConfetti] = useState(true);
 
+  const [booking, setBooking] = useState<any>(null);
+
+  useEffect(() => {
+    const bookingId = new URLSearchParams(
+      window.location.search
+    ).get('booking')
+  
+    if (bookingId) {
+      import('../lib/axiosInstance').then(m => m.default)
+        .then(api => api.get(`/bookings/${bookingId}`))
+        .then(res => setBooking(res.data))
+        .catch(err => console.error(err))
+    }
+  }, [])
+
   const bookingId = searchParams.get('id') || 'N/A';
   const name = searchParams.get('name') || 'Customer';
 
@@ -111,15 +126,20 @@ const SuccessPage: React.FC = () => {
               <span style={{ color: '#0AFFE6' }}>✓</span>
               <span>Our team will confirm your booking within 30 minutes</span>
             </div>
-            <div className="flex items-center gap-3">
-              <span style={{ color: '#0AFFE6' }}>✓</span>
-              <span>You can track your booking via WhatsApp</span>
-            </div>
+            
+            {booking && (
+              <div className="mt-4 p-4 rounded-xl" style={{ border: '1.5px solid rgba(10,255,230,0.2)', background: 'rgba(10,255,230,0.02)' }}>
+                <p className="font-dm text-xs uppercase" style={{ color: '#8A8AAA' }}>Order Details</p>
+                <p className="mt-3 font-medium" style={{ color: '#1A1A2E' }}>Booking ID: {booking.bookingNumber}</p>
+                <p className="mt-1">Date: {new Date(booking.scheduledDate).toLocaleDateString('en-IN')} at {booking.scheduledTime}</p>
+                <p className="mt-1">Total Paid: <span style={{ color: '#00897B' }}>₹{booking.totalAmount}</span></p>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="https://wa.me/919392420643?text=Hi%20SparkClean%2C%20I%20want%20to%20check%20my%20booking%20status"
+              href={`https://wa.me/919392420643?text=Hi%20SparkClean%2C%20My%20booking%20ID%20is%20${booking?.bookingNumber || bookingId.substring(0, 16)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 py-3 rounded-xl font-dm font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90"
