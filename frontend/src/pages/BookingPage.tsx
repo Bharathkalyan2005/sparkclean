@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import {
-  SERVICES, COMBOS, SERVICE_AREAS, TIME_SLOTS,
+  SERVICES, COMBOS, TIME_SLOTS,
   formatIndianCurrency, getNextNDates, formatDateDisplay
 } from '../data/services';
 import toast from 'react-hot-toast';
