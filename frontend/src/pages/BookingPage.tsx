@@ -169,12 +169,8 @@ const handlePayment = async () => {
       currency    : 'INR',
       name        : 'SparkClean',
       description : `Booking #${bookingNumber}`,
+      image       : '/logo-primary-cropped.png',
       
-      // Only add image in production
-      ...(config.razorpayMode === 'live' && {
-        image: `${config.frontendUrl}/logo-primary-cropped.png`
-      }),
-
       order_id: orderId,
       
       prefill: {
