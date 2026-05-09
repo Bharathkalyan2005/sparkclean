@@ -3,18 +3,16 @@ import { motion } from 'framer-motion';
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import axiosInstance from '../lib/axiosInstance';
 import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+  BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import toast from 'react-hot-toast';
 import { 
   LayoutDashboard, ClipboardList, Users, Settings, 
-  IndianRupee, Ticket, MessageSquare, LogOut, Loader2, Sparkles, TrendingUp, Star
+  IndianRupee, Ticket, MessageSquare, LogOut, Loader2, Sparkles, Star
 } from 'lucide-react';
-import Logo from '../components/Logo';
 
 // Types
-type Tab = 'dashboard' | 'bookings' | 'customers' | 'services' | 'revenue' | 'promos' | 'messages' | 'settings';
 
 const ADMIN_COLORS = {
   bg: '#0A0A0A',
@@ -69,6 +67,7 @@ export default function AdminPage() {
   const [stats, setStats] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [messages, setMessages] = useState<any[]>([]);
   const [feedbacks, setFeedbacks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../lib/axiosInstance';
-import StarRating from './StarRating';
 
 const Testimonials: React.FC = () => {
   const [active, setActive] = useState(0);
