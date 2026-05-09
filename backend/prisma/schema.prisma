@@ -186,3 +186,19 @@ model PromoCode {
   isActive      Boolean      @default(true)
   createdAt     DateTime     @default(now())
 }
+
+model Feedback {
+  id            String   @id @default(cuid())
+  customerName  String
+  customerEmail String?
+  phone         String?
+  area          String?
+  serviceName   String?
+  rating        Int
+  comment       String
+  isApproved    Boolean  @default(false)
+  isFeatured    Boolean  @default(false)
+  bookingId     String?
+  userId        String?
+  createdAt     DateTime @default(now())
+}

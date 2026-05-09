@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
+import FeedbackModal from '../components/FeedbackModal';
 
 // Simple CSS confetti
 const Confetti: React.FC = () => {
@@ -45,6 +47,7 @@ const SuccessPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const [booking, setBooking] = useState<any>(null);
 
@@ -173,6 +176,62 @@ const SuccessPage: React.FC = () => {
               </div>
             )}
           </div>
+
+          <div style={{
+            background   : '#161616',
+            border       : '1px solid rgba(10,255,230,0.2)',
+            borderRadius : '16px',
+            padding      : '24px',
+            textAlign    : 'center',
+            marginTop    : '24px',
+            marginBottom : '24px',
+          }}>
+            <p style={{ fontSize:'32px' }}>⭐</p>
+            <h3 style={{ color:'#FFFFFF' }} className="font-syne font-bold text-xl mt-2">
+              How are we doing?
+            </h3>
+            <p style={{ color:'#A0A0A0', fontSize:'14px' }} className="font-dm mt-1">
+              Take 30 seconds to share your experience
+            </p>
+            <button 
+              onClick={() => setShowFeedback(true)}
+              style={{
+                background   : '#0AFFE6',
+                color        : '#000',
+                fontWeight   : '700',
+                padding      : '12px 32px',
+                borderRadius : '10px',
+                border       : 'none',
+                cursor       : 'pointer',
+                marginTop    : '16px',
+              }}
+              className="font-dm"
+            >
+              ✦ Leave a Review
+            </button>
+            <p 
+              onClick={() => navigate('/')}
+              style={{ 
+                color    : '#A0A0A0',
+                fontSize : '13px',
+                cursor   : 'pointer',
+                marginTop: '12px',
+              }}
+              className="font-dm hover:text-white transition-colors"
+            >
+              Skip for now
+            </p>
+          </div>
+
+          <FeedbackModal
+            isOpen={showFeedback}
+            bookingId={booking?.id}
+            onClose={() => setShowFeedback(false)}
+            onSuccess={() => {
+              setShowFeedback(false);
+              toast.success('Thank you for your feedback! 🎉');
+            }}
+          />
 
           <div className="flex flex-col sm:flex-row gap-3">
             <a

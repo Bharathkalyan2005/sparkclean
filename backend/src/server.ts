@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.route';
 import bookingRoutes from './routes/booking.route';
 import adminRoutes from './routes/admin.route';
 import paymentRoutes from './routes/payment.route';
+import feedbackRoutes from './routes/feedback.route';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Basic Health Check Route
 app.get('/api/health', (req, res) => {

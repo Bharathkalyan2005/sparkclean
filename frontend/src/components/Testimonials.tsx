@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TESTIMONIALS } from '../data/services';
-
-const StarRating: React.FC<{ rating: number }> = ({ rating }) => (
-  <div className="flex gap-0.5">
-    {[1, 2, 3, 4, 5].map(star => (
-      <motion.svg
-        key={star}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: star * 0.08 }}
-        className={`w-4 h-4 ${star <= rating ? 'star-filled' : 'text-white/20'}`}
-        fill={star <= rating ? '#FFD700' : 'none'}
-        stroke={star <= rating ? '#FFD700' : 'currentColor'}
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-        />
-      </motion.svg>
-    ))}
-  </div>
-);
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../lib/axiosInstance';
+import StarRating from './StarRating';
 
 const Testimonials: React.FC = () => {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (paused) return;
+    axiosInstance.get('/feedback?approved=true&limit=6')
+      .then(r => {
+          if (r.data && r.data.length > 0) {
+              setReviews(r.data);
+          }
+      })
+      .catch(e => console.error(e));
+  }, []);
+
+  useEffect(() => {
+    if (paused || reviews.length === 0) return;
     const timer = setInterval(() => {
-      setActive(prev => (prev + 1) % TESTIMONIALS.length);
+      setActive(prev => (prev + 1) % reviews.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, [paused]);
+  }, [paused, reviews.length]);
+
+  if (reviews.length === 0) return null; // Hide if no approved reviews yet
 
   return (
     <section className="py-24 relative overflow-hidden section-dark">
@@ -66,47 +61,63 @@ const Testimonials: React.FC = () => {
           onMouseLeave={() => setPaused(false)}
         >
           <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -60 }}
-              transition={{ duration: 0.4 }}
-              className="rounded-2xl p-8 md:p-10"
-              style={{ background: '#161616', border: '1px solid rgba(10,255,230,0.2)', boxShadow: '0 4px 30px rgba(10,255,230,0.1), 0 2px 12px rgba(0,0,0,0.4)' }}
-            >
-              {/* Quote icon */}
-              <svg className="w-10 h-10 text-teal-400/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-              </svg>
+            {reviews[active] && (
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.4 }}
+                className="rounded-2xl p-8 md:p-10"
+                style={{ background: '#161616', border: '1px solid rgba(10,255,230,0.2)', boxShadow: '0 4px 30px rgba(10,255,230,0.1), 0 2px 12px rgba(0,0,0,0.4)' }}
+              >
+                {/* Quote icon */}
+                <svg className="w-10 h-10 text-teal-400/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
 
-              <p className="font-dm text-lg md:text-xl leading-relaxed italic mb-6" style={{ color: '#A0A0A0' }}>
-                "{TESTIMONIALS[active].review_text}"
-              </p>
+                {/* Stars */}
+                <div style={{ color:'#FFD700', fontSize:'18px', marginBottom:'12px' }}>
+                  {'★'.repeat(reviews[active].rating)}
+                  {'☆'.repeat(5 - reviews[active].rating)}
+                </div>
 
-              <div className="flex items-center gap-4">
-                {/* Avatar */}
-                <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(10,255,230,0.12)', border: '1.5px solid rgba(10,255,230,0.3)' }}>
-                  <span className="font-syne font-bold text-lg" style={{ color: '#0AFFE6' }}>
-                    {TESTIMONIALS[active].customer_name[0]}
-                  </span>
+                <p className="font-dm text-lg md:text-xl leading-relaxed italic mb-6" style={{ color: '#A0A0A0' }}>
+                  "{reviews[active].comment}"
+                </p>
+
+                <div className="flex items-center gap-4">
+                  {/* Avatar */}
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(10,255,230,0.12)', border: '1.5px solid rgba(10,255,230,0.3)' }}>
+                    <span className="font-syne font-bold text-lg uppercase" style={{ color: '#0AFFE6' }}>
+                      {reviews[active].customerName[0]}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-syne font-bold" style={{ color: '#FFFFFF' }}>{reviews[active].customerName}</p>
+                    <p className="text-sm font-dm" style={{ color: '#0AFFE6' }}>{reviews[active].area || 'Visakhapatnam'} {reviews[active].serviceName ? `• ${reviews[active].serviceName}` : ''}</p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-2">
+                    <span style={{
+                      background   : 'rgba(10,255,230,0.1)',
+                      color        : '#0AFFE6',
+                      padding      : '3px 10px',
+                      borderRadius : '20px',
+                      fontSize     : '11px',
+                    }}>
+                      ✓ Verified
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-syne font-bold" style={{ color: '#FFFFFF' }}>{TESTIMONIALS[active].customer_name}</p>
-                  <p className="text-sm font-dm" style={{ color: '#0AFFE6' }}>{TESTIMONIALS[active].area}</p>
-                </div>
-                <div className="ml-auto">
-                  <StarRating rating={TESTIMONIALS[active].rating} />
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
         {/* Dot indicators */}
         <div className="flex justify-center gap-2 mb-8">
-          {TESTIMONIALS.map((_, i) => (
+          {reviews.map((_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -120,7 +131,7 @@ const Testimonials: React.FC = () => {
 
         {/* Thumbnail row */}
         <div className="flex gap-3 justify-center overflow-x-auto no-scrollbar pb-2">
-          {TESTIMONIALS.map((t, i) => (
+          {reviews.map((t, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -129,12 +140,39 @@ const Testimonials: React.FC = () => {
                 ? { background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.4)' }
                 : { background: '#111111', border: '1px solid rgba(10,255,230,0.12)', opacity: 0.65 }}
             >
-              <p className="text-xs font-dm line-clamp-2 mb-2" style={{ color: '#A0A0A0' }}>"{t.review_text.substring(0, 60)}..."</p>
-              <p className="font-syne font-bold text-xs" style={{ color: '#FFFFFF' }}>{t.customer_name}</p>
+              <p className="text-xs font-dm line-clamp-2 mb-2" style={{ color: '#A0A0A0' }}>"{t.comment.substring(0, 60)}..."</p>
+              <p className="font-syne font-bold text-xs" style={{ color: '#FFFFFF' }}>{t.customerName}</p>
               <p className="text-xs font-dm" style={{ color: '#0AFFE6' }}>{t.area}</p>
             </button>
           ))}
         </div>
+
+        {/* CTA section */}
+        <div style={{ textAlign:'center', padding:'40px 20px' }}>
+          <p style={{ color:'#A0A0A0', fontSize:'15px' }}>
+            Used SparkClean before?
+          </p>
+          <h3 style={{ color:'#FFFFFF', fontSize:'24px', margin:'8px 0' }}>
+            Share your experience ✦
+          </h3>
+          <button
+            onClick={() => navigate('/feedback')}
+            style={{
+              background   : 'transparent',
+              border       : '1px solid #0AFFE6',
+              color        : '#0AFFE6',
+              padding      : '12px 32px',
+              borderRadius : '10px',
+              cursor       : 'pointer',
+              fontSize     : '15px',
+              fontWeight   : '600',
+              marginTop    : '16px',
+            }}
+          >
+            ✦ Write a Review
+          </button>
+        </div>
+
       </div>
     </section>
   );

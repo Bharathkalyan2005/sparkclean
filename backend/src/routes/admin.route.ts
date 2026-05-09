@@ -1,15 +1,30 @@
 import { Router } from 'express';
 import { authenticate, authorizeAdmin } from '../middleware/auth.middleware';
+import { 
+    getStats, 
+    getBookings, 
+    updateBookingStatus, 
+    getCustomers, 
+    getMessages, 
+    readMessage, 
+    getRevenue,
+    updateUserRole
+} from '../controllers/admin.controller';
 
 const router = Router();
 
+router.use(authenticate);
+router.use(authorizeAdmin);
+
 // /api/admin endpoints
 
-router.get('/stats', authenticate, authorizeAdmin, (req, res) => { res.send('Dashboard KPI metrics'); });
-router.get('/revenue', authenticate, authorizeAdmin, (req, res) => { res.send('Revenue by day/week/month'); });
-router.get('/top-areas', authenticate, authorizeAdmin, (req, res) => { res.send('Bookings by area heatmap'); });
-router.get('/top-services', authenticate, authorizeAdmin, (req, res) => { res.send('Most booked services'); });
-router.get('/customers', authenticate, authorizeAdmin, (req, res) => { res.send('All customer list'); });
-router.patch('/customers/:id/role', authenticate, authorizeAdmin, (req, res) => { res.send('Change user role'); });
+router.get('/stats', getStats);
+router.get('/bookings', getBookings);
+router.patch('/bookings/:id/status', updateBookingStatus);
+router.get('/customers', getCustomers);
+router.patch('/customers/:id/role', updateUserRole);
+router.get('/revenue', getRevenue);
+router.get('/messages', getMessages);
+router.patch('/messages/:id/read', readMessage);
 
 export default router;

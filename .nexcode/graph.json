@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-01T05:32:04.278Z",
+  "generatedAt": "2026-05-09T06:18:48.712Z",
   "workspaceRoot": "spark clean",
   "stats": {
-    "filesIndexed": 61,
-    "edgesIndexed": 55
+    "filesIndexed": 67,
+    "edgesIndexed": 62
   },
   "nodes": [
     {
@@ -13,6 +13,17 @@
       "lang": "json",
       "summary": "{\"web\":{\"client_id\":\"134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com\",\"project_id\":\"quickware-auth\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://oauth2.googleapis.com/token\",\"auth_prov",
       "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/create-admin.ts",
+      "path": "backend/create-admin.ts",
+      "lang": "ts",
+      "summary": "import { PrismaClient } from '@prisma/client'; import * as bcrypt from 'bcrypt'; const prisma = new PrismaClient(); async function createAdmin() { const hashedPassword = await bcrypt.hash('SparkClean@2026', 12); await prisma.user.upsert({",
+      "imports": [
+        "@prisma/client",
+        "bcrypt"
+      ],
       "exports": []
     },
     {
@@ -126,7 +137,7 @@
       "id": "frontend/public/index.html",
       "path": "frontend/public/index.html",
       "lang": "html",
-      "summary": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <link rel=\"icon\" href=\"%PUBLIC_URL%/favicon.ico\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />",
+      "summary": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <link rel=\"icon\" type=\"image/png\" href=\"%PUBLIC_URL%/logo-primary-cropped.png?v=2\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />",
       "imports": [],
       "exports": []
     },
@@ -175,7 +186,9 @@
         "./pages/SuccessPage",
         "./pages/AdminPage",
         "./pages/AuthPage",
-        "./pages/AuthCallbackPage"
+        "./pages/AuthCallbackPage",
+        "./pages/TrackingPage",
+        "./components/AdminRoute"
       ],
       "exports": []
     },
@@ -248,6 +261,25 @@
       "exports": []
     },
     {
+      "id": "backend/src/controllers/admin.controller.ts",
+      "path": "backend/src/controllers/admin.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); export const getStats = async (req: Request, res: Response) => { try { const today = new Date();",
+      "imports": [
+        "express",
+        "@prisma/client"
+      ],
+      "exports": [
+        "getStats",
+        "getBookings",
+        "updateBookingStatus",
+        "getCustomers",
+        "getMessages",
+        "readMessage",
+        "getRevenue"
+      ]
+    },
+    {
       "id": "backend/src/controllers/auth.controller.ts",
       "path": "backend/src/controllers/auth.controller.ts",
       "lang": "ts",
@@ -297,10 +329,11 @@
       "id": "backend/src/routes/admin.route.ts",
       "path": "backend/src/routes/admin.route.ts",
       "lang": "ts",
-      "summary": "import { Router } from 'express'; import { authenticate, authorizeAdmin } from '../middleware/auth.middleware'; const router = Router(); // /api/admin endpoints router.get('/stats', authenticate, authorizeAdmin, (req, res) => { res.send('Da",
+      "summary": "import { Router } from 'express'; import { authenticate, authorizeAdmin } from '../middleware/auth.middleware'; import { getStats, getBookings, updateBookingStatus,",
       "imports": [
         "express",
-        "../middleware/auth.middleware"
+        "../middleware/auth.middleware",
+        "../controllers/admin.controller"
       ],
       "exports": []
     },
@@ -369,6 +402,18 @@
       ]
     },
     {
+      "id": "frontend/src/components/AdminRoute.tsx",
+      "path": "frontend/src/components/AdminRoute.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { Navigate } from 'react-router-dom'; import toast from 'react-hot-toast'; const AdminRoute = ({ children }: { children: React.ReactNode }) => { const token = localStorage.getItem('sparkclean_token'); if (!",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "react-hot-toast"
+      ],
+      "exports": []
+    },
+    {
       "id": "frontend/src/components/CartSidebar.tsx",
       "path": "frontend/src/components/CartSidebar.tsx",
       "lang": "tsx",
@@ -412,11 +457,12 @@
       "id": "frontend/src/components/Footer.tsx",
       "path": "frontend/src/components/Footer.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES, SERVICE_AREAS } from '../data/services'; const SparkLogo = () => ( <img src=\"/logo-primary-cropped.png\" alt=\"SparkClean Logo\" className=\"h-8 w-auto\" /> )",
+      "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES, SERVICE_AREAS } from '../data/services'; import Logo from './Logo'; const Footer: React.FC = () => { const scrollTo = (id: string) => {",
       "imports": [
         "react",
         "react-router-dom",
-        "../data/services"
+        "../data/services",
+        "./Logo"
       ],
       "exports": []
     },
@@ -424,11 +470,12 @@
       "id": "frontend/src/components/Hero.tsx",
       "path": "frontend/src/components/Hero.tsx",
       "lang": "tsx",
-      "summary": "import React, { useEffect, useRef } from 'react'; import { useNavigate } from 'react-router-dom'; import gsap from 'gsap'; const Hero: React.FC = () => { const navigate = useNavigate(); const headingRef = useRef<HTMLHeadingElement>(null);",
+      "summary": "import React, { useEffect, useRef, useState } from 'react'; import { useNavigate } from 'react-router-dom'; import gsap from 'gsap'; import LoginPromptModal from './LoginPromptModal'; const Hero: React.FC = () => { const navigate = useNavig",
       "imports": [
         "react",
         "react-router-dom",
-        "gsap"
+        "gsap",
+        "./LoginPromptModal"
       ],
       "exports": []
     },
@@ -467,6 +514,27 @@
       "exports": []
     },
     {
+      "id": "frontend/src/components/LoginPromptModal.tsx",
+      "path": "frontend/src/components/LoginPromptModal.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { useNavigate } from 'react-router-dom'; const LoginPromptModal = ({ isOpen, onClose }: {",
+      "imports": [
+        "react",
+        "react-router-dom"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Logo.tsx",
+      "path": "frontend/src/components/Logo.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; interface LogoProps { className?: string; imageClassName?: string; textClassName?: string; subText?: React.ReactNode;",
+      "imports": [
+        "react"
+      ],
+      "exports": []
+    },
+    {
       "id": "frontend/src/components/Navbar.tsx",
       "path": "frontend/src/components/Navbar.tsx",
       "lang": "tsx",
@@ -477,7 +545,9 @@
         "framer-motion",
         "../context/CartContext",
         "lucide-react",
-        "./ProfileModal"
+        "./ProfileModal",
+        "react-hot-toast",
+        "./Logo"
       ],
       "exports": []
     },
@@ -513,13 +583,15 @@
       "id": "frontend/src/components/ServicesSection.tsx",
       "path": "frontend/src/components/ServicesSection.tsx",
       "lang": "tsx",
-      "summary": "import React, { useState } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useCart } from '../context/CartContext'; import { SERVICES } from '../data/services'; import { Service } from '../lib/supabase'; type",
+      "summary": "import React, { useState } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import toast from 'react-hot-toast'; import { useCart } from '../context/CartContext'; import { SERVICES } from '../data/services'; import { S",
       "imports": [
         "react",
         "framer-motion",
+        "react-hot-toast",
         "../context/CartContext",
         "../data/services",
-        "../lib/supabase"
+        "../lib/supabase",
+        "./LoginPromptModal"
       ],
       "exports": []
     },
@@ -611,26 +683,30 @@
       "id": "frontend/src/pages/AdminPage.tsx",
       "path": "frontend/src/pages/AdminPage.tsx",
       "lang": "tsx",
-      "summary": "import React, { useState, useEffect } from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import { supabase, Booking } from '../lib/supabase'; import { BarChart, Bar, XAxis, YAxis, Cartesian",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion } from 'framer-motion'; import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'; import axiosInstance from '../lib/axiosInstance'; import { Bar",
       "imports": [
         "react",
         "framer-motion",
         "react-router-dom",
-        "../lib/supabase",
+        "../lib/axiosInstance",
         "react-hot-toast",
-        "../data/services",
-        "recharts"
+        "../components/Logo",
+        "recharts",
+        "lucide-react"
       ],
-      "exports": []
+      "exports": [
+        "AdminPage"
+      ]
     },
     {
       "id": "frontend/src/pages/AuthCallbackPage.tsx",
       "path": "frontend/src/pages/AuthCallbackPage.tsx",
       "lang": "tsx",
-      "summary": "import { useEffect } from 'react' import { useNavigate, useSearchParams } from 'react-router-dom' export default function AuthCallbackPage() { const [searchParams] = useSearchParams() const navigate = useNavigate() useEffect(() => {",
+      "summary": "import { useEffect } from 'react' import { useNavigate, useSearchParams } from 'react-router-dom' import toast from 'react-hot-toast' export default function AuthCallbackPage() { const [searchParams] = useSearchParams() const navigate = use",
       "imports": [
         "react",
-        "react-router-dom"
+        "react-router-dom",
+        "react-hot-toast"
       ],
       "exports": [
         "AuthCallbackPage"
@@ -651,7 +727,8 @@
         "react-router-dom",
         "react-hot-toast",
         "lucide-react",
-        "../lib/axiosInstance"
+        "../lib/axiosInstance",
+        "../components/Logo"
       ],
       "exports": []
     },
@@ -667,7 +744,6 @@
         "../context/CartContext",
         "react-hot-toast",
         "../lib/axiosInstance",
-        "../lib/config",
         "../data/services"
       ],
       "exports": []
@@ -713,10 +789,21 @@
       "id": "frontend/src/pages/SuccessPage.tsx",
       "path": "frontend/src/pages/SuccessPage.tsx",
       "lang": "tsx",
-      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link } from 'react-router-dom'; import { motion } from 'framer-motion'; // Simple CSS confetti const Confetti: React.FC = () => { const colors = ['#0AFFE6', '#FFD",
+      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link, useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; // Simple CSS confetti const Confetti: React.FC = () => { const colors = ['#0",
       "imports": [
         "react",
         "react-router-dom",
+        "framer-motion"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/pages/TrackingPage.tsx",
+      "path": "frontend/src/pages/TrackingPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect, useCallback } from 'react'; import { motion } from 'framer-motion'; const TrackingPage: React.FC = () => { const [query, setQuery] = useState(''); const [booking, setBooking] = useState<any>(null); const",
+      "imports": [
+        "react",
         "framer-motion"
       ],
       "exports": []
@@ -807,6 +894,16 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/TrackingPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/components/AdminRoute.tsx",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/index.tsx",
       "to": "frontend/src/App.tsx",
       "type": "imports"
@@ -819,6 +916,11 @@
     {
       "from": "backend/src/routes/admin.route.ts",
       "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/admin.route.ts",
+      "to": "backend/src/controllers/admin.controller.ts",
       "type": "imports"
     },
     {
@@ -882,6 +984,16 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/components/Footer.tsx",
+      "to": "frontend/src/components/Logo.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Hero.tsx",
+      "to": "frontend/src/components/LoginPromptModal.tsx",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/components/Navbar.tsx",
       "to": "frontend/src/context/CartContext.tsx",
       "type": "imports"
@@ -889,6 +1001,11 @@
     {
       "from": "frontend/src/components/Navbar.tsx",
       "to": "frontend/src/components/ProfileModal.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Navbar.tsx",
+      "to": "frontend/src/components/Logo.tsx",
       "type": "imports"
     },
     {
@@ -904,6 +1021,11 @@
     {
       "from": "frontend/src/components/ServicesSection.tsx",
       "to": "frontend/src/lib/supabase.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServicesSection.tsx",
+      "to": "frontend/src/components/LoginPromptModal.tsx",
       "type": "imports"
     },
     {
@@ -918,17 +1040,22 @@
     },
     {
       "from": "frontend/src/pages/AdminPage.tsx",
-      "to": "frontend/src/lib/supabase.ts",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {
       "from": "frontend/src/pages/AdminPage.tsx",
-      "to": "frontend/src/data/services.ts",
+      "to": "frontend/src/components/Logo.tsx",
       "type": "imports"
     },
     {
       "from": "frontend/src/pages/AuthPage.tsx",
       "to": "frontend/src/lib/axiosInstance.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/AuthPage.tsx",
+      "to": "frontend/src/components/Logo.tsx",
       "type": "imports"
     },
     {
@@ -939,11 +1066,6 @@
     {
       "from": "frontend/src/pages/BookingPage.tsx",
       "to": "frontend/src/lib/axiosInstance.ts",
-      "type": "imports"
-    },
-    {
-      "from": "frontend/src/pages/BookingPage.tsx",
-      "to": "frontend/src/lib/config.ts",
       "type": "imports"
     },
     {

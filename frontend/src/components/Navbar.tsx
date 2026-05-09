@@ -29,6 +29,10 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const token = localStorage.getItem('sparkclean_token');
+  const decoded = token ? JSON.parse(atob(token.split('.')[1])) : null;
+  const isAdmin = decoded?.role === 'ADMIN';
+
   useEffect(() => {
     // Check if user is logged in via localStorage
     syncUserFromStorage();
@@ -152,6 +156,25 @@ const Navbar: React.FC = () => {
               style={{ color: '#0AFFE6' }}
             >
               Sign In
+            </button>
+          )}
+
+          {isAdmin && (
+            <button
+              onClick={() => navigate('/sparkadmin')}
+              className="hidden md:block transition-all"
+              style={{
+                background   : 'rgba(10,255,230,0.1)',
+                border       : '1px solid rgba(10,255,230,0.3)',
+                color        : '#0AFFE6',
+                padding      : '8px 16px',
+                borderRadius : '8px',
+                cursor       : 'pointer',
+                fontSize     : '13px',
+                fontWeight   : '600',
+              }}
+            >
+              ⚙️ Admin
             </button>
           )}
           
