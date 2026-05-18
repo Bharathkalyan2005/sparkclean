@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-18T10:40:50.892Z",
+  "generatedAt": "2026-05-18T10:52:48.108Z",
   "workspaceRoot": "spark clean",
   "stats": {
     "filesIndexed": 87,
-    "edgesIndexed": 79
+    "edgesIndexed": 80
   },
   "nodes": [
     {
@@ -1096,15 +1096,18 @@
       "id": "frontend/src/pages/SuccessPage.tsx",
       "path": "frontend/src/pages/SuccessPage.tsx",
       "lang": "tsx",
-      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link, useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; import toast from 'react-hot-toast'; import FeedbackModal from '../components",
+      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; import toast from 'react-hot-toast'; import api from '../lib/axiosInstance'; import",
       "imports": [
         "react",
         "react-router-dom",
         "framer-motion",
         "react-hot-toast",
+        "../lib/axiosInstance",
         "../components/FeedbackModal"
       ],
-      "exports": []
+      "exports": [
+        "SuccessPage"
+      ]
     },
     {
       "id": "frontend/src/pages/TrackingPage.tsx",
@@ -1531,6 +1534,11 @@
     {
       "from": "frontend/src/pages/HomePage.tsx",
       "to": "frontend/src/components/CartSidebar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/SuccessPage.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {

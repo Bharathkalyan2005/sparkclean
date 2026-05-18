@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import api from '../lib/axiosInstance';
 import FeedbackModal from '../components/FeedbackModal';
 
 // Simple CSS confetti
@@ -43,32 +44,57 @@ const Confetti: React.FC = () => {
   );
 };
 
-const SuccessPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+export default function SuccessPage() {
+  const [searchParams]  = useSearchParams()
+  const navigate        = useNavigate()
+  const [bookingNumber, setBookingNumber] = useState('')
+  const [bookingData,   setBookingData]   = useState<any>(null)
+  
   const [showConfetti, setShowConfetti] = useState(true);
   const [showFeedback, setShowFeedback] = useState(false);
 
-  const [booking, setBooking] = useState<any>(null);
-
   useEffect(() => {
-    const bookingId = new URLSearchParams(
-      window.location.search
-    ).get('booking')
-  
-    if (bookingId) {
-      import('../lib/axiosInstance').then(m => m.default)
-        .then(api => api.get(`/bookings/${bookingId}`))
-        .then(res => setBooking(res.data))
-        .catch(err => console.error(err))
+    // Try ALL possible sources for booking number
+    // Priority: URL param -> localStorage -> API fetch
+
+    // Source 1: URL param ?number=SC-XXXX
+    const numberFromUrl = searchParams.get('number')
+
+    // Source 2: localStorage
+    const numberFromStorage = 
+      localStorage.getItem('sc_booking_number') ||
+      localStorage.getItem('last_booking_number') ||
+      localStorage.getItem('bookingNumber')
+
+    // Source 3: booking ID from URL -> fetch from API
+    const bookingId = searchParams.get('booking')
+    
+    // Use best available source
+    if (numberFromUrl && numberFromUrl !== 'undefined') {
+      setBookingNumber(numberFromUrl)
+    } else if (
+      numberFromStorage && 
+      numberFromStorage !== 'undefined'
+    ) {
+      setBookingNumber(numberFromStorage)
+    } else if (bookingId && bookingId !== 'undefined') {
+      // Fetch from API using booking ID
+      api.get(`/bookings/${bookingId}`)
+        .then(res => {
+          const num = res.data.bookingNumber
+          setBookingNumber(num)
+          setBookingData(res.data)
+          localStorage.setItem('sc_booking_number', num)
+        })
+        .catch(err => {
+          console.error('API fetch failed:', err)
+          setBookingNumber('Check your email for ID')
+        })
+    } else {
+      console.warn('No booking number found anywhere!')
+      setBookingNumber('Check your email')
     }
-  }, [])
-
-  const bookingId = searchParams.get('booking') || 'N/A';
-  const name = searchParams.get('name') || 'Customer';
-
-  const bookingNumber = localStorage.getItem('last_booking_number')
-    || searchParams.get('number') || booking?.bookingNumber;
+  }, [searchParams])
 
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 5500);
@@ -124,43 +150,76 @@ const SuccessPage: React.FC = () => {
             Your unique Booking ID
           </p>
 
-          {/* Booking ID — big and copyable */}
           <div
             onClick={() => {
-              navigator.clipboard.writeText(bookingNumber || '')
-              toast.success('Booking ID copied!')
+              if (bookingNumber && bookingNumber !== 'undefined' && bookingNumber !== 'Check your email' && bookingNumber !== 'Check your email for ID') {
+                navigator.clipboard.writeText(bookingNumber)
+                toast.success('Booking ID copied! 📋')
+              }
             }}
             style={{
-              background   : 'rgba(10,255,230,0.08)',
-              border       : '1px solid rgba(10,255,230,0.3)',
-              borderRadius : '12px',
-              padding      : '16px 24px',
-              margin       : '16px auto',
-              maxWidth     : '320px',
-              cursor       : 'pointer',
-              display      : 'flex',
-              alignItems   : 'center',
+              background    : 'rgba(10,255,230,0.08)',
+              border        : '1px solid rgba(10,255,230,0.3)',
+              borderRadius  : '12px',
+              padding       : '16px 24px',
+              margin        : '16px auto',
+              maxWidth      : '340px',
+              cursor        : bookingNumber && !bookingNumber.includes('Check') ? 'pointer' : 'default',
+              display       : 'flex',
+              alignItems    : 'center',
               justifyContent: 'center',
-              gap          : '12px',
+              gap           : '12px',
+              minHeight     : '60px',
             }}
           >
-            <span style={{
-              color        : '#0AFFE6',
-              fontSize     : '22px',
-              fontWeight   : '700',
-              fontFamily   : 'monospace',
-              letterSpacing: '2px',
-            }}>
-              {bookingNumber}
-            </span>
-            <span style={{ 
-              color   : '#A0A0A0', 
-              fontSize: '14px' 
-            }}>
-              📋
-            </span>
+            {bookingNumber && bookingNumber !== 'undefined' ? (
+              <>
+                <span style={{
+                  color        : '#0AFFE6',
+                  fontSize     : '20px',
+                  fontWeight   : '700',
+                  fontFamily   : 'monospace',
+                  letterSpacing: '2px',
+                }}>
+                  {bookingNumber}
+                </span>
+                <span style={{ color: '#A0A0A0', fontSize: '16px' }}>
+                  📋
+                </span>
+              </>
+            ) : (
+              // Loading state while fetching
+              <div style={{
+                display   : 'flex',
+                alignItems: 'center',
+                gap       : '10px',
+              }}>
+                <svg 
+                  width="20" height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="none"
+                  style={{ animation: 'spin 1s linear infinite' }}
+                >
+                  <circle 
+                    cx="12" cy="12" r="10"
+                    stroke="#0AFFE6" strokeWidth="3"
+                    strokeDasharray="50 30"
+                  />
+                </svg>
+                <span style={{ color: '#A0A0A0', fontSize: '14px' }}>
+                  Loading your Booking ID...
+                </span>
+              </div>
+            )}
           </div>
-
+          
+          <style>{`
+            @keyframes spin {
+              from { transform: rotate(0deg) }
+              to   { transform: rotate(360deg) }
+            }
+          `}</style>
+          
           <p style={{ 
             color   : '#A0A0A0', 
             fontSize: '12px' 
@@ -175,39 +234,55 @@ const SuccessPage: React.FC = () => {
             marginTop: '20px',
           }}>
             <button
-              onClick={() => navigate(`/track?id=${bookingNumber}`)}
+              onClick={() => {
+                if (bookingNumber && bookingNumber !== 'undefined' && !bookingNumber.includes('Check')) {
+                  navigate(`/track?id=${bookingNumber}`)
+                } else {
+                  navigate('/track')
+                }
+              }}
               style={{
-                flex         : 1,
-                padding      : '12px',
-                background   : '#0AFFE6',
-                color        : '#000',
-                fontWeight   : '700',
-                borderRadius : '12px',
-                border       : 'none',
-                cursor       : 'pointer',
-                fontSize     : '14px',
+                flex        : 1,
+                padding     : '14px',
+                background  : '#0AFFE6',
+                color       : '#000',
+                fontWeight  : '700',
+                borderRadius: '12px',
+                border      : 'none',
+                cursor      : 'pointer',
+                fontSize    : '15px',
+                display     : 'flex',
+                alignItems  : 'center',
+                justifyContent: 'center',
+                gap         : '8px',
               }}
             >
               🔍 Track Booking
             </button>
-            
+
             <a
-              href={`https://wa.me/919392420643?text=Hi SparkClean! My booking ID is ${bookingNumber}`}
+              href={`https://wa.me/919392420643?text=${
+                encodeURIComponent(
+                  `Hi SparkClean! My booking ID is ${
+                    bookingNumber && !bookingNumber.includes('Check') ? bookingNumber : 'just created'
+                  }. I need help.`
+                )
+              }`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
                 flex           : 1,
-                padding        : '12px',
+                padding        : '14px',
                 background     : '#25D366',
                 color          : '#FFF',
                 fontWeight     : '700',
                 borderRadius   : '12px',
                 textDecoration : 'none',
-                fontSize       : '14px',
+                fontSize       : '15px',
                 display        : 'flex',
                 alignItems     : 'center',
                 justifyContent : 'center',
-                gap            : '6px',
+                gap            : '8px',
               }}
             >
               💬 WhatsApp
@@ -263,7 +338,7 @@ const SuccessPage: React.FC = () => {
 
         <FeedbackModal
           isOpen={showFeedback}
-          bookingId={booking?.id}
+          bookingId={bookingData?.id}
           onClose={() => setShowFeedback(false)}
           onSuccess={() => {
             setShowFeedback(false);
@@ -273,6 +348,4 @@ const SuccessPage: React.FC = () => {
       </motion.div>
     </div>
   );
-};
-
-export default SuccessPage;
+}

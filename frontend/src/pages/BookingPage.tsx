@@ -233,7 +233,11 @@ const handlePayment = async () => {
 
           clearCart();
           toast.success('Payment successful! 🎉')
-          navigate(`/success?booking=${bookingId}`)
+          
+          localStorage.setItem('sc_booking_number', bookingNumber)
+          localStorage.setItem('sc_booking_id', bookingId)
+
+          navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)
 
         } catch (err) {
           console.error('Verification failed:', err)
@@ -302,9 +306,13 @@ const handleCODBooking = async () => {
       notes         : '',
     })
 
-    const { bookingId } = bookingRes.data
+    const { bookingId, bookingNumber } = bookingRes.data
+    
+    localStorage.setItem('sc_booking_number', bookingNumber)
+    localStorage.setItem('sc_booking_id', bookingId)
+    
     clearCart();
-    navigate(`/success?booking=${bookingId}`)
+    navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)
 
   } catch (error: any) {
     toast.error('Booking failed. Try again.')

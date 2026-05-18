@@ -293,4 +293,43 @@ router.post('/track-by-phone', rateLimiter, async (req, res) => {
   }
 });
 
+// GET single booking by ID (optional auth, since SuccessPage might just ping it after payment)
+router.get('/:id', async (req, res) => {
+  try {
+    const bookingId = req.params.id
+
+    const booking = await prisma.booking.findFirst({
+      where: {
+        id: bookingId
+      },
+      select: {
+        id           : true,
+        bookingNumber: true,
+        customerName : true,
+        services     : true,
+        totalAmount  : true,
+        scheduledDate: true,
+        scheduledTime: true,
+        area         : true,
+        city         : true,
+        status       : true,
+        paymentStatus: true,
+        paymentMethod: true,
+        createdAt    : true,
+      }
+    })
+
+    if (!booking) {
+      return res.status(404).json({ 
+        error: 'Booking not found' 
+      })
+    }
+
+    res.json(booking)
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 export default router;
