@@ -96,17 +96,16 @@ router.post('/verify', authenticate, async (req: any, res: any) => {
 
 Your SparkClean booking is CONFIRMED!
 
-Booking ID : ${booking.bookingNumber}
-Services   : ${services}
-Date       : ${new Date(booking.scheduledDate).toLocaleDateString('en-IN')}
-Time       : ${booking.scheduledTime}
-Address    : ${booking.address}, ${booking.area}
-Total Paid : ₹${booking.totalAmount}
+🆔 Booking ID : ${booking.bookingNumber}
+📅 Date       : ${new Date(booking.scheduledDate).toLocaleDateString('en-IN')}
+⏰ Time       : ${booking.scheduledTime}  
+📍 Area       : ${booking.area}
+💰 Total      : ₹${booking.totalAmount}
 
-Our team will arrive on time.
-Questions? Call: 9392420643
+Save your Booking ID to track anytime:
+🔗 sparkclean.in/track?id=${booking.bookingNumber}
 
-Thank you for choosing SparkClean! ✦`);
+Questions? Call: 9392420643 ✦`);
 
       // Log WhatsApp link (send via Twilio in production)
       console.log(

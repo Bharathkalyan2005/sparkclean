@@ -135,7 +135,18 @@ const handlePayment = async () => {
     })
 
     const { bookingId, bookingNumber } = bookingRes.data
-    console.log('✅ Booking created:', bookingNumber)
+    
+    // Store for success page
+    localStorage.setItem('last_booking_number', bookingNumber)
+    localStorage.setItem('last_booking_id',     bookingId)
+    
+    console.log('New Booking ID:', bookingNumber)
+
+    // Show booking ID to user immediately
+    toast.success(
+      `Booking created! ID: ${bookingNumber}`,
+      { duration: 5000 }
+    )
 
     // Step 2: Create Razorpay order
     const orderRes = await api.post('/payments/create-order', {

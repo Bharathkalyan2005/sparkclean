@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
 import { CartProvider } from './context/CartContext';
@@ -48,6 +48,7 @@ function App() {
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/book" element={<BookingPage />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/admin" element={<Navigate to="/sparkadmin" replace />} />
           <Route path="/sparkadmin/*" element={
             <AdminRoute>
               <AdminPage />

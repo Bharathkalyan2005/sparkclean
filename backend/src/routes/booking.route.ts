@@ -1,27 +1,56 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate } from '../middleware/auth.middleware';
+import { customAlphabet } from 'nanoid';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-const generateBookingNumber = async (): Promise<string> => {
-  const date   = new Date()
-    .toISOString()
-    .slice(0, 10)
-    .replace(/-/g, '')
-  const random = Math
-    .random()
-    .toString(36)
-    .substring(2, 8)
-    .toUpperCase()
-  const num = `SC-${date}-${random}`
+// Only uppercase letters + numbers (no confusing chars)
+// Removed: 0, O, I, 1 to avoid confusion
+const nanoid = customAlphabet(
+  'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', 
+  6
+);
+
+async function generateBookingNumber(): Promise<string> {
+  const maxRetries = 10;
   
-  const exists = await prisma.booking.findUnique({
-    where: { bookingNumber: num }
-  })
-  return exists ? generateBookingNumber() : num
-};
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    // Get today's date in IST (India timezone)
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST = UTC+5:30
+    const istDate = new Date(now.getTime() + istOffset);
+    
+    const year  = istDate.getUTCFullYear();
+    const month = String(istDate.getUTCMonth() + 1).padStart(2, '0');
+    const day   = String(istDate.getUTCDate()).padStart(2, '0');
+    
+    const dateStr  = `${year}${month}${day}`;  // 20260518
+    const randomId = nanoid();                 // A3K9P2
+    
+    const bookingNumber = `SC-${dateStr}-${randomId}`;
+    
+    // Check uniqueness in database
+    const existing = await prisma.booking.findUnique({
+      where : { bookingNumber },
+      select: { bookingNumber: true }
+    });
+    
+    if (!existing) {
+      console.log(`✅ Generated booking ID: ${bookingNumber}`);
+      return bookingNumber;
+    }
+    
+    console.warn(`⚠️ Collision on attempt ${attempt + 1}: ${bookingNumber}`);
+  }
+  
+  // Fallback
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const fallback  = `SC-FB-${timestamp}`;
+  console.warn(`⚠️ Using fallback ID: ${fallback}`);
+  return fallback;
+}
 
 router.post('/', authenticate, async (req, res) => {
   try {
@@ -58,8 +87,13 @@ router.post('/', authenticate, async (req, res) => {
       });
     }
 
-    // Generate booking number
+    // Generate FRESH unique ID for every booking
     const bookingNumber = await generateBookingNumber();
+
+    console.log('=== NEW BOOKING ===');
+    console.log('Customer  :', customerId);
+    console.log('Booking ID:', bookingNumber);
+    console.log('Timestamp :', new Date().toISOString());
 
     // Create booking
     const booking = await prisma.booking.create({
@@ -94,9 +128,46 @@ router.post('/', authenticate, async (req, res) => {
       success      : true,
       bookingId    : booking.id,
       bookingNumber: booking.bookingNumber,
+      message      : 'Booking created successfully',
     });
 
   } catch (error: any) {
+    // Handle duplicate key error (extra safety)
+    if (error.code === 'P2002' && 
+        error.meta?.target?.includes('bookingNumber')) {
+      
+      // Retry once more if DB constraint catches duplicate
+      try {
+        const retryNumber = await generateBookingNumber();
+        const booking = await prisma.booking.create({
+          data: {
+            bookingNumber: retryNumber,
+            // Re-using same required fields from the above scope
+            customerId: (req as any).user.userId || (req as any).user.id,
+            customerName: String(req.body.customerName),
+            customerPhone: String(req.body.customerPhone),
+            customerEmail: req.body.customerEmail || '',
+            address: String(req.body.address),
+            area: String(req.body.area),
+            services: req.body.services || [],
+            subtotal: parseFloat(req.body.subtotal) || 0,
+            totalAmount: parseFloat(req.body.totalAmount),
+            scheduledDate: new Date(req.body.scheduledDate),
+            scheduledTime: String(req.body.scheduledTime)
+          }
+        });
+        return res.status(201).json({
+          success      : true,
+          bookingId    : booking.id,
+          bookingNumber: retryNumber,
+        });
+      } catch (retryErr: any) {
+        return res.status(500).json({
+          error: 'Booking ID generation failed. Try again.'
+        });
+      }
+    }
+
     console.error('❌ Booking error:', error.message);
     console.error('Error code:', error.code);
     console.error('Full error:', error);

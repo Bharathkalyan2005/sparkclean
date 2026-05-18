@@ -113,6 +113,8 @@ model Booking {
   customerPhone   String
   customerEmail   String?
   address         String
+  addressLat      Float?
+  addressLng      Float?
   area            String
   city            String        @default("Visakhapatnam")
   services        Json
@@ -201,4 +203,16 @@ model Feedback {
   bookingId     String?
   userId        String?
   createdAt     DateTime @default(now())
+}
+
+model CleanerLocation {
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  cleanerId String
+  lat       Float
+  lng       Float
+  heading   Float?   @default(0)
+  speed     Float?   @default(0)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 }

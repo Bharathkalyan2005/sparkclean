@@ -1,12 +1,97 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-09T06:18:48.712Z",
+  "generatedAt": "2026-05-18T10:40:50.892Z",
   "workspaceRoot": "spark clean",
   "stats": {
-    "filesIndexed": 67,
-    "edgesIndexed": 62
+    "filesIndexed": 87,
+    "edgesIndexed": 79
   },
   "nodes": [
+    {
+      "id": "Add maps.json",
+      "path": "Add maps.json",
+      "lang": "json",
+      "summary": "{\"Transcoder\":\"pdf2json@4.0.3 [https://github.com/modesty/pdf2json]\",\"Meta\":{\"PDFFormatVersion\":\"1.7\",\"IsAcroFormPresent\":false,\"IsXFAPresent\":false,\"Author\":\"bharath kalyan\",\"Creator\":\"Microsoft® Word 2021\",\"Producer\":\"Microsoft® Word 2021",
+      "imports": [
+        "leaflet",
+        ",",
+        "react",
+        "../lib/mapIcons",
+        "../lib/mapConfig",
+        "../components/BookingMap",
+        "socket.io",
+        "http",
+        "./pages/CleanerApp"
+      ],
+      "exports": [
+        "tealPin",
+        "homePin",
+        "cleanerPin",
+        "DARK_TILES",
+        "LIGHT_TILES",
+        "CITY_CENTERS"
+      ]
+    },
+    {
+      "id": "Add-maps-clean.md",
+      "path": "Add-maps-clean.md",
+      "lang": "md",
+      "summary": "Also fix Leaflet default icon bug. import 'leaflet/dist/leaflet.css' ADD at very top: Open src/index.tsx # STEP 1 Fix Leaflet CSS in index.tsx No .env changes needed zero API keys!",
+      "imports": [
+        "leaflet",
+        "leaflet/dist/images/marker-icon-2x.png",
+        "leaflet/dist/images/marker-icon.png",
+        "react",
+        "../lib/mapConfig",
+        "../lib/mapIcons",
+        "socket.io-client",
+        "../components/BookingMap",
+        "socket.io",
+        "http",
+        "react-router-dom",
+        "./pages/CleanerApp",
+        "react-leaflet"
+      ],
+      "exports": [
+        "tealPin",
+        "homePin",
+        "cleanerPin",
+        "CITY_CENTERS",
+        "LIGHT_TILES",
+        "DARK_TILES"
+      ]
+    },
+    {
+      "id": "Add-maps-ordered.md",
+      "path": "Add-maps-ordered.md",
+      "lang": "md",
+      "summary": "Add maps & real-time location to SparkClean using Leaflet.js + OpenStreetMap. 100% free, no API keys needed. # TECH STACK Map display : Leaflet.js + react-leaflet Map tiles : CartoDB Dark (matches #0A0A0A theme)",
+      "imports": [
+        "leaflet",
+        "leaflet/dist/images/marker-icon.png",
+        "leaflet/dist/images/marker-icon-2x.png",
+        "leaflet/dist/images/marker-shadow.png",
+        "react",
+        "../components/AddressSearch",
+        "../lib/mapIcons",
+        "../lib/mapConfig",
+        "../components/BookingMap",
+        "socket.io-client",
+        "http",
+        "socket.io",
+        "react-router-dom",
+        "./pages/CleanerApp",
+        "react-leaflet"
+      ],
+      "exports": [
+        "tealPin",
+        "homePin",
+        "cleanerPin",
+        "DARK_TILES",
+        "LIGHT_TILES",
+        "CITY_CENTERS"
+      ]
+    },
     {
       "id": "client_secret_134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com.json",
       "path": "client_secret_134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com.json",
@@ -39,6 +124,14 @@
       "path": "backend/package.json",
       "lang": "json",
       "summary": "{ \"name\": \"backend\", \"version\": \"1.0.0\", \"description\": \"\", \"main\": \"src/server.ts\", \"scripts\": {",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/seed-services.ts",
+      "path": "backend/seed-services.ts",
+      "lang": "ts",
+      "summary": "��i\u0000m\u0000p\u0000o\u0000r\u0000t\u0000 \u0000{\u0000 \u0000P\u0000r\u0000i\u0000s\u0000m\u0000a\u0000C\u0000l\u0000i\u0000e\u0000n\u0000t\u0000 \u0000}\u0000 \u0000f\u0000r\u0000o\u0000m\u0000 \u0000\"\u0000@\u0000p\u0000r\u0000i\u0000s\u0000m\u0000a\u0000/\u0000c\u0000l\u0000i\u0000e\u0000n\u0000t\u0000\"\u0000;\u0000 \u0000c\u0000o\u0000n\u0000s\u0000t\u0000 \u0000p\u0000r\u0000i\u0000s\u0000m\u0000a\u0000 \u0000=\u0000 \u0000n\u0000e\u0000w\u0000 \u0000P\u0000r\u0000i\u0000s\u0000m\u0000a\u0000C\u0000l\u0000i\u0000e\u0000n\u0000t\u0000(\u0000)\u0000;\u0000 \u0000 \u0000c\u0000o\u0000n\u0000s\u0000t\u0000 \u0000S\u0000E\u0000R\u0000V\u0000I\u0000C\u0000E\u0000S\u0000 \u0000=\u0000 \u0000[\u0000 \u0000 \u0000 \u0000{\u0000 \u0000n\u0000a\u0000m\u0000e\u0000:\u0000 \u0000\"\u0000B\u0000a\u0000t\u0000h\u0000r\u0000o\u0000",
       "imports": [],
       "exports": []
     },
@@ -129,7 +222,10 @@
         "./routes/auth.route",
         "./routes/booking.route",
         "./routes/admin.route",
-        "./routes/payment.route"
+        "./routes/payment.route",
+        "./routes/feedback.route",
+        "http",
+        "socket.io"
       ],
       "exports": []
     },
@@ -173,7 +269,7 @@
       "id": "frontend/src/App.tsx",
       "path": "frontend/src/App.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { Toaster } from 'react-hot-toast'; import { CartProvider } from './cont",
+      "summary": "import React from 'react'; import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { Toaster } from 'react-hot-toast'; import { CartProvider } fr",
       "imports": [
         "react",
         "react-router-dom",
@@ -188,6 +284,7 @@
         "./pages/AuthPage",
         "./pages/AuthCallbackPage",
         "./pages/TrackingPage",
+        "./pages/FeedbackPage",
         "./components/AdminRoute"
       ],
       "exports": []
@@ -204,12 +301,16 @@
       "id": "frontend/src/index.tsx",
       "path": "frontend/src/index.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import ReactDOM from 'react-dom/client'; // @ts-ignore import './index.css'; import App from './App'; import reportWebVitals from './reportWebVitals';",
+      "summary": "import \"leaflet/dist/leaflet.css\"; import React from 'react'; import ReactDOM from 'react-dom/client'; import './index.css'; import App from './App'; import reportWebVitals from './reportWebVitals';",
       "imports": [
         "react",
         "react-dom/client",
         "./App",
-        "./reportWebVitals"
+        "./reportWebVitals",
+        "leaflet",
+        "leaflet/dist/images/marker-icon-2x.png",
+        "leaflet/dist/images/marker-icon.png",
+        "leaflet/dist/images/marker-shadow.png"
       ],
       "exports": []
     },
@@ -261,6 +362,22 @@
       "exports": []
     },
     {
+      "id": "backend/src/controllers/admin-services.controller.ts",
+      "path": "backend/src/controllers/admin-services.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import { PrismaClient, Category } from '@prisma/client'; const prisma = new PrismaClient(); export const getAdminServices = async (req: Request, res: Response) => { try { const services = await p",
+      "imports": [
+        "express",
+        "@prisma/client"
+      ],
+      "exports": [
+        "getAdminServices",
+        "createService",
+        "updateService",
+        "deleteService"
+      ]
+    },
+    {
       "id": "backend/src/controllers/admin.controller.ts",
       "path": "backend/src/controllers/admin.controller.ts",
       "lang": "ts",
@@ -276,7 +393,8 @@
         "getCustomers",
         "getMessages",
         "readMessage",
-        "getRevenue"
+        "getRevenue",
+        "updateUserRole"
       ]
     },
     {
@@ -295,6 +413,41 @@
         "login",
         "getMe",
         "updateMe"
+      ]
+    },
+    {
+      "id": "backend/src/controllers/feedback.controller.ts",
+      "path": "backend/src/controllers/feedback.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); export const getPublicFeedback = async (req: Request, res: Response) => { try { const { limit = '6' } = req.query",
+      "imports": [
+        "express",
+        "@prisma/client"
+      ],
+      "exports": [
+        "getPublicFeedback",
+        "getAllFeedback",
+        "submitFeedback",
+        "approveFeedback",
+        "rejectFeedback",
+        "featureFeedback",
+        "deleteFeedback"
+      ]
+    },
+    {
+      "id": "backend/src/controllers/promo.controller.ts",
+      "path": "backend/src/controllers/promo.controller.ts",
+      "lang": "ts",
+      "summary": "import { Request, Response } from 'express'; import { PrismaClient, DiscountType } from '@prisma/client'; const prisma = new PrismaClient(); export const getPromos = async (req: Request, res: Response) => { try { const promos = await prisma",
+      "imports": [
+        "express",
+        "@prisma/client"
+      ],
+      "exports": [
+        "getPromos",
+        "createPromo",
+        "togglePromo",
+        "deletePromo"
       ]
     },
     {
@@ -333,6 +486,8 @@
       "imports": [
         "express",
         "../middleware/auth.middleware",
+        "../controllers/promo.controller",
+        "../controllers/admin-services.controller",
         "../controllers/admin.controller"
       ],
       "exports": []
@@ -355,11 +510,24 @@
       "id": "backend/src/routes/booking.route.ts",
       "path": "backend/src/routes/booking.route.ts",
       "lang": "ts",
-      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; const router = Router(); const prisma = new PrismaClient(); const generateBookingNumber = async (",
+      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; import { customAlphabet } from 'nanoid'; const router = Router(); const prisma = new PrismaClient",
       "imports": [
         "express",
         "@prisma/client",
-        "../middleware/auth.middleware"
+        "../middleware/auth.middleware",
+        "nanoid"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/feedback.route.ts",
+      "path": "backend/src/routes/feedback.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express'; import { authenticate, authorizeAdmin } from '../middleware/auth.middleware'; import { getPublicFeedback, getAllFeedback, submitFeedback,",
+      "imports": [
+        "express",
+        "../middleware/auth.middleware",
+        "../controllers/feedback.controller"
       ],
       "exports": []
     },
@@ -402,6 +570,18 @@
       ]
     },
     {
+      "id": "frontend/src/components/AddressSearch.tsx",
+      "path": "frontend/src/components/AddressSearch.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState } from 'react' interface PhotonFeature { properties: { name: string city?: string state?: string",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "AddressSearch"
+      ]
+    },
+    {
       "id": "frontend/src/components/AdminRoute.tsx",
       "path": "frontend/src/components/AdminRoute.tsx",
       "lang": "tsx",
@@ -412,6 +592,22 @@
         "react-hot-toast"
       ],
       "exports": []
+    },
+    {
+      "id": "frontend/src/components/BookingMap.tsx",
+      "path": "frontend/src/components/BookingMap.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useRef, useState } from 'react' import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet' import L from 'leaflet' import { DARK_TILES, CITY_CENTERS } from '../lib/mapConfig' import { homePin } from '",
+      "imports": [
+        "react",
+        "react-leaflet",
+        "leaflet",
+        "../lib/mapConfig",
+        "../lib/mapIcons"
+      ],
+      "exports": [
+        "BookingMap"
+      ]
     },
     {
       "id": "frontend/src/components/CartSidebar.tsx",
@@ -450,6 +646,20 @@
         "framer-motion",
         "../lib/supabase",
         "react-hot-toast"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/FeedbackModal.tsx",
+      "path": "frontend/src/components/FeedbackModal.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import toast from 'react-hot-toast'; import StarRating from './StarRating'; import axiosInstance from '../lib/axiosInstance'; interface Feedba",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-hot-toast",
+        "./StarRating",
+        "../lib/axiosInstance"
       ],
       "exports": []
     },
@@ -501,6 +711,22 @@
         "framer-motion"
       ],
       "exports": []
+    },
+    {
+      "id": "frontend/src/components/LiveTrackingMap.tsx",
+      "path": "frontend/src/components/LiveTrackingMap.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useState, useRef } from 'react' import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet' import L from 'leaflet' import { DARK_TILES, CITY_CENTERS } from '../lib/mapConfig' import {",
+      "imports": [
+        "react",
+        "react-leaflet",
+        "leaflet",
+        "../lib/mapConfig",
+        "../lib/mapIcons"
+      ],
+      "exports": [
+        "LiveTrackingMap"
+      ]
     },
     {
       "id": "frontend/src/components/LoadingScreen.tsx",
@@ -568,6 +794,20 @@
       ]
     },
     {
+      "id": "frontend/src/components/ServiceAreaMap.tsx",
+      "path": "frontend/src/components/ServiceAreaMap.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useEffect, useState } from 'react' import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet' import { DARK_TILES, CITY_CENTERS } from '../lib/mapConfig' // Define service zones (dummy polygons for demo) // Form",
+      "imports": [
+        "react",
+        "react-leaflet",
+        "../lib/mapConfig"
+      ],
+      "exports": [
+        "ServiceAreaMap"
+      ]
+    },
+    {
       "id": "frontend/src/components/ServiceAreas.tsx",
       "path": "frontend/src/components/ServiceAreas.tsx",
       "lang": "tsx",
@@ -596,14 +836,25 @@
       "exports": []
     },
     {
+      "id": "frontend/src/components/StarRating.tsx",
+      "path": "frontend/src/components/StarRating.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState } from 'react'; interface StarRatingProps { value: number; onChange: (rating: number) => void; size?: number; }",
+      "imports": [
+        "react"
+      ],
+      "exports": []
+    },
+    {
       "id": "frontend/src/components/Testimonials.tsx",
       "path": "frontend/src/components/Testimonials.tsx",
       "lang": "tsx",
-      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { TESTIMONIALS } from '../data/services'; const StarRating: React.FC<{ rating: number }> = ({ rating }) => ( <div className=",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion, AnimatePresence } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import axiosInstance from '../lib/axiosInstance'; const Testimonials: React.FC = ()",
       "imports": [
         "react",
         "framer-motion",
-        "../data/services"
+        "react-router-dom",
+        "../lib/axiosInstance"
       ],
       "exports": []
     },
@@ -668,6 +919,32 @@
       "exports": []
     },
     {
+      "id": "frontend/src/lib/mapConfig.ts",
+      "path": "frontend/src/lib/mapConfig.ts",
+      "lang": "ts",
+      "summary": "export const DARK_TILES = { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', attribution: '&copy; OpenStreetMap &copy; CartoDB' }; export const LIGHT_TILES = { url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', ",
+      "imports": [],
+      "exports": [
+        "DARK_TILES",
+        "LIGHT_TILES",
+        "CITY_CENTERS"
+      ]
+    },
+    {
+      "id": "frontend/src/lib/mapIcons.ts",
+      "path": "frontend/src/lib/mapIcons.ts",
+      "lang": "ts",
+      "summary": "import L from 'leaflet'; export const tealPin = new L.DivIcon({ className: '', html: `<div style=\"width:32px;height:32px;background:#0AFFE6;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #000;box-shadow:0 2px 8px rgba",
+      "imports": [
+        "leaflet"
+      ],
+      "exports": [
+        "tealPin",
+        "homePin",
+        "cleanerPin"
+      ]
+    },
+    {
       "id": "frontend/src/lib/supabase.ts",
       "path": "frontend/src/lib/supabase.ts",
       "lang": "ts",
@@ -690,7 +967,6 @@
         "react-router-dom",
         "../lib/axiosInstance",
         "react-hot-toast",
-        "../components/Logo",
         "recharts",
         "lucide-react"
       ],
@@ -749,6 +1025,37 @@
       "exports": []
     },
     {
+      "id": "frontend/src/pages/CleanerApp.tsx",
+      "path": "frontend/src/pages/CleanerApp.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react' import { io, Socket } from 'socket.io-client' export default function CleanerApp() { const [socket, setSocket] = useState<Socket | null>(null) const [bookingId, setBookingId] = useState('')",
+      "imports": [
+        "react",
+        "socket.io-client"
+      ],
+      "exports": [
+        "CleanerApp"
+      ]
+    },
+    {
+      "id": "frontend/src/pages/FeedbackPage.tsx",
+      "path": "frontend/src/pages/FeedbackPage.tsx",
+      "lang": "tsx",
+      "summary": "import React, { useState, useEffect } from 'react'; import { motion } from 'framer-motion'; import toast from 'react-hot-toast'; import { useNavigate } from 'react-router-dom'; import Navbar from '../components/Navbar'; import Footer from '",
+      "imports": [
+        "react",
+        "framer-motion",
+        "react-hot-toast",
+        "react-router-dom",
+        "../components/Navbar",
+        "../components/Footer",
+        "../components/StarRating",
+        "../lib/axiosInstance",
+        "react-confetti"
+      ],
+      "exports": []
+    },
+    {
       "id": "frontend/src/pages/HomePage.tsx",
       "path": "frontend/src/pages/HomePage.tsx",
       "lang": "tsx",
@@ -789,11 +1096,13 @@
       "id": "frontend/src/pages/SuccessPage.tsx",
       "path": "frontend/src/pages/SuccessPage.tsx",
       "lang": "tsx",
-      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link, useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; // Simple CSS confetti const Confetti: React.FC = () => { const colors = ['#0",
+      "summary": "import React, { useEffect, useState } from 'react'; import { useSearchParams, Link, useNavigate } from 'react-router-dom'; import { motion } from 'framer-motion'; import toast from 'react-hot-toast'; import FeedbackModal from '../components",
       "imports": [
         "react",
         "react-router-dom",
-        "framer-motion"
+        "framer-motion",
+        "react-hot-toast",
+        "../components/FeedbackModal"
       ],
       "exports": []
     },
@@ -813,6 +1122,22 @@
       "path": "backend/prisma/migrations/20260430101920_razorpay_payment_method/migration.sql",
       "lang": "sql",
       "summary": "-- CreateEnum CREATE TYPE \"Role\" AS ENUM ('CUSTOMER', 'ADMIN', 'CLEANER'); -- CreateEnum CREATE TYPE \"Category\" AS ENUM ('INDIVIDUAL', 'COMBO'); -- CreateEnum CREATE TYPE \"BookingStatus\" AS ENUM ('PENDING', 'CONFIRMED', 'ASSIGNED', 'IN_PROG",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/prisma/migrations/20260509064356_add_feedback/migration.sql",
+      "path": "backend/prisma/migrations/20260509064356_add_feedback/migration.sql",
+      "lang": "sql",
+      "summary": "-- CreateTable CREATE TABLE \"Feedback\" ( \"id\" TEXT NOT NULL, \"customerName\" TEXT NOT NULL, \"customerEmail\" TEXT, \"phone\" TEXT,",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "id": "backend/prisma/migrations/20260517110419_add_maps_location/migration.sql",
+      "path": "backend/prisma/migrations/20260517110419_add_maps_location/migration.sql",
+      "lang": "sql",
+      "summary": "-- AlterTable ALTER TABLE \"Booking\" ADD COLUMN \"addressLat\" DOUBLE PRECISION, ADD COLUMN \"addressLng\" DOUBLE PRECISION; -- CreateTable CREATE TABLE \"CleanerLocation\" ( \"id\" TEXT NOT NULL,",
       "imports": [],
       "exports": []
     }
@@ -846,6 +1171,11 @@
     {
       "from": "backend/src/server.ts",
       "to": "backend/src/routes/payment.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/feedback.route.ts",
       "type": "imports"
     },
     {
@@ -900,6 +1230,11 @@
     },
     {
       "from": "frontend/src/App.tsx",
+      "to": "frontend/src/pages/FeedbackPage.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/App.tsx",
       "to": "frontend/src/components/AdminRoute.tsx",
       "type": "imports"
     },
@@ -916,6 +1251,16 @@
     {
       "from": "backend/src/routes/admin.route.ts",
       "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/admin.route.ts",
+      "to": "backend/src/controllers/promo.controller.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/admin.route.ts",
+      "to": "backend/src/controllers/admin-services.controller.ts",
       "type": "imports"
     },
     {
@@ -944,6 +1289,16 @@
       "type": "imports"
     },
     {
+      "from": "backend/src/routes/feedback.route.ts",
+      "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/feedback.route.ts",
+      "to": "backend/src/controllers/feedback.controller.ts",
+      "type": "imports"
+    },
+    {
       "from": "backend/src/routes/payment.route.ts",
       "to": "backend/src/middleware/auth.middleware.ts",
       "type": "imports"
@@ -956,6 +1311,16 @@
     {
       "from": "backend/src/routes/services.route.ts",
       "to": "backend/src/controllers/services.controller.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/BookingMap.tsx",
+      "to": "frontend/src/lib/mapConfig.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/BookingMap.tsx",
+      "to": "frontend/src/lib/mapIcons.ts",
       "type": "imports"
     },
     {
@@ -979,6 +1344,16 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/components/FeedbackModal.tsx",
+      "to": "frontend/src/components/StarRating.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/FeedbackModal.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/components/Footer.tsx",
       "to": "frontend/src/data/services.ts",
       "type": "imports"
@@ -994,6 +1369,16 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/components/LiveTrackingMap.tsx",
+      "to": "frontend/src/lib/mapConfig.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/LiveTrackingMap.tsx",
+      "to": "frontend/src/lib/mapIcons.ts",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/components/Navbar.tsx",
       "to": "frontend/src/context/CartContext.tsx",
       "type": "imports"
@@ -1006,6 +1391,11 @@
     {
       "from": "frontend/src/components/Navbar.tsx",
       "to": "frontend/src/components/Logo.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServiceAreaMap.tsx",
+      "to": "frontend/src/lib/mapConfig.ts",
       "type": "imports"
     },
     {
@@ -1030,7 +1420,7 @@
     },
     {
       "from": "frontend/src/components/Testimonials.tsx",
-      "to": "frontend/src/data/services.ts",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {
@@ -1041,11 +1431,6 @@
     {
       "from": "frontend/src/pages/AdminPage.tsx",
       "to": "frontend/src/lib/axiosInstance.ts",
-      "type": "imports"
-    },
-    {
-      "from": "frontend/src/pages/AdminPage.tsx",
-      "to": "frontend/src/components/Logo.tsx",
       "type": "imports"
     },
     {
@@ -1071,6 +1456,26 @@
     {
       "from": "frontend/src/pages/BookingPage.tsx",
       "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/FeedbackPage.tsx",
+      "to": "frontend/src/components/Navbar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/FeedbackPage.tsx",
+      "to": "frontend/src/components/Footer.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/FeedbackPage.tsx",
+      "to": "frontend/src/components/StarRating.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/FeedbackPage.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {
@@ -1126,6 +1531,11 @@
     {
       "from": "frontend/src/pages/HomePage.tsx",
       "to": "frontend/src/components/CartSidebar.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/pages/SuccessPage.tsx",
+      "to": "frontend/src/components/FeedbackModal.tsx",
       "type": "imports"
     }
   ]

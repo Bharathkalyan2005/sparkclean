@@ -1,0 +1,1422 @@
+Also fix Leaflet default icon bug. 
+ 
+import 'leaflet/dist/leaflet.css' 
+ 
+ADD at very top: 
+Open src/index.tsx 
+ 
+ 
+# STEP 1   Fix Leaflet CSS in index.tsx 
+ 
+ 
+No .env changes needed   zero API keys! 
+ 
+npm install socket.io 
+Backend: 
+ 
+npm install socket.io-client 
+npm install @types/leaflet 
+npm install leaflet react-leaflet 
+# INSTALL 
+ 
+Live tracking : Socket.io (already on backend) 
+ETA routing   : OSRM API (free, no key) 
+Address search: Photon API (free, no key) 
+Map tiles     : CartoDB Dark (matches #0A0A0A theme) 
+Map display   : Leaflet.js + react-leaflet 
+# TECH STACK 
+ 
+100% free, no API keys needed. 
+using Leaflet.js + OpenStreetMap. 
+Add maps & real-time location to SparkClean 
+----------------Page (0) Break----------------
+      width        : 32px; 
+    <div style=" 
+  html: ` 
+export const tealPin = new L.DivIcon({ 
+ 
+import L from 'leaflet' 
+ 
+CREATE src/lib/mapIcons.ts 
+ 
+ 
+# STEP 2   Custom Map Icons 
+ 
+ 
+}) 
+  shadowUrl    : markerShadow, 
+  iconRetinaUrl: markerIcon2x, 
+  iconUrl      : markerIcon, 
+L.Icon.Default.mergeOptions({ 
+ 
+  ._getIconUrl 
+delete (L.Icon.Default.prototype as any) 
+ 
+  'leaflet/dist/images/marker-shadow.png' 
+import markerShadow from  
+  'leaflet/dist/images/marker-icon-2x.png' 
+import markerIcon2x from  
+  'leaflet/dist/images/marker-icon.png' 
+import markerIcon from  
+import L from 'leaflet' 
+ 
+Open src/index.tsx ADD: 
+----------------Page (1) Break----------------
+  iconAnchor : [18, 18], 
+  iconSize   : [36, 36], 
+  `, 
+    ">        </div> 
+      box-shadow      : 0 2px 8px rgba(0,0,0,0.3); 
+      font-size       : 18px; 
+      justify-content : center; 
+      align-items     : center; 
+      display         : flex; 
+      border          : 3px solid #0AFFE6; 
+      border-radius   : 50%; 
+      background      : #FFFFFF; 
+      height          : 36px; 
+      width           : 36px; 
+    <div style=" 
+  html: ` 
+export const homePin = new L.DivIcon({ 
+ 
+}) 
+  className  : '', 
+  popupAnchor: [0, -32], 
+  iconAnchor : [16, 32], 
+  iconSize   : [32, 32], 
+  `, 
+    "></div> 
+      box-shadow   : 0 2px 8px rgba(10,255,230,0.5); 
+      border       : 3px solid #000; 
+      transform    : rotate(-45deg); 
+      border-radius: 50% 50% 50% 0; 
+      background   : #0AFFE6; 
+      height       : 32px; 
+----------------Page (2) Break----------------
+CREATE src/lib/mapConfig.ts 
+ 
+ 
+# STEP 3   Dark Map Tile Config 
+ 
+ 
+}) 
+  className  : '', 
+  popupAnchor: [0, -20], 
+  iconAnchor : [20, 20], 
+  iconSize   : [40, 40], 
+  `, 
+    ">      </div> 
+      animation       : pulse 2s infinite; 
+      box-shadow      : 0 2px 12px rgba(10,255,230,0.6); 
+      font-size       : 20px; 
+      justify-content : center; 
+      align-items     : center; 
+      display         : flex; 
+      border          : 3px solid #000; 
+      border-radius   : 50%; 
+      background      : #0AFFE6; 
+      height          : 40px; 
+      width           : 40px; 
+    <div style=" 
+  html: ` 
+export const cleanerPin = new L.DivIcon({ 
+ 
+}) 
+  className  : '', 
+  popupAnchor: [0, -18], 
+----------------Page (3) Break----------------
+  lng  : number 
+  lat  : number 
+  label: string 
+interface Suggestion { 
+ 
+import { useState, useEffect, useRef } from 'react' 
+ 
+Uses Photon API   no key needed: 
+ 
+CREATE src/components/AddressSearch.tsx 
+ 
+ 
+# STEP 4   Address Autocomplete Component 
+ 
+ 
+} 
+  India    : { lat: 20.5937, lng: 78.9629 }, 
+  Mumbai   : { lat: 19.0760, lng: 72.8777 }, 
+  Bengaluru: { lat: 12.9716, lng: 77.5946 }, 
+export const CITY_CENTERS = { 
+ 
+} 
+  attribution: '&copy; OpenStreetMap contributors', 
+  url        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+export const LIGHT_TILES = { 
+ 
+} 
+  attribution: '&copy; OpenStreetMap &copy; CartoDB', 
+  url        : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', 
+export const DARK_TILES = { 
+ 
+----------------Page (4) Break----------------
+ 
+    } 
+      return 
+      setSuggestions([]) 
+    if (value.length < 3) { 
+  useEffect(() => { 
+ 
+  const timerRef = useRef<any>(null) 
+    useState(false) 
+  const [showList, setShowList] =  
+    useState(false) 
+  const [loading, setLoading] =  
+    useState<Suggestion[]>([]) 
+  const [suggestions, setSuggestions] =  
+}: Props) => { 
+  placeholder = 'Search your address...' 
+  value, onChange, onSelect, 
+const AddressSearch = ({  
+ 
+} 
+  placeholder?: string 
+  }) => void 
+    lng    : number 
+    lat    : number 
+    address: string 
+  onSelect : (data: { 
+  onChange : (val: string) => void 
+  value    : string 
+interface Props { 
+ 
+} 
+----------------Page (5) Break----------------
+      } 
+        setLoading(false) 
+      } finally { 
+        console.error('Address search failed:', err) 
+      } catch (err) { 
+        setShowList(true) 
+        setSuggestions(results) 
+        ) 
+          }) 
+            lng: f.geometry.coordinates[0], 
+            lat: f.geometry.coordinates[1], 
+            ].filter(Boolean).join(', '), 
+              f.properties.state, 
+              f.properties.city, 
+              f.properties.street, 
+              f.properties.name, 
+            label: [ 
+          (f: any) => ({ 
+        const results = data.features.map( 
+ 
+        const data = await res.json() 
+        const res  = await fetch(url) 
+         
+          `&limit=6&lang=en` 
+          `q=${encodeURIComponent(value+' India')}` + 
+          `https://photon.komoot.io/api/?` + 
+        const url =  
+      try { 
+      setLoading(true) 
+    timerRef.current = setTimeout(async () => { 
+    clearTimeout(timerRef.current) 
+----------------Page (6) Break----------------
+        <span style={{ 
+        /> 
+          }} 
+            boxSizing    : 'border-box', 
+            transition   : 'border-color 0.2s', 
+            outline      : 'none', 
+            fontSize     : '15px', 
+            borderRadius : '12px', 
+              ? '#0AFFE6' : '#E2E8F0', 
+            borderColor  : showList  
+            border       : '2px solid', 
+            background   : 'white', 
+            padding      : '14px 44px 14px 16px', 
+            width        : '100%', 
+          style={{ 
+          placeholder={placeholder} 
+          } 
+            setTimeout(() => setShowList(false), 200) 
+          onBlur={() =>  
+          onFocus={() => setShowList(true)} 
+          onChange={e => onChange(e.target.value)} 
+          value={value} 
+        <input 
+      <div style={{ position:'relative' }}> 
+    <div style={{ position:'relative' }}> 
+  return ( 
+ 
+  }, [value]) 
+    return () => clearTimeout(timerRef.current) 
+ 
+    }, 400) 
+----------------Page (7) Break----------------
+                   lat    : s.lat, 
+                   address: s.label, 
+                 onSelect({ 
+               onMouseDown={() => { 
+               key={i} 
+             <div 
+           {suggestions.map((s, i) => (  
+        }}> 
+           overflowY    : 'auto', 
+          maxHeight    : '280px',  
+           zIndex       : 9999, 
+           boxShadow    : '0 8px 24px rgba(0,0,0,0.12)',  
+           borderRadius : '12px', 
+           border       : '1px solid #E2E8F0',  
+           background   : 'white', 
+           right        : 0,  
+           left         : 0,  
+           top          : 'calc(100% + 4px)',  
+           position     : 'absolute',  
+        <div style={{ 
+      {showList && suggestions.length > 0 && (  
+ 
+      </div> 
+        </span> 
+          {loading ? '       ' : '    '} 
+        }}> 
+          fontSize  : '18px', 
+          transform : 'translateY(-50%)', 
+          top       : '50%', 
+          right     : '14px', 
+          position  : 'absolute', 
+----------------Page (8) Break----------------
+              <span style={{ lineHeight: '1.4' }}> 
+              }}>    </span> 
+                fontSize  : '16px' 
+                flexShrink: 0, 
+                marginTop : '1px', 
+              <span style={{  
+            > 
+              } 
+                (e.currentTarget.style.background = 'white') 
+              onMouseLeave={e => 
+              } 
+                (e.currentTarget.style.background = '#F0FFFE') 
+              onMouseEnter={e => 
+               }} 
+                 transition   : 'background 0.1s',  
+                 gap          : '10px',  
+                 alignItems   : 'flex -start', 
+                 display      : 'flex',  
+                   ? '1px solid #F5F5F5' : 'none',  
+                borderBottom : i < suggestions.length - 1  
+                color        : '#1A1A1A', 
+                fontSize     : '14px', 
+                cursor       : 'pointer', 
+                padding      : '12px 16px', 
+              style={{ 
+              }} 
+                setShowList(false) 
+                setSuggestions([]) 
+                onChange(s.label) 
+                }) 
+                  lng    : s.lng, 
+----------------Page (9) Break----------------
+  onChange={(val) =>  
+  value={formData.address} 
+<AddressSearch 
+ 
+  '../components/AddressSearch' 
+import AddressSearch from  
+REPLACE plain address input with: 
+ 
+}>({ lat: null, lng: null }) 
+  lng: number | null 
+  lat: number | null 
+const [coords, setCoords] = useState<{ 
+ADD state for coordinates: 
+ 
+In BookingPage.tsx: 
+ 
+ 
+# STEP 5   Update BookingPage.tsx 
+ 
+ 
+export default AddressSearch 
+ 
+} 
+  ) 
+    </div> 
+      )} 
+        </div> 
+          ))} 
+            </div> 
+              </span> 
+                {s.label} 
+----------------Page (10) Break----------------
+} 
+  address : string 
+  lng     : number 
+  lat     : number 
+interface Props { 
+ 
+import { DARK_TILES }    from '../lib/mapConfig' 
+import { tealPin }       from '../lib/mapIcons' 
+         Marker, Popup } from 'react-leaflet' 
+import { MapContainer, TileLayer,  
+ 
+Shows pin at booked address on SuccessPage: 
+ 
+CREATE src/components/BookingMap.tsx 
+ 
+ 
+# STEP 6   BookingMap Component 
+ 
+ 
+  addressLng: coords.lng, 
+  addressLat: coords.lat, 
+ADD to booking submit data: 
+ 
+/> 
+  placeholder="House/flat no., street, landmark..." 
+  }} 
+    setCoords({ lat, lng }) 
+    setFormData({...formData, address}) 
+  onSelect={({ address, lat, lng }) => { 
+  } 
+    setFormData({...formData, address: val}) 
+----------------Page (11) Break----------------
+        zoom={15} 
+        center={[lat, lng]} 
+      <MapContainer 
+ 
+      </div> 
+        </span> 
+          Your service location 
+        }}> 
+          fontWeight: '600' 
+          fontSize  : '14px', 
+          color     : '#0AFFE6', 
+        <span style={{  
+        <span style={{ fontSize:'18px' }}>    </span> 
+      }}> 
+        gap        : '8px', 
+        alignItems : 'center', 
+        display    : 'flex', 
+        padding    : '12px 16px', 
+        background : 'rgba(10,255,230,0.08)', 
+      <div style={{ 
+    }}> 
+      marginTop    : '20px', 
+      border       : '1px solid rgba(10,255,230,0.2)', 
+      overflow     : 'hidden', 
+      borderRadius : '16px', 
+    <div style={{ 
+  return ( 
+ 
+  if (!lat || !lng) return null 
+const BookingMap = ({ lat, lng, address }: Props) => { 
+ 
+----------------Page (12) Break----------------
+        </span> 
+          {address} 
+        }}> 
+          fontSize : '13px', 
+          color    : '#A0A0A0', 
+        <span style={{  
+        <span style={{ fontSize:'14px' }}>    </span> 
+      }}> 
+        gap        : '6px', 
+        alignItems : 'center', 
+        display    : 'flex', 
+        padding    : '10px 16px', 
+        background : '#0A0A0A', 
+      <div style={{ 
+ 
+      </MapContainer> 
+        </Marker> 
+          </Popup> 
+            {address} 
+            <strong>Service here</strong><br/> 
+          <Popup> 
+        <Marker position={[lat, lng]} icon={tealPin}> 
+        /> 
+          attribution={DARK_TILES.attribution} 
+          url={DARK_TILES.url} 
+        <TileLayer 
+      > 
+        attributionControl={false} 
+        scrollWheelZoom={false} 
+        zoomControl={true} 
+        style={{ height:'240px', width:'100%' }} 
+----------------Page (13) Break----------------
+import { io, Socket }       from 'socket.io-client' 
+         useMap }           from 'react-leaflet' 
+         Marker, Polyline, 
+import { MapContainer, TileLayer, 
+import { useEffect, useState, useRef } from 'react' 
+ 
+Shows cleaner moving to customer in real time: 
+ 
+CREATE src/components/LiveTrackingMap.tsx 
+ 
+ 
+# STEP 7   Live Tracking Map Component 
+ 
+ 
+)} 
+  /> 
+    address={booking.address} 
+    lng={booking.addressLng} 
+    lat={booking.addressLat} 
+  <BookingMap 
+{booking?.addressLat && ( 
+ 
+import BookingMap from '../components/BookingMap' 
+ADD to SuccessPage.tsx: 
+ 
+export default BookingMap 
+ 
+} 
+  ) 
+    </div> 
+      </div> 
+----------------Page (14) Break----------------
+  const [eta,         setEta        ] =  
+    useState<Position[]>([]) 
+  const [trail,       setTrail      ] =  
+    useState<Position | null>(null) 
+  const [cleanerPos,  setCleanerPos ] =  
+}: Props) => { 
+  bookingId, customerLat, customerLng 
+const LiveTrackingMap = ({ 
+ 
+} 
+  return null 
+  }, [pos]) 
+      { animate: true, duration: 1 }) 
+    if (pos) map.panTo([pos.lat, pos.lng],  
+  useEffect(() => { 
+  const map = useMap() 
+const MapPanner = ({ pos }: { pos: Position | null }) => { 
+ 
+} 
+  customerLng: number 
+  customerLat: number 
+  bookingId  : string 
+interface Props { 
+ 
+} 
+  lng: number 
+  lat: number 
+interface Position { 
+ 
+import { DARK_TILES }       from '../lib/mapConfig' 
+import { homePin, cleanerPin } from '../lib/mapIcons' 
+----------------Page (15) Break----------------
+          { lat, lng } 
+          ...prev.slice(-30), 
+        setTrail(prev => [ 
+        setCleanerPos({ lat, lng }) 
+      async ({ lat, lng }: Position) => { 
+      'location:update', 
+    socketRef.current.on( 
+ 
+    }) 
+      setConnected(false) 
+    socketRef.current.on('disconnect', () => { 
+ 
+    }) 
+      ) 
+        'customer:watch', { bookingId } 
+      socketRef.current?.emit( 
+      setConnected(true) 
+    socketRef.current.on('connect', () => { 
+ 
+    ) 
+      'http://localhost:3001' 
+      process.env.REACT_APP_API_URL ||  
+    socketRef.current = io( 
+  useEffect(() => { 
+ 
+  const socketRef = useRef<Socket | null>(null) 
+    useState<string | null>(null) 
+  const [lastUpdate,  setLastUpdate ] =  
+    useState(false) 
+  const [connected,   setConnected  ] =  
+    useState<string | null>(null) 
+----------------Page (16) Break----------------
+    return () => { 
+ 
+    ) 
+      } 
+        } 
+          // ETA unavailable   silent fail 
+        } catch { 
+          } 
+            ) 
+                 : `${Math.floor(mins/60)}h ${mins%60}m away` 
+                 ? `${mins} min away` 
+              mins < 60 
+             setEta( 
+            ) 
+               data.routes[0].duration / 60 
+            const mins = Math.ceil( 
+          if (data.routes?.[0]) { 
+           
+          const data = await res.json() 
+          const res  = await fetch(url) 
+            `?overview=false` 
+            `${lng},${lat};${customerLng},${customerLat}` + 
+            `https://router.project-osrm.org/route/v1/driving/` + 
+          const url =  
+        try { 
+        // Get ETA from OSRM (free) 
+ 
+        ) 
+          new Date().toLocaleTimeString('en-IN') 
+        setLastUpdate( 
+        ]) 
+----------------Page (17) Break----------------
+              margin     : 0, 
+              color      : cleanerPos ? '#000' : '#FFF', 
+              fontWeight : '700', 
+            <p style={{ 
+          <div> 
+          <span style={{ fontSize:'24px' }}>      </span> 
+        }}> 
+          gap       : '10px' 
+          alignItems: 'center', 
+          display   : 'flex', 
+        <div style={{  
+      }}> 
+        transition     : 'background 0.5s', 
+        justifyContent : 'space-between', 
+        alignItems     : 'center', 
+        display        : 'flex', 
+        padding        : '14px 20px', 
+          ? '#0AFFE6' : '#161616', 
+        background     : cleanerPos  
+      <div style={{ 
+      {/* ETA Banner */} 
+    }}> 
+      border       : '1px solid rgba(10,255,230,0.2)', 
+      overflow     : 'hidden', 
+      borderRadius : '16px', 
+    <div style={{ 
+  return ( 
+ 
+  }, [bookingId, customerLat, customerLng]) 
+    } 
+      socketRef.current?.disconnect() 
+----------------Page (18) Break----------------
+            background  : connected  
+            borderRadius: '50%', 
+            height      : '8px', 
+            width       : '8px', 
+          <div style={{ 
+        }}> 
+          borderRadius: '20px', 
+          padding   : '4px 10px', 
+          background: 'rgba(0,0,0,0.15)', 
+          gap       : '6px', 
+          alignItems: 'center', 
+          display   : 'flex', 
+        <div style={{ 
+ 
+        </div> 
+          </div> 
+            )} 
+              </p> 
+                {eta} 
+              }}> 
+                margin  : 0, 
+                fontSize: '13px', 
+                color   : '#000', 
+              <p style={{ 
+            {eta && ( 
+            </p> 
+                : 'Waiting for cleaner to start...'} 
+                ? 'Your cleaner is on the way!' 
+              {cleanerPos 
+            }}> 
+              fontSize   : '15px', 
+----------------Page (19) Break----------------
+          position={[customerLat, customerLng]} 
+        <Marker 
+        {/* Customer home pin */} 
+ 
+        <MapPanner pos={cleanerPos}/> 
+        {/* Auto-pan to cleaner */} 
+ 
+        /> 
+          attribution={DARK_TILES.attribution} 
+          url={DARK_TILES.url} 
+        <TileLayer 
+      > 
+        scrollWheelZoom={true} 
+        zoomControl={true} 
+        style={{ height:'380px', width:'100%' }} 
+        zoom={13} 
+        center={[customerLat, customerLng]} 
+      <MapContainer 
+      {/* Map */} 
+ 
+      </div> 
+        </div> 
+          </span> 
+            {connected ? 'LIVE' : 'RECONNECTING'} 
+          }}> 
+            fontWeight: '600', 
+            color   : connected ? '#22C55E' : '#EF4444', 
+            fontSize: '11px', 
+          <span style={{ 
+          }}/> 
+              ? '#22C55E' : '#EF4444', 
+----------------Page (20) Break----------------
+           /> 
+             }} 
+               dashArray: '8 4',  
+               opacity  : 0.5,  
+               weight   : 3,  
+               color    : '#0AFFE6',  
+             pathOptions={{  
+             positions={trail.map(p => [p.lat, p.lng])}   
+           <Polyline 
+         {trail.length > 1 && (  
+         {/* Movement trail */}  
+ 
+        )} 
+          </Marker> 
+            </Popup> 
+              {eta && <><br/>{eta}</>} 
+              <strong>Your cleaner</strong> 
+            <Popup> 
+          > 
+            icon={cleanerPin} 
+            position={[cleanerPos.lat, cleanerPos.lng]} 
+          <Marker 
+        {cleanerPos && ( 
+        {/* Cleaner moving pin */} 
+ 
+        </Marker> 
+          </Popup> 
+            <strong>Your location</strong> 
+          <Popup> 
+        > 
+          icon={homePin} 
+----------------Page (21) Break----------------
+export default LiveTrackingMap 
+ 
+} 
+  ) 
+    </div> 
+       </div> 
+        )} 
+          </span> 
+            Last update: {lastUpdate} 
+          }}> 
+            fontSize: '11px', 
+            color   : '#606060', 
+          <span style={{  
+        {lastUpdate && ( 
+        </span> 
+             Live   updates in real time 
+        }}> 
+          fontSize: '12px', 
+          color   : '#A0A0A0', 
+        <span style={{  
+       }}> 
+         alignItems     : 'center',  
+         justifyContent : 'space -between',  
+         display        : 'flex',  
+         padding        : '10px 16px',  
+         background     : '#0A0A0A',  
+       <div style={{  
+       {/* Footer */}  
+ 
+       </MapContainer>  
+        )} 
+----------------Page (22) Break----------------
+ 
+  const socketRef  = useRef<any>(null) 
+  const watchIdRef = useRef<number | null>(null) 
+  const [status,    setStatus   ] = useState('') 
+  const [bookingId, setBookingId] = useState('') 
+  const [tracking,  setTracking ] = useState(false) 
+const CleanerApp = () => { 
+ 
+import { io }               from 'socket.io-client' 
+import { useState, useRef } from 'react' 
+ 
+Route: /cleaner (add to App.tsx) 
+CREATE src/pages/CleanerApp.tsx 
+ 
+ 
+# STEP 8   Cleaner Location App 
+ 
+ 
+)} 
+  /> 
+    customerLng={booking.addressLng} 
+    customerLat={booking.addressLat} 
+    bookingId={booking.id} 
+  <LiveTrackingMap 
+  booking.addressLat && ( 
+  booking.status === 'IN_PROGRESS') &&  
+{(booking.status === 'ASSIGNED' ||  
+ 
+status = ASSIGNED or IN_PROGRESS: 
+Show in booking detail when  
+ 
+----------------Page (23) Break----------------
+          const { latitude, longitude, 
+        (pos) => { 
+      .watchPosition( 
+    watchIdRef.current = navigator.geolocation 
+ 
+    }) 
+      setStatus('Reconnecting...') 
+    socketRef.current.on('disconnect', () => { 
+ 
+    }) 
+      ) 
+        'cleaner:join', { bookingId } 
+      socketRef.current.emit( 
+      setStatus('Connected    ') 
+    socketRef.current.on('connect', () => { 
+ 
+    ) 
+      'http://localhost:3001' 
+      process.env.REACT_APP_API_URL ||  
+    socketRef.current = io( 
+ 
+    } 
+      return 
+      alert('GPS not supported on this device') 
+    if (!navigator.geolocation) { 
+ 
+    } 
+      return 
+      alert('Enter valid booking ID (SC-...)') 
+    if (!bookingId.startsWith('SC-')) { 
+  const startTracking = () => { 
+----------------Page (24) Break----------------
+        .clearWatch(watchIdRef.current) 
+      navigator.geolocation 
+    if (watchIdRef.current !== null) { 
+  const stopTracking = () => { 
+ 
+  } 
+    setTracking(true) 
+ 
+      ) 
+        } 
+          timeout           : 10000, 
+          maximumAge        : 3000, 
+          enableHighAccuracy: true, 
+        { 
+        }, 
+          setStatus('GPS error: ' + err.message) 
+        (err) => { 
+        }, 
+          ) 
+             ${longitude.toFixed(4)}` 
+            `Sharing: ${latitude.toFixed(4)},  
+          setStatus( 
+          ) 
+              heading, speed } 
+              lng: longitude, 
+              lat: latitude,  
+            { bookingId,  
+            'cleaner:location', 
+          socketRef.current?.emit( 
+           
+                  heading, speed } = pos.coords 
+----------------Page (25) Break----------------
+          fontSize  : '22px', 
+          color     : '#FFFFFF', 
+        <h1 style={{ 
+         
+        <span style={{ fontSize:'48px' }}>      </span> 
+      }}> 
+        textAlign    : 'center', 
+        maxWidth     : '360px', 
+        width        : '100%', 
+        padding      : '32px 24px', 
+        borderRadius : '20px', 
+        border       : '1px solid rgba(10,255,230,0.2)', 
+        background   : '#161616', 
+      <div style={{ 
+    }}> 
+      fontFamily     : 'Inter, sans-serif', 
+      padding        : '24px', 
+      justifyContent : 'center', 
+      alignItems     : 'center', 
+      flexDirection  : 'column', 
+      display        : 'flex', 
+      background     : '#0A0A0A', 
+      minHeight      : '100vh', 
+    <div style={{ 
+  return ( 
+ 
+  } 
+    setStatus('Stopped') 
+    setTracking(false) 
+    socketRef.current?.disconnect() 
+    } 
+----------------Page (26) Break----------------
+              outline      : 'none', 
+              marginBottom : '16px', 
+              fontSize     : '14px', 
+              color        : '#FFFFFF', 
+              borderRadius : '12px', 
+              border       : '1px solid rgba(255,255,255,0.1)', 
+              background   : '#0A0A0A', 
+              padding      : '14px 16px', 
+              width        : '100%', 
+            style={{ 
+            } 
+              setBookingId(e.target.value.toUpperCase()) 
+            onChange={e =>  
+            value={bookingId} 
+            placeholder="Booking ID (SC-YYYYMMDD-XXXX)" 
+          <input 
+        {!tracking && ( 
+ 
+        </p> 
+          Share your live location 
+        }}> 
+          margin   : '0 0 24px' 
+          fontSize : '14px', 
+          color    : '#A0A0A0', 
+        <p style={{  
+         
+        </h1> 
+          SparkClean Staff 
+        }}> 
+          margin    : '16px 0 4px', 
+          fontWeight: '700', 
+----------------Page (27) Break----------------
+               color        : bookingId   
+                 ? '#0AFFE6' : '#333',  
+               background   : bookingId   
+               padding      : '16px',  
+               width        : '100%',  
+             style={{ 
+             disabled={!bookingId}  
+             onClick={startTracking}  
+           <button 
+         {!tracking ? (  
+ 
+        )} 
+          </div> 
+            {status} 
+           }}> 
+             wordBreak    : 'break -all', 
+             color        : '#0AFFE6',  
+             fontSize     : '12px',  
+             marginBottom : '16px',  
+             padding      : '10px 16px',  
+             borderRadius : '10px',  
+             border       : '1px solid rgba(10,255,230,0.2)',   
+             background   : 'rgba(10,255,230,0.05)',   
+           <div style={{  
+         {status && (  
+ 
+         )} 
+           /> 
+            }} 
+              boxSizing    : 'border-box', 
+              textAlign    : 'center', 
+----------------Page (28) Break----------------
+                fontWeight: '600', 
+                fontSize  : '14px', 
+                color     : '#22C55E', 
+              <span style={{ 
+              }}/> 
+                borderRadius : '50%', 
+                background   : '#22C55E', 
+                height       : '10px', 
+                width        : '10px', 
+              <div style={{ 
+            }}> 
+              marginBottom : '16px', 
+              gap          : '8px', 
+              justifyContent:'center', 
+              alignItems   : 'center', 
+              display      : 'flex', 
+            <div style={{ 
+           <> 
+         ) : ( 
+           </button> 
+                Start Sharing Location  
+           > 
+            }} 
+              transition   : 'all 0.2s', 
+                ? 'pointer' : 'not-allowed', 
+              cursor       : bookingId  
+              border       : 'none', 
+              borderRadius : '12px', 
+              fontSize     : '15px', 
+              fontWeight   : '700', 
+                ? '#000' : '#666', 
+----------------Page (29) Break----------------
+        )} 
+          </> 
+            </button> 
+                 Stop & Complete Job 
+            > 
+              }} 
+                cursor       : 'pointer', 
+                border       : '1px solid #EF4444', 
+                borderRadius : '12px', 
+                fontSize     : '15px', 
+                fontWeight   : '600', 
+                color        : '#EF4444', 
+                background   : 'rgba(239,68,68,0.1)', 
+                padding      : '14px', 
+                width        : '100%', 
+              style={{ 
+              onClick={stopTracking} 
+            <button 
+ 
+            </p> 
+              Customer can see you on map 
+            }}> 
+              margin   : '0 0 16px', 
+              fontSize : '13px', 
+              color    : '#A0A0A0', 
+            <p style={{ 
+ 
+            </div> 
+              </span> 
+                Location sharing active 
+              }}> 
+----------------Page (30) Break----------------
+  socket.on('cleaner:join', ({ bookingId }) => { 
+ 
+  console.log('Socket connected:', socket.id) 
+io.on('connection', (socket) => { 
+ 
+}) 
+  } 
+    methods    : ['GET','POST'], 
+    credentials: true, 
+    origin     : process.env.FRONTEND_URL, 
+  cors: { 
+const io = new Server(httpServer, { 
+ 
+const httpServer = createServer(app) 
+ 
+import { Server }       from 'socket.io' 
+import { createServer } from 'http' 
+ 
+REPLACE app.listen with httpServer: 
+In src/index.ts (or server.ts) 
+ 
+ 
+# STEP 9   Backend Socket.io Setup 
+ 
+ 
+export default CleanerApp 
+ 
+} 
+  ) 
+    </div> 
+      </div> 
+----------------Page (31) Break----------------
+  socket.on('customer:watch', ({ bookingId }) => { 
+ 
+  }) 
+      }) 
+        timestamp: new Date().toISOString() 
+        lat, lng, heading, 
+      .emit('location:update', { 
+    io.to(`booking:${bookingId}`) 
+ 
+    } 
+      console.error('Location save error:', err) 
+    } catch (err) { 
+      }) 
+        } 
+          speed  : speed   || 0, 
+          heading: heading || 0, 
+          lat, lng, 
+          cleanerId: 'unassigned', 
+          bookingId, 
+        create: { 
+        update: { lat, lng, heading, speed }, 
+        where : { bookingId }, 
+      await prisma.cleanerLocation.upsert({ 
+    try { 
+  }) => { 
+    bookingId, lat, lng, heading, speed 
+  socket.on('cleaner:location', async ({ 
+ 
+  }) 
+    console.log(`Cleaner in room: ${bookingId}`) 
+    socket.join(`booking:${bookingId}`) 
+----------------Page (32) Break----------------
+import { DARK_TILES }    from '../lib/mapConfig' 
+         Circle, Popup } from 'react-leaflet' 
+import { MapContainer, TileLayer, 
+ 
+Coming soon = grey dashed circles 
+Live cities = teal circles 
+Shows all cities on one map: 
+ 
+CREATE src/components/ServiceAreaMap.tsx 
+ 
+ 
+# STEP 10   Service Areas Map 
+ 
+ 
+) 
+  ) 
+    }` 
+      process.env.PORT || 3001 
+    `Server + Socket.io on port ${ 
+  () => console.log( 
+  process.env.PORT || 3001, 
+httpServer.listen( 
+ 
+}) 
+  }) 
+    console.log('Socket disconnected:', socket.id) 
+  socket.on('disconnect', () => { 
+ 
+  }) 
+    console.log(`Customer watching: ${bookingId}`) 
+    socket.join(`booking:${bookingId}`) 
+----------------Page (33) Break----------------
+    name    : 'Hyderabad', 
+  { 
+  }, 
+    areas   : ['MVP Colony','Madhurawada'], 
+    status  : 'COMING_SOON', 
+    lng     : 83.2185, 
+    lat     : 17.6868, 
+    state   : 'Andhra Pradesh', 
+    name    : 'Visakhapatnam', 
+  { 
+  }, 
+               'Powai','Thane'], 
+    areas   : ['Bandra','Andheri', 
+    status  : 'LIVE', 
+    lng     : 72.8777, 
+    lat     : 19.0760, 
+    state   : 'Maharashtra', 
+    name    : 'Mumbai', 
+  { 
+  }, 
+               'Whitefield','HSR Layout'], 
+    areas   : ['Koramangala','Indiranagar', 
+    status  : 'LIVE', 
+    lng     : 77.5946, 
+    lat     : 12.9716, 
+    state   : 'Karnataka', 
+    name    : 'Bengaluru', 
+  { 
+const cities = [ 
+ 
+import { useNavigate }   from 'react-router-dom' 
+----------------Page (34) Break----------------
+      overflow     : 'hidden', 
+      borderRadius : '16px', 
+    <div style={{ 
+  return ( 
+ 
+  const navigate = useNavigate() 
+const ServiceAreaMap = () => { 
+ 
+] 
+  }, 
+    areas   : ['Connaught Place','Gurugram'], 
+    status  : 'COMING_SOON', 
+    lng     : 77.2090, 
+    lat     : 28.6139, 
+    state   : 'NCR', 
+    name    : 'Delhi', 
+  { 
+  }, 
+    areas   : ['Anna Nagar','T. Nagar'], 
+    status  : 'COMING_SOON', 
+    lng     : 80.2707, 
+    lat     : 13.0827, 
+    state   : 'Tamil Nadu', 
+    name    : 'Chennai', 
+  { 
+  }, 
+    areas   : ['Banjara Hills','Gachibowli'], 
+    status  : 'COMING_SOON', 
+    lng     : 78.4867, 
+    lat     : 17.3850, 
+    state   : 'Telangana', 
+----------------Page (35) Break----------------
+                  dashArray  : '8 4', 
+                  weight     : 1, 
+                  fillOpacity: 0.1, 
+                  fillColor  : '#333333', 
+                  color      : '#555555', 
+              : { 
+                } 
+                  weight     : 2, 
+                  fillOpacity: 0.15, 
+                  fillColor  : '#0AFFE6', 
+                  color      : '#0AFFE6', 
+              ? { 
+              city.status === 'LIVE' 
+            pathOptions={ 
+            radius={25000} 
+            center={[city.lat, city.lng]} 
+            key={city.name} 
+          <Circle 
+        {cities.map(city => ( 
+ 
+        <TileLayer url={DARK_TILES.url}/> 
+      > 
+        attributionControl={false} 
+        scrollWheelZoom={false} 
+        zoomControl={true} 
+        style={{ height:'420px', width:'100%' }} 
+        zoom={5} 
+        center={[18, 78]} 
+      <MapContainer 
+    }}> 
+      border       : '1px solid rgba(10,255,230,0.2)', 
+----------------Page (36) Break----------------
+                  padding      : '3px 10px', 
+                    ? '#166534' : '#92400e', 
+                  color        : city.status === 'LIVE' 
+                    : 'rgba(245,158,11,0.15)', 
+                    ? 'rgba(34,197,94,0.15)' 
+                  background   : city.status === 'LIVE' 
+                <span style={{ 
+ 
+                </p> 
+                  {city.state} 
+                }}> 
+                  margin   : '0 0 8px' 
+                  fontSize : '12px', 
+                  color    : '#666', 
+                <p style={{  
+                </p> 
+                  {city.name} 
+                }}> 
+                  color      : '#1A1A1A' 
+                  margin     : '0 0 4px', 
+                  fontSize   : '15px', 
+                  fontWeight : '700', 
+                <p style={{  
+              }}> 
+                minWidth  : '180px' 
+                fontFamily: 'Inter, sans-serif', 
+              <div style={{  
+            <Popup> 
+          > 
+            } 
+                } 
+----------------Page (37) Break----------------
+                      marginTop    : '12px', 
+                      width        : '100%', 
+                    style={{ 
+                    onClick={() => navigate('/book')} 
+                  <button 
+                {city.status === 'LIVE' ? ( 
+ 
+                </div> 
+                  ))} 
+                    </span> 
+                      {a} 
+                    }}> 
+                      margin       : '2px', 
+                      fontSize     : '11px', 
+                      borderRadius : '4px', 
+                      padding      : '2px 8px', 
+                      color        : '#555', 
+                      background   : '#F5F5F5', 
+                      display      : 'inline-block', 
+                    <span key={a} style={{ 
+                  {city.areas.map(a => ( 
+                <div style={{ marginTop:'10px' }}> 
+ 
+                </span> 
+                    : '     COMING SOON'} 
+                    ? '    LIVE NOW' 
+                  {city.status === 'LIVE' 
+                }}> 
+                  fontWeight   : '600', 
+                  fontSize     : '11px', 
+                  borderRadius : '20px', 
+----------------Page (38) Break----------------
+                      textDecoration:'none', 
+                      textAlign    : 'center', 
+                      border       : '1px solid #0AFFE6', 
+                      borderRadius : '8px', 
+                      fontSize     : '13px', 
+                      fontWeight   : '600', 
+                      color        : '#0AFFE6', 
+                      background   : 'transparent', 
+                      padding      : '8px', 
+                      marginTop    : '12px', 
+                      width        : '100%', 
+                      display      : 'block', 
+                    style={{ 
+                    rel="noreferrer" 
+                    target="_blank" 
+${city.name}`} 
+                    href={`https://wa.me/919392420643?text=Notify me when SparkClean launches in 
+                   
+                ) : ( 
+                  </button> 
+                    Book Now  
+                  > 
+                    }} 
+                      cursor       : 'pointer', 
+                      border       : 'none', 
+                      borderRadius : '8px', 
+                      fontSize     : '13px', 
+                      fontWeight   : '700', 
+                      color        : '#000', 
+                      background   : '#0AFFE6', 
+                      padding      : '8px', 
+----------------Page (39) Break----------------
+            color   : '#A0A0A0', 
+          <span style={{  
+          }}/> 
+            background   : '#0AFFE6', 
+            borderRadius : '50%', 
+            height       : '12px', 
+            width        : '12px', 
+          <div style={{ 
+        }}> 
+          gap       : '6px' 
+          alignItems: 'center', 
+          display   : 'flex', 
+        <div style={{  
+      }}> 
+        alignItems     : 'center', 
+        gap            : '20px', 
+        display        : 'flex', 
+        padding        : '12px 20px', 
+        background     : '#0A0A0A', 
+      <div style={{ 
+ 
+      </MapContainer> 
+        ))} 
+          </Circle> 
+            </Popup> 
+              </div> 
+                )} 
+                  </a> 
+                         Notify Me 
+                  > 
+                    }} 
+----------------Page (40) Break----------------
+Replace existing ServiceAreas pills section 
+ 
+export default ServiceAreaMap 
+ 
+} 
+  ) 
+    </div> 
+      </div> 
+        </div> 
+          </span> 
+            Coming soon 
+          }}> 
+            fontSize: '12px' 
+            color   : '#A0A0A0', 
+          <span style={{  
+          }}/> 
+            background   : '#555', 
+            borderRadius : '50%', 
+            height       : '12px', 
+            width        : '12px', 
+          <div style={{ 
+        }}> 
+          gap       : '6px' 
+          alignItems: 'center', 
+          display   : 'flex', 
+        <div style={{ 
+        </div> 
+          </span> 
+            Live now 
+          }}> 
+            fontSize: '12px' 
+----------------Page (41) Break----------------
+ 
+# STEP 12   App.tsx Routes 
+ 
+ 
+  npx prisma generate 
+  npx prisma migrate dev --name add_maps_location 
+Run: 
+ 
+} 
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
+  speed     Float?   @default(0) 
+  heading   Float?   @default(0) 
+  lng       Float 
+  lat       Float 
+  cleanerId String 
+  bookingId String   @unique 
+  id        String   @id @default(cuid()) 
+model CleanerLocation { 
+ADD new model: 
+ 
+  addressLng Float? 
+  addressLat Float? 
+ADD to Booking model: 
+In prisma/schema.prisma 
+ 
+ 
+# STEP 11   Prisma Schema Update 
+ 
+ 
+with <ServiceAreaMap /> component. 
+----------------Page (42) Break----------------
+ 
+      Interactive map with cities     
+  5. Service areas section 
+      Live map shows cleaner moving     
+  4. View booking detail 
+      Click Start Sharing     
+      Enter booking ID 
+  3. Go to /cleaner 
+      map shows pin at address     
+  2. Success page 
+      address autocomplete works     
+  1. Book a service 
+Test: 
+ 
+Render auto deploys backend     
+Vercel auto deploys frontend     
+ 
+git push origin main 
+git commit -m "feat: maps + live tracking (Leaflet)" 
+git add . 
+ 
+ 
+# STEP 13   Deploy 
+ 
+ 
+<Route path="/cleaner" element={<CleanerApp/>}/> 
+ 
+import CleanerApp from './pages/CleanerApp' 
+ 
+ADD to App.tsx: 
+ 
+----------------Page (43) Break----------------
+Total cost: 0 forever. 
+Zero API keys needed. 
+Build everything now. 
+ 
+- Contact: 9392420643 
+- All colors and fonts 
+- Admin dashboard 
+- Auth system 
+- Booking flow & payment 
+- All existing pages 
+ 
+# DO NOT CHANGE 
+ 
+----------------Page (44) Break----------------

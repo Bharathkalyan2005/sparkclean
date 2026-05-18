@@ -89,7 +89,68 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
+  cors: {
+    origin     : [
+      process.env.FRONTEND_URL,
+      'https://sparkclean-orcin.vercel.app',
+      'http://localhost:3000'
+    ].filter(Boolean) as string[],
+    credentials: true,
+    methods    : ['GET','POST'],
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('Socket connected:', socket.id);
+
+  socket.on('cleaner:join', ({ bookingId }) => {
+    socket.join(`booking:${bookingId}`);
+    console.log(`Cleaner in room: ${bookingId}`);
+  });
+
+  socket.on('cleaner:location', async ({
+    bookingId, lat, lng, heading, speed
+  }) => {
+    try {
+      await prisma.cleanerLocation.upsert({
+        where : { bookingId },
+        update: { lat, lng, heading, speed },
+        create: {
+          bookingId,
+          cleanerId: 'unassigned',
+          lat, lng,
+          heading: heading || 0,
+          speed  : speed   || 0,
+        }
+      });
+    } catch (err) {
+      console.error('Location save error:', err);
+    }
+
+    io.to(`booking:${bookingId}`)
+      .emit('location:update', {
+        lat, lng, heading,
+        timestamp: new Date().toISOString()
+      });
+  });
+
+  socket.on('customer:watch', ({ bookingId }) => {
+    socket.join(`booking:${bookingId}`);
+    console.log(`Customer watching: ${bookingId}`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected:', socket.id);
+  });
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`Server + Socket.io is running on http://localhost:${PORT}`);
 });

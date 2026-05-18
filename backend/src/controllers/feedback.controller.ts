@@ -57,7 +57,7 @@ export const approveFeedback = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const feedback = await prisma.feedback.update({
-            where: { id },
+            where: { id: id as string },
             data: { isApproved: true }
         });
         res.json({ success: true, feedback });
@@ -70,7 +70,7 @@ export const rejectFeedback = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const feedback = await prisma.feedback.update({
-            where: { id },
+            where: { id: id as string },
             data: { isApproved: false, isFeatured: false }
         });
         res.json({ success: true, feedback });
@@ -84,7 +84,7 @@ export const featureFeedback = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { featured } = req.body;
         const feedback = await prisma.feedback.update({
-            where: { id },
+            where: { id: id as string },
             data: { isFeatured: featured }
         });
         res.json({ success: true, feedback });
@@ -97,7 +97,7 @@ export const deleteFeedback = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         await prisma.feedback.delete({
-            where: { id }
+            where: { id: id as string }
         });
         res.json({ success: true, message: 'Feedback deleted' });
     } catch (error: any) {

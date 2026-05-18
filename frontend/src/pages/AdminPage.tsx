@@ -70,6 +70,8 @@ export default function AdminPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [messages, setMessages] = useState<any[]>([]);
   const [feedbacks, setFeedbacks] = useState<any[]>([]);
+  const [promos, setPromos] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Drive activeTab off the URL path natively
@@ -135,15 +137,39 @@ export default function AdminPage() {
     }
   };
 
+  const fetchPromos = async () => {
+    try {
+      const { data } = await axiosInstance.get('/admin/promos');
+      setPromos(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchServices = async () => {
+    try {
+      const { data } = await axiosInstance.get('/admin/services');
+      setServices(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
-    if (activeTab === 'dashboard' || activeTab === 'bookings') fetchStats();
+    if (activeTab === 'dashboard' || activeTab === 'bookings' || activeTab === 'revenue') fetchStats();
     if (activeTab === 'customers') fetchCustomers();
     if (activeTab === 'messages') fetchMessages();
     if (activeTab === 'feedback') fetchFeedbacks();
+    if (activeTab === 'promos') fetchPromos();
+    if (activeTab === 'services') fetchServices();
     
     // Provide a brief loading state simulation for placeholder pages
-    if (['services', 'revenue', 'promos', 'settings'].includes(activeTab)) {
+    if (['settings'].includes(activeTab)) {
       setTimeout(() => setLoading(false), 300);
     }
     
@@ -202,6 +228,86 @@ export default function AdminPage() {
       fetchFeedbacks();
     } catch (error) {
       toast.error('Failed to perform action');
+    }
+  };
+
+  const handlePromoCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      code: formData.get('code'),
+      discountType: formData.get('discountType'),
+      discountValue: formData.get('discountValue'),
+      minOrder: formData.get('minOrder'),
+      maxUses: formData.get('maxUses'),
+    };
+    try {
+      await axiosInstance.post('/admin/promos', data);
+      toast.success('Promo created successfully');
+      fetchPromos();
+      // @ts-ignore
+      e.target.reset();
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || 'Failed to create promo');
+    }
+  };
+
+  const handlePromoToggle = async (id: string, currentState: boolean) => {
+    try {
+      await axiosInstance.patch(`/admin/promos/${id}/toggle`, { isActive: !currentState });
+      fetchPromos();
+    } catch (error) {
+      toast.error('Failed to toggle promo');
+    }
+  };
+
+  const handlePromoDelete = async (id: string) => {
+    if (!window.confirm('Delete this promo code?')) return;
+    try {
+      await axiosInstance.delete(`/admin/promos/${id}`);
+      toast.success('Promo deleted');
+      fetchPromos();
+    } catch (error) {
+      toast.error('Failed to delete promo');
+    }
+  };
+
+  const handleServiceCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      category: formData.get('category'),
+      price: formData.get('price'),
+    };
+    try {
+      await axiosInstance.post('/admin/services', data);
+      toast.success('Service created successfully');
+      fetchServices();
+      // @ts-ignore
+      e.target.reset();
+    } catch (error: any) {
+      toast.error('Failed to create service');
+    }
+  };
+
+  const handleServiceToggle = async (id: string, currentState: boolean) => {
+    try {
+      await axiosInstance.patch(`/admin/services/${id}`, { isActive: !currentState });
+      fetchServices();
+    } catch (error) {
+      toast.error('Failed to update service status');
+    }
+  };
+
+  const handleServiceDelete = async (id: string) => {
+    if (!window.confirm('Delete this service? Note: This might break past bookings using this service ID.')) return;
+    try {
+      await axiosInstance.delete(`/admin/services/${id}`);
+      toast.success('Service deleted');
+      fetchServices();
+    } catch (error) {
+      toast.error('Failed to delete service');
     }
   };
 
@@ -344,7 +450,16 @@ export default function AdminPage() {
                   <tbody>
                     {bookings.map(b => (
                       <tr key={b.id} style={{ borderBottom: `1px solid ${ADMIN_COLORS.border}` }}>
-                        <td style={{ padding: '12px 0' }}>{b.bookingNumber}</td>
+                          <td style={{ padding: '12px 0' }}>
+                            <span style={{
+                              color      : '#0AFFE6',
+                              fontFamily : 'monospace',
+                              fontSize   : '13px',
+                              fontWeight : '600',
+                            }}>
+                              {b.bookingNumber}
+                            </span>
+                          </td>
                         <td style={{ padding: '12px 0' }}>{b.customerName}</td>
                         <td style={{ padding: '12px 0' }}>₹{b.totalAmount}</td>
                         <td style={{ padding: '12px 0' }}><StatusBadge status={b.status} /></td>
@@ -394,7 +509,7 @@ export default function AdminPage() {
             } />
 
             {/* Other Tabs (Placeholder for now to satisfy component size) */}
-            <Route path="/bookings" element={
+            <Route path="bookings" element={
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Bookings Management</h1>
                 <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
@@ -414,7 +529,33 @@ export default function AdminPage() {
                 <tbody>
                   {bookings.map(b => (
                     <tr key={b.id} style={{ borderTop: `1px solid ${ADMIN_COLORS.border}` }}>
-                      <td style={{ padding: '16px' }}>{b.bookingNumber}</td>
+                        <td style={{ padding: '16px' }}>
+                          <span style={{
+                            color      : '#0AFFE6',
+                            fontFamily : 'monospace',
+                            fontSize   : '13px',
+                            fontWeight : '600',
+                          }}>
+                            {b.bookingNumber}
+                          </span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(b.bookingNumber)
+                              toast.success('ID copied!')
+                            }}
+                            style={{
+                              background : 'transparent',
+                              border     : 'none',
+                              cursor     : 'pointer',
+                              color      : '#A0A0A0',
+                              fontSize   : '12px',
+                              padding    : '2px 6px',
+                            }}
+                            title="Copy ID"
+                          >
+                            📋
+                          </button>
+                        </td>
                       <td style={{ padding: '16px' }}>{b.customerName}</td>
                       <td style={{ padding: '16px' }}>{b.customerPhone}</td>
                       <td style={{ padding: '16px' }}>{b.area}</td>
@@ -449,7 +590,7 @@ export default function AdminPage() {
         } />
 
         {/* CUSTOMERS TAB */}
-        <Route path="/customers" element={
+        <Route path="customers" element={
            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Customers</h1>
              <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
@@ -510,7 +651,7 @@ export default function AdminPage() {
         } />
 
         {/* FEEDBACK TAB */}
-        <Route path="/feedback" element={
+        <Route path="feedback" element={
            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
              <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Feedback Management</h1>
              
@@ -579,8 +720,227 @@ export default function AdminPage() {
            </motion.div>
         } />
 
+        {/* MESSAGES TAB */}
+        <Route path="messages" element={
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Customer Messages</h1>
+            <div style={{ display: 'grid', gap: '16px' }}>
+              {messages.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '40px', color: ADMIN_COLORS.muted }}>No messages found.</div>
+              ) : (
+                messages.map((m: any) => (
+                  <div key={m.id} style={{ 
+                    background: ADMIN_COLORS.card, padding: '20px', borderRadius: '12px', 
+                    border: `1px solid ${m.isRead ? ADMIN_COLORS.border : ADMIN_COLORS.accent}` 
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <div>
+                        <h3 style={{ fontWeight: 'bold', fontSize: '16px' }}>{m.name}</h3>
+                        <p style={{ color: ADMIN_COLORS.muted, fontSize: '14px' }}>{m.email} • {m.phone}</p>
+                      </div>
+                      <span style={{ fontSize: '12px', color: ADMIN_COLORS.muted }}>
+                        {new Date(m.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '14px', lineHeight: '1.6' }}>{m.message}</p>
+                    {!m.isRead && (
+                      <button 
+                        onClick={async () => {
+                          try {
+                            await axiosInstance.patch(`/admin/messages/${m.id}/read`);
+                            setMessages(prev => prev.map(msg => msg.id === m.id ? { ...msg, isRead: true } : msg));
+                          } catch (error) {}
+                        }}
+                        style={{ marginTop: '16px', fontSize: '13px', color: ADMIN_COLORS.accent, fontWeight: 'bold' }}
+                      >
+                        Mark as Read
+                      </button>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </motion.div>
+        } />
+
+        {/* PROMOS TAB */}
+        <Route path="promos" element={
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Promo Codes</h1>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px' }}>
+              <div style={{ background: ADMIN_COLORS.card, padding: '24px', borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, height: 'fit-content' }}>
+                <h3 style={{ fontWeight: 'bold', marginBottom: '16px' }}>Create New Promo</h3>
+                <form onSubmit={handlePromoCreate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <input name="code" placeholder="Code (e.g. SUMMER20)" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff', textTransform: 'uppercase' }} />
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <select name="discountType" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }}>
+                      <option value="PERCENT" style={{color: '#000'}}>Percentage (%)</option>
+                      <option value="FIXED" style={{color: '#000'}}>Fixed Amount (₹)</option>
+                    </select>
+                    <input name="discountValue" type="number" placeholder="Value" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  </div>
+                  <input name="minOrder" type="number" placeholder="Min Order Amount (Optional)" style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  <input name="maxUses" type="number" placeholder="Max Uses (Default 100)" style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  <button type="submit" style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>Create Promo</button>
+                </form>
+              </div>
+
+              <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                <thead style={{ background: '#111' }}>
+                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                    <th style={{ padding: '16px' }}>Code</th>
+                    <th style={{ padding: '16px' }}>Discount</th>
+                    <th style={{ padding: '16px' }}>Min Order</th>
+                    <th style={{ padding: '16px' }}>Uses</th>
+                    <th style={{ padding: '16px' }}>Status</th>
+                    <th style={{ padding: '16px' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {promos.map(p => (
+                    <tr key={p.id} style={{ borderTop: `1px solid ${ADMIN_COLORS.border}`, opacity: p.isActive ? 1 : 0.5 }}>
+                      <td style={{ padding: '16px', fontWeight: 'bold', color: ADMIN_COLORS.accent }}>{p.code}</td>
+                      <td style={{ padding: '16px' }}>{p.discountType === 'PERCENT' ? `${p.discountValue}%` : `₹${p.discountValue}`}</td>
+                      <td style={{ padding: '16px' }}>₹{p.minOrder}</td>
+                      <td style={{ padding: '16px' }}>{p.usedCount} / {p.maxUses}</td>
+                      <td style={{ padding: '16px' }}>
+                        <button onClick={() => handlePromoToggle(p.id, p.isActive)} style={{ padding: '4px 12px', background: p.isActive ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.1)', color: p.isActive ? ADMIN_COLORS.emerald : '#fff', borderRadius: '4px', fontSize: '12px' }}>
+                          {p.isActive ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+                      <td style={{ padding: '16px' }}>
+                        <button onClick={() => handlePromoDelete(p.id)} style={{ color: ADMIN_COLORS.red }}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {promos.length === 0 && <tr><td colSpan={6} style={{ padding: '24px', textAlign: 'center', color: ADMIN_COLORS.muted }}>No promos created yet.</td></tr>}
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </motion.div>
+        } />
+
+        {/* SERVICES TAB */}
+        <Route path="services" element={
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Services Management</h1>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px' }}>
+              <div style={{ background: ADMIN_COLORS.card, padding: '24px', borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, height: 'fit-content' }}>
+                <h3 style={{ fontWeight: 'bold', marginBottom: '16px' }}>Add New Service/Combo</h3>
+                <form onSubmit={handleServiceCreate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <input name="name" placeholder="Service Name (e.g. Minimal Magic)" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  <textarea name="description" placeholder="Description & featured details..." style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff', minHeight: '80px' }} />
+                  <select name="category" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }}>
+                    <option value="INDIVIDUAL" style={{color: '#000'}}>Individual</option>
+                    <option value="COMBO" style={{color: '#000'}}>Combo</option>
+                  </select>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <input name="price" type="number" placeholder="Price (₹)" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="unit" placeholder="Unit (e.g. per session)" style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  </div>
+                  <button type="submit" style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>Add Service</button>
+                </form>
+              </div>
+
+              <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                <thead style={{ background: '#111' }}>
+                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                    <th style={{ padding: '16px' }}>Name</th>
+                    <th style={{ padding: '16px' }}>Details Map</th>
+                    <th style={{ padding: '16px' }}>Category</th>
+                    <th style={{ padding: '16px' }}>Price & Unit</th>
+                    <th style={{ padding: '16px' }}>Status</th>
+                    <th style={{ padding: '16px' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {services.map(s => (
+                    <tr key={s.id} style={{ borderTop: `1px solid ${ADMIN_COLORS.border}`, opacity: s.isActive ? 1 : 0.5 }}>
+                      <td style={{ padding: '16px', fontWeight: 'bold' }}>{s.name}</td>
+                      <td style={{ padding: '16px', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: ADMIN_COLORS.muted }} title={s.description || 'No descriptions added'}>{s.description || '-'}</td>
+                      <td style={{ padding: '16px' }}>{s.category}</td>
+                      <td style={{ padding: '16px' }}>₹{s.price} {s.unit ? <span style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>/{s.unit}</span> : ''}</td>
+                      <td style={{ padding: '16px' }}>
+                        <button onClick={() => handleServiceToggle(s.id, s.isActive)} style={{ padding: '4px 12px', background: s.isActive ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.1)', color: s.isActive ? ADMIN_COLORS.emerald : '#fff', borderRadius: '4px', fontSize: '12px' }}>
+                          {s.isActive ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+                      <td style={{ padding: '16px' }}>
+                        <button onClick={() => handleServiceDelete(s.id)} style={{ color: ADMIN_COLORS.red }}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {services.length === 0 && <tr><td colSpan={5} style={{ padding: '24px', textAlign: 'center', color: ADMIN_COLORS.muted }}>No services found.</td></tr>}
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </motion.div>
+        } />
+
+        {/* SETTINGS TAB */}
+        <Route path="settings" element={
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Platform Settings</h1>
+            <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, padding: '24px', maxWidth: '600px' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', color: ADMIN_COLORS.muted }}>Admin Email</label>
+                <input type="text" disabled value={adminUser?.email || ''} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', color: ADMIN_COLORS.muted }}>Change Password</label>
+                <input type="password" placeholder="New Password" style={{ width: '100%', padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+              </div>
+              <button style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold' }}>Save Changes</button>
+            </div>
+          </motion.div>
+        } />
+
+        {/* REVENUE TAB */}
+        <Route path="revenue" element={
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Revenue Analytics</h1>
+            {stats ? (
+              <div style={{ display: 'grid', gap: '24px' }}>
+                <div style={{ display: 'flex', gap: '24px', background: ADMIN_COLORS.card, border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '16px', padding: '24px' }}>
+                  <div style={{ flex: 1, textAlign: 'center' }}>
+                    <p style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>Total All-Time Revenue</p>
+                    <p style={{ fontSize: '32px', color: ADMIN_COLORS.emerald, fontWeight: 'bold', marginTop: '4px' }}>₹{stats.global.totalRevenue}</p>
+                  </div>
+                  <div style={{ flex: 1, borderLeft: `1px solid ${ADMIN_COLORS.border}`, textAlign: 'center' }}>
+                    <p style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>Today's Revenue</p>
+                    <p style={{ fontSize: '32px', color: ADMIN_COLORS.accent, fontWeight: 'bold', marginTop: '4px' }}>₹{stats.cards.todayRevenue.value}</p>
+                  </div>
+                </div>
+
+                <div style={{ background: ADMIN_COLORS.card, border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '16px', padding: '24px', height: '400px' }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: ADMIN_COLORS.muted }}>Detailed View — Last 7 Days</h3>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={stats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                      <XAxis dataKey="date" stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
+                      <YAxis stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value}`} />
+                      <Tooltip 
+                        cursor={{ fill: 'rgba(255,255,255,0.02)' }}
+                        contentStyle={{ background: '#000', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px' }}
+                      />
+                      <Bar dataKey="revenue" fill={ADMIN_COLORS.emerald} radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            ) : (
+               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}><Loader2 className="animate-spin" color={ADMIN_COLORS.emerald} /></div>
+            )}
+          </motion.div>
+        } />
+
         {/* MORE TABS */}
-        <Route path="/:tab" element={
+        <Route path=":tab" element={
           <div style={{ textAlign: 'center', marginTop: '100px', color: ADMIN_COLORS.muted }}>
             <Sparkles size={48} style={{ margin: '0 auto', marginBottom: '16px', opacity: 0.5 }} />
             <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Management</h2>

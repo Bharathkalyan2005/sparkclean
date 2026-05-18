@@ -22,10 +22,10 @@ const Confetti: React.FC = () => {
             key={i}
             style={{
               position: 'absolute',
-              left: `${left}%`,
+              left: left + '%',
               top: '-10px',
-              width: `${size}px`,
-              height: `${size}px`,
+              width: size + 'px',
+              height: size + 'px',
               background: color,
               borderRadius: Math.random() > 0.5 ? '50%' : '2px',
               animation: `confettiFall ${duration}s ease-in ${delay}s forwards`,
@@ -64,8 +64,11 @@ const SuccessPage: React.FC = () => {
     }
   }, [])
 
-  const bookingId = searchParams.get('id') || 'N/A';
+  const bookingId = searchParams.get('booking') || 'N/A';
   const name = searchParams.get('name') || 'Customer';
+
+  const bookingNumber = localStorage.getItem('last_booking_number')
+    || searchParams.get('number') || booking?.bookingNumber;
 
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 5500);
@@ -74,7 +77,7 @@ const SuccessPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative"
-      style={{ background: 'linear-gradient(135deg, #F0FFFE 0%, #FFFFFF 60%, #F0FFFE 100%)' }}>
+      style={{ background: '#0A0A0A' }}>
 
       {showConfetti && <Confetti />}
 
@@ -82,175 +85,191 @@ const SuccessPage: React.FC = () => {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'backOut' }}
-        className="rounded-3xl p-10 md:p-14 text-center max-w-lg w-full relative z-10"
-        style={{
-          background: '#FFFFFF',
-          border: '1.5px solid rgba(10,255,230,0.25)',
-          boxShadow: '0 8px 60px rgba(10,255,230,0.15), 0 2px 20px rgba(0,0,0,0.05)',
-        }}
+        className="text-center max-w-lg w-full relative z-10"
       >
-        {/* Success icon */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-          className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"
-          style={{
-            background: 'linear-gradient(135deg, #0AFFE6, #00CDB7)',
-            boxShadow: '0 0 40px rgba(10,255,230,0.4)',
-          }}
-        >
-          <svg className="w-12 h-12" fill="none" stroke="#0A1628" strokeWidth={2.5} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-        </motion.div>
-
-        {/* Sparkle accents */}
-        <div className="absolute top-8 right-8 text-4xl animate-bounce" style={{ color: '#0AFFE6', opacity: 0.6 }}>✦</div>
-        <div className="absolute bottom-8 left-8 text-2xl animate-spin" style={{ color: '#0AFFE6', opacity: 0.3, animationDuration: '8s' }}>✦</div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <h1 className="font-syne font-bold text-3xl mb-2" style={{ color: '#1A1A2E' }}>Booking Confirmed! 🎉</h1>
-          <p className="font-dm text-lg mb-6" style={{ color: '#00897B' }}>Thank you, {name}!</p>
-
+        <div style={{
+          textAlign    : 'center',
+          padding      : '32px',
+          background   : 'rgba(10,255,230,0.05)',
+          border       : '1px solid rgba(10,255,230,0.3)',
+          borderRadius : '20px',
+          marginBottom : '24px',
+        }}>
+          {/* Animated checkmark */}
           <div style={{
-            background   : 'rgba(10,255,230,0.06)',
-            border       : '1px solid rgba(10,255,230,0.25)',
-            borderRadius : '16px',
-            padding      : '20px',
-            textAlign    : 'center',
-            marginBottom : '24px',
+            width          : '72px',
+            height         : '72px',
+            borderRadius   : '50%',
+            background     : 'rgba(34,197,94,0.15)',
+            border         : '2px solid #22C55E',
+            display        : 'flex',
+            alignItems     : 'center',
+            justifyContent : 'center',
+            margin         : '0 auto 20px',
+            fontSize       : '32px',
           }}>
-            <p style={{ color: '#A0A0A0', fontSize: '14px' }} className="font-dm">
-              Your Booking ID
-            </p>
-            <p style={{
+            ✓
+          </div>
+
+          <h2 style={{
+            color      : '#FFFFFF',
+            fontSize   : '28px',
+            fontFamily : 'Instrument Serif, serif',
+            marginBottom: '8px',
+          }}>
+            Booking Confirmed!
+          </h2>
+
+          <p style={{ color: '#A0A0A0', fontSize: '15px' }}>
+            Your unique Booking ID
+          </p>
+
+          {/* Booking ID — big and copyable */}
+          <div
+            onClick={() => {
+              navigator.clipboard.writeText(bookingNumber || '')
+              toast.success('Booking ID copied!')
+            }}
+            style={{
+              background   : 'rgba(10,255,230,0.08)',
+              border       : '1px solid rgba(10,255,230,0.3)',
+              borderRadius : '12px',
+              padding      : '16px 24px',
+              margin       : '16px auto',
+              maxWidth     : '320px',
+              cursor       : 'pointer',
+              display      : 'flex',
+              alignItems   : 'center',
+              justifyContent: 'center',
+              gap          : '12px',
+            }}
+          >
+            <span style={{
               color        : '#0AFFE6',
-              fontSize     : '24px',
+              fontSize     : '22px',
               fontWeight   : '700',
               fontFamily   : 'monospace',
               letterSpacing: '2px',
-              margin       : '8px 0',
             }}>
-              {booking?.bookingNumber || (typeof bookingId === 'string' ? bookingId.substring(0, 16) : bookingId)}
-            </p>
-            <p style={{ color: '#A0A0A0', fontSize: '13px' }} className="font-dm">
-              Save this ID to track your booking
-            </p>
-
-            <button
-              onClick={() => navigate(`/track?id=${booking?.bookingNumber || bookingId}`)}
-              className="font-dm"
-              style={{
-                marginTop    : '16px',
-                padding      : '10px 24px',
-                background   : 'transparent',
-                border       : '1px solid #0AFFE6',
-                color        : '#0AFFE6',
-                borderRadius : '10px',
-                cursor       : 'pointer',
-                fontSize     : '14px',
-                fontWeight   : '600',
-              }}
-            >
-              Track This Booking →
-            </button>
+              {bookingNumber}
+            </span>
+            <span style={{ 
+              color   : '#A0A0A0', 
+              fontSize: '14px' 
+            }}>
+              📋
+            </span>
           </div>
 
-          <div className="font-dm text-sm space-y-2 mb-8 text-left" style={{ color: '#4A4A6A' }}>
-            <div className="flex items-center gap-3">
-              <span style={{ color: '#0AFFE6' }}>✓</span>
-              <span>WhatsApp confirmation sent to your number</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span style={{ color: '#0AFFE6' }}>✓</span>
-              <span>Our team will confirm your booking within 30 minutes</span>
-            </div>
-            
-            {booking && (
-              <div className="mt-4 p-4 rounded-xl" style={{ border: '1.5px solid rgba(10,255,230,0.2)', background: 'rgba(10,255,230,0.02)' }}>
-                <p className="font-dm text-xs uppercase" style={{ color: '#8A8AAA' }}>Order Details</p>
-                <p className="mt-3 font-medium" style={{ color: '#1A1A2E' }}>Booking ID: {booking.bookingNumber}</p>
-                <p className="mt-1">Date: {new Date(booking.scheduledDate).toLocaleDateString('en-IN')} at {booking.scheduledTime}</p>
-                <p className="mt-1">Total Paid: <span style={{ color: '#00897B' }}>₹{booking.totalAmount}</span></p>
-              </div>
-            )}
-          </div>
-
-          <div style={{
-            background   : '#161616',
-            border       : '1px solid rgba(10,255,230,0.2)',
-            borderRadius : '16px',
-            padding      : '24px',
-            textAlign    : 'center',
-            marginTop    : '24px',
-            marginBottom : '24px',
+          <p style={{ 
+            color   : '#A0A0A0', 
+            fontSize: '12px' 
           }}>
-            <p style={{ fontSize:'32px' }}>⭐</p>
-            <h3 style={{ color:'#FFFFFF' }} className="font-syne font-bold text-xl mt-2">
-              How are we doing?
-            </h3>
-            <p style={{ color:'#A0A0A0', fontSize:'14px' }} className="font-dm mt-1">
-              Take 30 seconds to share your experience
-            </p>
-            <button 
-              onClick={() => setShowFeedback(true)}
+            Tap to copy • Use this ID to track your booking
+          </p>
+
+          {/* Action buttons */}
+          <div style={{
+            display  : 'flex',
+            gap      : '12px',
+            marginTop: '20px',
+          }}>
+            <button
+              onClick={() => navigate(`/track?id=${bookingNumber}`)}
               style={{
+                flex         : 1,
+                padding      : '12px',
                 background   : '#0AFFE6',
                 color        : '#000',
                 fontWeight   : '700',
-                padding      : '12px 32px',
-                borderRadius : '10px',
+                borderRadius : '12px',
                 border       : 'none',
                 cursor       : 'pointer',
-                marginTop    : '16px',
+                fontSize     : '14px',
               }}
-              className="font-dm"
             >
-              ✦ Leave a Review
+              🔍 Track Booking
             </button>
-            <p 
-              onClick={() => navigate('/')}
-              style={{ 
-                color    : '#A0A0A0',
-                fontSize : '13px',
-                cursor   : 'pointer',
-                marginTop: '12px',
-              }}
-              className="font-dm hover:text-white transition-colors"
-            >
-              Skip for now
-            </p>
-          </div>
-
-          <FeedbackModal
-            isOpen={showFeedback}
-            bookingId={booking?.id}
-            onClose={() => setShowFeedback(false)}
-            onSuccess={() => {
-              setShowFeedback(false);
-              toast.success('Thank you for your feedback! 🎉');
-            }}
-          />
-
-          <div className="flex flex-col sm:flex-row gap-3">
+            
             <a
-              href={`https://wa.me/919392420643?text=Track%20your%20booking:%20https://sparkclean-orcin.vercel.app/track?id=${booking?.bookingNumber || (typeof bookingId === 'string' ? bookingId.substring(0, 16) : bookingId)}`}
+              href={`https://wa.me/919392420643?text=Hi SparkClean! My booking ID is ${bookingNumber}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-3 rounded-xl font-dm font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
+              style={{
+                flex           : 1,
+                padding        : '12px',
+                background     : '#25D366',
+                color          : '#FFF',
+                fontWeight     : '700',
+                borderRadius   : '12px',
+                textDecoration : 'none',
+                fontSize       : '14px',
+                display        : 'flex',
+                alignItems     : 'center',
+                justifyContent : 'center',
+                gap            : '6px',
+              }}
             >
-              <svg className="w-5 h-5" fill="white" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Track on WhatsApp
+              💬 WhatsApp
             </a>
-            <Link to="/" className="flex-1 btn-teal py-3 flex items-center justify-center gap-2 text-center">
-              Back to Home
-            </Link>
           </div>
-        </motion.div>
+        </div>
+
+        <div style={{
+          background   : '#161616',
+          border       : '1px solid rgba(10,255,230,0.2)',
+          borderRadius : '16px',
+          padding      : '24px',
+          textAlign    : 'center',
+          marginTop    : '24px',
+          marginBottom : '24px',
+        }}>
+          <p style={{ fontSize:'32px' }}>⭐</p>
+          <h3 style={{ color:'#FFFFFF' }} className="font-syne font-bold text-xl mt-2">
+            How are we doing?
+          </h3>
+          <p style={{ color:'#A0A0A0', fontSize:'14px' }} className="font-dm mt-1">
+            Take 30 seconds to share your experience
+          </p>
+          <button 
+            onClick={() => setShowFeedback(true)}
+            style={{
+              background   : '#0AFFE6',
+              color        : '#000',
+              fontWeight   : '700',
+              padding      : '12px 32px',
+              borderRadius : '10px',
+              border       : 'none',
+              cursor       : 'pointer',
+              marginTop    : '16px',
+            }}
+            className="font-dm"
+          >
+            ✦ Leave a Review
+          </button>
+          <p 
+            onClick={() => navigate('/')}
+            style={{ 
+              color    : '#A0A0A0',
+              fontSize : '13px',
+              cursor   : 'pointer',
+              marginTop: '12px',
+            }}
+            className="font-dm hover:text-white transition-colors"
+          >
+            Skip for now
+          </p>
+        </div>
+
+        <FeedbackModal
+          isOpen={showFeedback}
+          bookingId={booking?.id}
+          onClose={() => setShowFeedback(false)}
+          onSuccess={() => {
+            setShowFeedback(false);
+            toast.success('Thank you for your feedback! 🎉');
+          }}
+        />
       </motion.div>
     </div>
   );
