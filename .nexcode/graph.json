@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-18T10:52:48.108Z",
+  "generatedAt": "2026-05-18T10:58:55.903Z",
   "workspaceRoot": "spark clean",
   "stats": {
-    "filesIndexed": 87,
-    "edgesIndexed": 80
+    "filesIndexed": 88,
+    "edgesIndexed": 82
   },
   "nodes": [
     {
@@ -668,6 +668,19 @@
       "path": "frontend/src/components/Footer.tsx",
       "lang": "tsx",
       "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES, SERVICE_AREAS } from '../data/services'; import Logo from './Logo'; const Footer: React.FC = () => { const scrollTo = (id: string) => {",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../data/services",
+        "./Logo"
+      ],
+      "exports": []
+    },
+    {
+      "id": "frontend/src/components/Footer_new.tsx",
+      "path": "frontend/src/components/Footer_new.tsx",
+      "lang": "tsx",
+      "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES } from '../data/services'; import Logo from './Logo'; const footerAreas = [ // LIVE cities — with star badge",
       "imports": [
         "react",
         "react-router-dom",
@@ -1363,6 +1376,16 @@
     },
     {
       "from": "frontend/src/components/Footer.tsx",
+      "to": "frontend/src/components/Logo.tsx",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Footer_new.tsx",
+      "to": "frontend/src/data/services.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/Footer_new.tsx",
       "to": "frontend/src/components/Logo.tsx",
       "type": "imports"
     },
