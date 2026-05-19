@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import SparkCleanMap from './SparkCleanMap';
 
 const CITIES_DATA = [
   {
@@ -73,6 +74,85 @@ const ServiceAreas: React.FC = () => {
             Live in Bengaluru & Mumbai — coming soon to more cities
           </p>
         </motion.div>
+
+        {/* --- MAP ADDED HERE --- */}
+        <div style={{ marginBottom: '48px' }}>
+          {/* Map heading */}
+          <div style={{
+            display      : 'flex',
+            alignItems   : 'center',
+            gap          : '12px',
+            marginBottom : '20px',
+          }}>
+            <span style={{ fontSize: '20px' }}>🗺️</span>
+            <div>
+              <h3 style={{
+                color     : '#FFFFFF',
+                fontSize  : '18px',
+                fontWeight: '700',
+              }}>
+                Our Coverage Map
+              </h3>
+              <p style={{ 
+                color   : '#A0A0A0', 
+                fontSize: '13px' 
+              }}>
+                Click any pin to see areas and book
+              </p>
+            </div>
+
+            {/* Legend */}
+            <div style={{
+              marginLeft : 'auto',
+              display    : 'flex',
+              gap        : '16px',
+            }}>
+              <span style={{
+                display   : 'flex',
+                alignItems: 'center',
+                gap       : '6px',
+                color     : '#A0A0A0',
+                fontSize  : '12px',
+              }}>
+                <span style={{
+                  width       : '10px',
+                  height      : '10px',
+                  borderRadius: '50%',
+                  background  : '#0AFFE6',
+                  display     : 'inline-block',
+                }} />
+                Live
+              </span>
+              <span style={{
+                display   : 'flex',
+                alignItems: 'center',
+                gap       : '6px',
+                color     : '#A0A0A0',
+                fontSize  : '12px',
+              }}>
+                <span style={{
+                  width       : '10px',
+                  height      : '10px',
+                  borderRadius: '50%',
+                  background  : 'rgba(255,255,255,0.3)',
+                  display     : 'inline-block',
+                }} />
+                Coming Soon
+              </span>
+            </div>
+          </div>
+
+          {/* Map container with border */}
+          <div style={{
+            border       : '1px solid rgba(10,255,230,0.2)',
+            borderRadius : '20px',
+            overflow     : 'hidden',
+            boxShadow    : '0 0 40px rgba(10,255,230,0.05)',
+          }}>
+            <SparkCleanMap />
+          </div>
+        </div>
+        {/* --- MAP END --- */}
 
         {CITIES_DATA.map((city, cityIndex) => (
           <motion.div

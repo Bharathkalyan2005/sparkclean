@@ -13,4 +13,19 @@ const config = {
   supportPhone: '9392420643',
 };
 
+let cachedConfig: any = null;
+
+export async function getPublicConfig() {
+  if (cachedConfig) return cachedConfig;
+  
+  try {
+    const res = await fetch(`${config.apiUrl}/config/public`);
+    cachedConfig = await res.json();
+    return cachedConfig;
+  } catch (err) {
+    console.error('Failed to load public config', err);
+    return {};
+  }
+}
+
 export default config;

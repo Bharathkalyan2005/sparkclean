@@ -62,16 +62,57 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { email, newPassword } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      res.status(404).json({ error: 'User not found with this email' });
+      return;
+    }
+
+    if (!user.passwordHash) {
+      res.status(400).json({ error: 'This account uses Google Sign-In. Cannot change password.' });
+      return;
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+
+    await prisma.user.update({
+      where: { email },
+      data: { passwordHash }
+    });
+
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    res.status(500).json({ error: 'Server error during password reset' });
+  }
+};
+
 export const getMe = async (req: Request | any, res: Response): Promise<void> => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    const userId = req.user.userId || req.user.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id           : true,
+        fullName     : true,
+        email        : true,
+        phone        : true,
+        role         : true,
+        totalBookings: true,
+        createdAt    : true,
+      }
+    });
+
     if (!user) {
       res.status(404).json({ error: 'User not found' });
       return;
     }
-    // Remove passwordHash before returning
-    const { passwordHash, ...userWithoutPassword } = user;
-    res.status(200).json(userWithoutPassword);
+    
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: 'Server error fetching profile' });
   }
@@ -80,9 +121,10 @@ export const getMe = async (req: Request | any, res: Response): Promise<void> =>
 export const updateMe = async (req: Request | any, res: Response): Promise<void> => {
   try {
     const { fullName, phone, address } = req.body;
+    const userId = req.user.userId || req.user.id;
 
     const updatedUser = await prisma.user.update({
-      where: { id: req.user.id },
+      where: { id: userId },
       data: {
         fullName,
         phone,

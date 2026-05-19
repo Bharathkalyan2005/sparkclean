@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SERVICES } from '../data/services';
 import Logo from './Logo';
 
 const footerAreas = [
@@ -102,16 +101,13 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-syne font-bold mb-4" style={{ color: '#0AFFE6' }}>Our Services</h4>
             <ul className="space-y-2.5">
-              {SERVICES.slice(0, 7).map(s => {
-                const displayPrice = servicePriceOverrides[s.name] ?? s.price;
-                return (
-                  <li key={s.id}>
-                    <Link to="/book" className="font-dm text-sm transition-colors text-[#606060] hover:text-[#0AFFE6]">
-                      {s.name} — ₹{displayPrice}
-                    </Link>
-                  </li>
-                );
-              })}
+              {Object.entries(servicePriceOverrides).map(([name, price], idx) => (
+                <li key={idx}>
+                  <Link to="/book" className="font-dm text-sm transition-colors text-[#606060] hover:text-[#0AFFE6]">
+                    {name} — ₹{price}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

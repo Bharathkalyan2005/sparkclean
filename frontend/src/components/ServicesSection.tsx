@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
-import { SERVICES } from '../data/services';
 import { Service } from '../lib/supabase';
 import LoginPromptModal from './LoginPromptModal';
 
@@ -149,7 +148,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       {/* Icon */}
       <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
         style={{ background: 'rgba(10,255,230,0.1)', border: '1.5px solid rgba(10,255,230,0.25)', color: '#0AFFE6' }}>
-        <ServiceIcon name={service.icon_name} />
+        <ServiceIcon name={service.iconName} />
       </div>
 
       {/* Info */}
@@ -279,11 +278,31 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
 
 const ServicesSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<any>(null);
+  const [services, setServices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    import('../lib/axiosInstance').then(({ default: api }) => {
+      api.get('/services/individual')
+        .then(res => setServices(res.data.services))
+        .catch(err => console.error(err))
+        .finally(() => setLoading(false));
+    });
+  }, []);
 
   const filtered = activeCategory === 'All'
-    ? SERVICES
-    : SERVICES.filter(s => s.category === activeCategory);
+    ? services
+    : services.filter(s => {
+        // Map frontend categories to our DB iconNames for backward compatibility
+        const catLower = activeCategory.toLowerCase();
+        if (catLower === 'kitchen' && (s.iconName === 'kitchen' || s.iconName === 'fridge')) return true;
+        if (catLower === 'cleaning' && (s.iconName === 'bath' || s.iconName === 'dust' || s.iconName === 'clean')) return true;
+        if (catLower === 'appliances' && s.iconName === 'fridge') return true;
+        if (catLower === 'laundry' && s.iconName === 'iron') return true;
+        if (catLower === 'special' && s.iconName === 'party') return true;
+        return false;
+      });
 
   const closeModal = () => setSelectedService(null);
 
@@ -375,7 +394,7 @@ const ServicesSection: React.FC = () => {
                     <img src={selectedService.image_url} alt={selectedService.name} className="w-full h-full object-cover max-h-[300px] md:max-h-none" />
                   ) : (
                     <div className="p-12 text-teal-400 opacity-50 flex items-center justify-center h-[200px] md:h-full">
-                      <ServiceIcon name={selectedService.icon_name} />
+                      <ServiceIcon name={selectedService.iconName} />
                     </div>
                   )}
                   {selectedService.highlight && (
@@ -411,7 +430,7 @@ const ServicesSection: React.FC = () => {
                           Key Features
                         </h4>
                         <ul className="space-y-2">
-                          {selectedService.features.map((feature, idx) => (
+                          {selectedService.features.map((feature: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2 text-sm text-gray-300 font-dm">
                               <span className="text-teal-400 mt-0.5">•</span>
                               {feature}

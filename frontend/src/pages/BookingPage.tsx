@@ -3,11 +3,165 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import {
-  SERVICES, COMBOS, TIME_SLOTS,
+  TIME_SLOTS,
   formatIndianCurrency, getNextNDates, formatDateDisplay
 } from '../data/services';
 import toast from 'react-hot-toast';
 import api from '../lib/axiosInstance';
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  Circle,
+} from '@react-google-maps/api';
+
+const areaCoordinates: Record<string, {
+  lat: number
+  lng: number
+  city: string
+}> = {
+  // ── BENGALURU ──
+  'Koramangala'    : { lat: 12.9352, lng: 77.6245, city: 'Bengaluru' },
+  'Indiranagar'    : { lat: 12.9784, lng: 77.6408, city: 'Bengaluru' },
+  'Whitefield'     : { lat: 12.9698, lng: 77.7499, city: 'Bengaluru' },
+  'HSR Layout'     : { lat: 12.9116, lng: 77.6474, city: 'Bengaluru' },
+  'Marathahalli'   : { lat: 12.9591, lng: 77.6974, city: 'Bengaluru' },
+  'BTM Layout'     : { lat: 12.9165, lng: 77.6101, city: 'Bengaluru' },
+  'Jayanagar'      : { lat: 12.9308, lng: 77.5831, city: 'Bengaluru' },
+  'Electronic City': { lat: 12.8399, lng: 77.6770, city: 'Bengaluru' },
+  'Bannerghatta'   : { lat: 12.8635, lng: 77.5957, city: 'Bengaluru' },
+  'Hebbal'         : { lat: 13.0353, lng: 77.5950, city: 'Bengaluru' },
+
+  // ── MUMBAI ──
+  'Bandra'         : { lat: 19.0596, lng: 72.8295, city: 'Mumbai' },
+  'Andheri'        : { lat: 19.1136, lng: 72.8697, city: 'Mumbai' },
+  'Powai'          : { lat: 19.1176, lng: 72.9060, city: 'Mumbai' },
+  'Thane'          : { lat: 19.2183, lng: 72.9781, city: 'Mumbai' },
+  'Navi Mumbai'    : { lat: 19.0330, lng: 73.0297, city: 'Mumbai' },
+  'Juhu'           : { lat: 19.1075, lng: 72.8263, city: 'Mumbai' },
+  'Borivali'       : { lat: 19.2307, lng: 72.8567, city: 'Mumbai' },
+  'Worli'          : { lat: 19.0176, lng: 72.8178, city: 'Mumbai' },
+  'Malad'          : { lat: 19.1874, lng: 72.8484, city: 'Mumbai' },
+  'Kandivali'      : { lat: 19.2043, lng: 72.8493, city: 'Mumbai' },
+};
+
+// Dark map style
+const darkMapStyle = [
+  { elementType: 'geometry',
+    stylers: [{ color: '#0a0a0a' }] },
+  { elementType: 'labels.text.stroke',
+    stylers: [{ color: '#0a0a0a' }] },
+  { elementType: 'labels.text.fill',
+    stylers: [{ color: '#9ca5b3' }] },
+  { featureType: 'road',
+    elementType: 'geometry',
+    stylers: [{ color: '#1a1a1a' }] },
+  { featureType: 'road.highway',
+    elementType: 'geometry',
+    stylers: [{ color: '#1a1a2e' }] },
+  { featureType: 'water',
+    elementType: 'geometry',
+    stylers: [{ color: '#0a1628' }] },
+  { featureType: 'poi',
+    stylers: [{ visibility: 'off' }] },
+  { featureType: 'transit',
+    stylers: [{ visibility: 'off' }] },
+]
+
+interface BookingMapProps {
+  area     : string
+  address  : string
+}
+
+const libraries: any = ['places'];
+
+function BookingMap({ area, address }: BookingMapProps) {
+  const coords = areaCoordinates[area]
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: 
+      process.env.REACT_APP_GOOGLE_MAPS_KEY || '',
+    libraries,
+  })
+
+  if (!coords) return null
+
+  if (!isLoaded) {
+    return (
+      <div style={{
+        height        : '220px',
+        borderRadius  : '14px',
+        background    : 'rgba(10,255,230,0.03)',
+        border        : '1px solid rgba(10,255,230,0.15)',
+        display       : 'flex',
+        alignItems    : 'center',
+        justifyContent: 'center',
+        gap           : '10px',
+      }}>
+        <svg
+          width="20" height="20"
+          viewBox="0 0 24 24" fill="none"
+          style={{ animation: 'spin 1s linear infinite' }}
+        >
+          <circle cx="12" cy="12" r="10"
+            stroke="#0AFFE6" strokeWidth="3"
+            strokeDasharray="50 30"
+          />
+        </svg>
+        <span style={{ color: '#A0A0A0', fontSize: '13px' }}>
+          Loading map...
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <GoogleMap
+      mapContainerStyle={{
+        width       : '100%',
+        height      : '220px',
+        borderRadius: '14px',
+      }}
+      center ={{ lat: coords.lat, lng: coords.lng }}
+      zoom   ={14}
+      options={{
+        styles           : darkMapStyle,
+        disableDefaultUI : true,
+        zoomControl      : true,
+        scrollwheel      : false,
+        mapTypeControl   : false,
+        streetViewControl: false,
+        fullscreenControl: false,
+      }}
+    >
+      {/* Main pin for selected area */}
+      <Marker
+        position={{ lat: coords.lat, lng: coords.lng }}
+        icon={{
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale       : 12,
+          fillColor   : '#0AFFE6',
+          fillOpacity : 1,
+          strokeColor : '#FFFFFF',
+          strokeWeight: 2,
+        }}
+      />
+
+      {/* Service radius circle ~2km */}
+      <Circle
+        center ={{ lat: coords.lat, lng: coords.lng }}
+        radius ={2000}
+        options={{
+          fillColor   : '#0AFFE6',
+          fillOpacity : 0.06,
+          strokeColor : '#0AFFE6',
+          strokeOpacity: 0.3,
+          strokeWeight: 1,
+        }}
+      />
+    </GoogleMap>
+  )
+}
 
 // ── Razorpay type declarations ──────────────────────────────────
 declare global {
@@ -77,8 +231,30 @@ const BookingPage: React.FC = () => {
   }, [navigate]);
 
   const [step, setStep] = useState(1);
-  const [selectedServices, setSelectedServices] = useState<typeof cartItems>([]);
-  const [selectedCombo, setSelectedCombo] = useState<(typeof COMBOS)[0] | null>(null);
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [selectedCombo, setSelectedCombo] = useState<any | null>(null);
+
+  const [services, setServices] = useState<any[]>([]);
+  const [combos, setCombos] = useState<any[]>([]);
+  const [loadingSvc, setLoadingSvc] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      api.get('/services/individual'),
+      api.get('/services/combos'),
+    ])
+    .then(([svcRes, comboRes]) => {
+      setServices(svcRes.data.services);
+      const formattedCombos = comboRes.data.combos.map((c: any, i: number) => ({
+        ...c,
+        price: Number(c.price),
+        is_popular: i === 1
+      }));
+      setCombos(formattedCombos);
+    })
+    .catch(err => console.error('Services load failed:', err))
+    .finally(() => setLoadingSvc(false));
+  }, []);
 
   const [form, setForm] = useState({
     name: '',
@@ -91,19 +267,20 @@ const BookingPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [loading, setLoading] = useState(false);
+  const [customArea, setCustomArea] = useState('');
   const [bookingStep, setBookingStep] = useState<'idle' | 'creating' | 'payment' | 'verifying'>('idle');
 
   const nextDates = getNextNDates(7);
 
   useEffect(() => {
     const comboId = searchParams.get('combo');
-    if (comboId) {
-      const combo = COMBOS.find(c => c.id === comboId);
+    if (comboId && combos.length > 0) {
+      const combo = combos.find(c => c.id === comboId);
       if (combo) setSelectedCombo(combo);
     } else if (cartItems.length > 0) {
       setSelectedServices(cartItems);
     }
-  }, [searchParams]); // eslint-disable-line
+  }, [searchParams, combos]); // eslint-disable-line
 
   const total = selectedCombo
     ? selectedCombo.price
@@ -370,7 +547,7 @@ const handleCODBooking = async () => {
   };
   */
 
-  const toggleService = (service: typeof SERVICES[0]) => {
+  const toggleService = (service: any) => {
     setSelectedCombo(null);
     setSelectedServices(prev => {
       const exists = prev.find(s => s.id === service.id);
@@ -380,7 +557,7 @@ const handleCODBooking = async () => {
   };
 
   const isStep1Valid = (selectedCombo || selectedServices.length > 0);
-  const isStep2Valid = form.name && form.phone && form.address && form.area && selectedDate && selectedTime;
+  const isStep2Valid = form.name && form.phone && form.address && form.area && selectedDate && selectedTime && (form.area !== 'Other (Not listed)' || customArea.trim() !== '');
 
   // ── Shared style tokens ──────────────────────────────────────
   const cardSelected = { border: '1.5px solid #0AFFE6', background: 'rgba(10,255,230,0.06)', borderRadius: 14 };
@@ -446,7 +623,7 @@ const handleCODBooking = async () => {
               <div className="mb-8">
                 <h3 className="text-xs font-dm uppercase tracking-wider mb-4" style={{ color: '#00897B' }}>Combo Packages</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {COMBOS.map(combo => (
+                  {loadingSvc ? <p className="text-sm">Loading...</p> : combos.map(combo => (
                     <button
                       key={combo.id}
                       onClick={() => { setSelectedCombo(selectedCombo?.id === combo.id ? null : combo); setSelectedServices([]); }}
@@ -468,7 +645,7 @@ const handleCODBooking = async () => {
               <div>
                 <h3 className="text-xs font-dm uppercase tracking-wider mb-4" style={{ color: '#00897B' }}>Individual Services</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {SERVICES.map(service => {
+                  {loadingSvc ? <p className="text-sm">Loading...</p> : services.map(service => {
                     const isSelected = selectedServices.some(s => s.id === service.id);
                     return (
                       <button
@@ -490,7 +667,7 @@ const handleCODBooking = async () => {
                           <p className="text-xs font-dm" style={{ color: '#8A8AAA' }}>{service.unit}</p>
                         </div>
                         <span className="font-syne font-bold flex-shrink-0" style={{ color: '#0AFFE6' }}>
-                          ₹{service.id === 'svc-9' ? '1/cloth' : service.price}
+                          ₹{service.unit === 'per cloth' ? '10/cloth' : Number(service.price)}
                         </span>
                       </button>
                     );
@@ -546,7 +723,61 @@ const handleCODBooking = async () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Full Address *</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-dm" style={{ color: '#4A4A6A' }}>Full Address *</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const loadingToast = toast.loading('Detecting address...');
+                        if (navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                              try {
+                                const res = await fetch(`https://photon.komoot.io/reverse?lon=${position.coords.longitude}&lat=${position.coords.latitude}`);
+                                if (res.ok) {
+                                  const data = await res.json();
+                                  const props = data?.features?.[0]?.properties;
+                                  if (props) {
+                                    const fullAddress = [props.name, props.street, props.district, props.city, props.state].filter(Boolean).join(', ');
+                                    const detectedCity = props.city || props.state;
+                                    
+                                    // Try to match area
+                                    let matchedArea = form.area;
+                                    if (props.district || props.city) {
+                                      const possibleArea = areas.find(a => 
+                                        (props.district && props.district.includes(a.name)) || 
+                                        (props.city && props.city.includes(a.name))
+                                      );
+                                      if (possibleArea) matchedArea = possibleArea.name;
+                                    }
+
+                                    setForm({ ...form, address: fullAddress, area: matchedArea, city: detectedCity });
+                                    toast.success('Address auto-filled');
+                                  } else {
+                                    toast.error('Could not determine address exactly. Please enter manually.');
+                                  }
+                                }
+                              } catch (err) {
+                                toast.error('Failed to resolve address');
+                              } finally {
+                                toast.dismiss(loadingToast);
+                              }
+                            },
+                            () => {
+                              toast.dismiss(loadingToast);
+                              toast.error('Location permission denied or failed.');
+                            }
+                          );
+                        } else {
+                          toast.dismiss(loadingToast);
+                          toast.error('Geolocation is not supported by this browser.');
+                        }
+                      }}
+                      className="text-xs font-semibold px-3 py-1 rounded-full bg-[#0AFFE6]/20 text-[#07A696] hover:bg-[#0AFFE6]/30 transition-colors"
+                    >
+                      📍 Auto-detect
+                    </button>
+                  </div>
                   <textarea value={form.address} onChange={e => setForm({ ...form, address: e.target.value })}
                     placeholder="House/flat no., street, landmark..." className="form-input light min-h-[80px]" required />
                 </div>
@@ -601,8 +832,113 @@ const handleCODBooking = async () => {
                         ))
                       }
                     </optgroup>
+                    <option value="Other (Not listed)">Other (Not listed)</option>
                   </select>
+
+                  {form.area === 'Other (Not listed)' && (
+                    <div style={{ marginTop: '12px' }}>
+                      <input
+                        type="text"
+                        placeholder="Enter your custom area or city"
+                        className="form-input light"
+                        value={customArea}
+                        onChange={(e) => setCustomArea(e.target.value)}
+                        required
+                      />
+                    </div>
+                  )}
                 </div>
+
+                {form.area && areaCoordinates[form.area] && (
+                  <div style={{ marginTop: '16px' }}>
+                    {/* Map header */}
+                    <div style={{
+                      display      : 'flex',
+                      alignItems   : 'center',
+                      justifyContent: 'space-between',
+                      marginBottom : '10px',
+                    }}>
+                      <div style={{
+                        display   : 'flex',
+                        alignItems: 'center',
+                        gap       : '8px',
+                      }}>
+                        <span style={{ fontSize: '16px' }}>📍</span>
+                        <div>
+                          <p style={{
+                            color     : '#1A1A2E',
+                            fontSize  : '14px',
+                            fontWeight: '600',
+                          }}>
+                            {form.area}
+                          </p>
+                          <p style={{
+                            color   : '#4A4A6A',
+                            fontSize: '12px',
+                          }}>
+                            {areaCoordinates[form.area]?.city}, India
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Live service badge */}
+                      <span style={{
+                        background   : 'rgba(10,255,230,0.12)',
+                        color        : '#00897B',
+                        border       : '1px solid rgba(10,255,230,0.3)',
+                        borderRadius : '20px',
+                        padding      : '3px 10px',
+                        fontSize     : '11px',
+                        fontWeight   : '700',
+                      }}>
+                        ✦ SERVICE AVAILABLE
+                      </span>
+                    </div>
+                
+                    {/* Map */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key        ={form.area}
+                        initial    ={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate    ={{ opacity: 1, y: 0,  scale: 1    }}
+                        exit       ={{ opacity: 0, y: -10             }}
+                        transition ={{ duration: 0.3, ease: 'easeOut' }}
+                        style={{
+                          border      : '1px solid rgba(10,255,230,0.2)',
+                          borderRadius: '14px',
+                          overflow    : 'hidden',
+                          boxShadow   : '0 0 20px rgba(10,255,230,0.05)',
+                        }}
+                      >
+                        <BookingMap
+                          area   ={form.area}
+                          address={form.address}
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                
+                    {/* Service radius note */}
+                    <p style={{
+                      color     : 'rgba(26,26,46,0.5)',
+                      fontSize  : '12px',
+                      textAlign : 'center',
+                      marginTop : '8px',
+                      display   : 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap       : '4px',
+                    }}>
+                      <span style={{
+                        width       : '8px',
+                        height      : '8px',
+                        borderRadius: '50%',
+                        background  : 'rgba(10,255,230,0.4)',
+                        display     : 'inline-block',
+                      }} />
+                      Teal circle shows our ~2km service coverage area
+                    </p>
+                  </div>
+                )}
 
                 {/* Date Picker */}
                 <div>
@@ -652,11 +988,17 @@ const handleCODBooking = async () => {
                 </button>
                 <button
                   disabled={!isStep2Valid}
-                  onClick={() => setStep(3)}
-                  className={`flex-2 py-4 px-8 rounded-xl font-dm font-semibold text-base transition-all ${isStep2Valid ? 'btn-teal' : ''}`}
-                  style={!isStep2Valid ? { background: 'rgba(10,255,230,0.08)', color: 'rgba(26,26,46,0.3)', border: '1.5px solid rgba(10,255,230,0.15)', cursor: 'not-allowed', borderRadius: 12 } : {}}
+                  onClick={() => {
+                    if (form.area === 'Other (Not listed)') {
+                      toast.error('Service is not started in your location');
+                      return;
+                    }
+                    setStep(3);
+                  }}
+                  className={`flex-[2] py-4 rounded-xl font-dm font-semibold text-base transition-all ${isStep2Valid ? 'btn-teal' : ''}`}
+                  style={!isStep2Valid ? { background: 'rgba(10,255,230,0.08)', color: 'rgba(26,26,46,0.3)', border: '1.5px solid rgba(10,255,230,0.15)', cursor: 'not-allowed', borderRadius: 12 } : { borderRadius: 12 }}
                 >
-                  Review Order →
+                  Continue to Payment →
                 </button>
               </div>
             </motion.div>
@@ -703,10 +1045,105 @@ const handleCODBooking = async () => {
                   ))}
                 </div>
                 <div className="h-px" style={{ background: 'rgba(10,255,230,0.15)' }} />
-                <div>
-                  <p className="text-xs font-dm" style={{ color: '#8A8AAA' }}>Address</p>
-                  <p className="font-dm text-sm" style={{ color: '#1A1A2E' }}>{form.address}</p>
-                </div>
+
+                {/* Order Summary Map */}
+                {form.area && areaCoordinates[form.area] && (
+                  <div style={{
+                    background   : 'rgba(10,255,230,0.02)',
+                    border       : '1px solid rgba(10,255,230,0.08)',
+                    borderRadius : '14px',
+                    padding      : '16px',
+                    marginBottom : '16px',
+                  }}>
+                    <p style={{
+                      color        : '#00897B',
+                      fontSize     : '12px',
+                      fontWeight   : '600',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                      marginBottom : '10px',
+                    }}>
+                      Service Location
+                    </p>
+
+                    {/* Mini map */}
+                    <div style={{
+                      height      : '160px',
+                      borderRadius: '10px',
+                      overflow    : 'hidden',
+                      marginBottom: '10px',
+                      border      : '1px solid rgba(10,255,230,0.15)',
+                    }}>
+                      <BookingMap
+                        area   ={form.area}
+                        address={form.address}
+                      />
+                    </div>
+
+                    {/* Address details */}
+                    <div style={{
+                      display      : 'flex',
+                      alignItems   : 'flex-start',
+                      gap          : '8px',
+                    }}>
+                      <span style={{ color: '#0AFFE6', fontSize: '16px' }}>
+                        📍
+                      </span>
+                      <div>
+                        <p style={{
+                          color     : '#1A1A2E',
+                          fontSize  : '14px',
+                          fontWeight: '500',
+                        }}>
+                          {form.address}
+                        </p>
+                        <p style={{
+                          color   : '#4A4A6A',
+                          fontSize: '13px',
+                          marginTop: '2px',
+                        }}>
+                          {form.area}, {areaCoordinates[form.area]?.city}
+                        </p>
+                      </div>
+                    </div>
+                    {/* OPEN IN GOOGLE MAPS BUTTON */}
+                     <a
+                      href={`https://www.google.com/maps/search/${
+                        encodeURIComponent(
+                          form.area + ' ' + 
+                          areaCoordinates[form.area]?.city
+                        )
+                      }/@${areaCoordinates[form.area]?.lat},${
+                        areaCoordinates[form.area]?.lng
+                      },15z`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display        : 'flex',
+                        alignItems     : 'center',
+                        justifyContent : 'center',
+                        gap            : '6px',
+                        marginTop      : '8px',
+                        padding        : '8px',
+                        background     : 'transparent',
+                        border         : '1px solid rgba(10,255,230,0.3)',
+                        borderRadius   : '10px',
+                        color          : '#00897B',
+                        fontSize       : '12px',
+                        textDecoration : 'none',
+                        transition     : 'all 0.2s',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'rgba(10,255,230,0.05)'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'transparent'
+                      }}
+                    >
+                      🗺️ Open in Google Maps
+                    </a>
+                  </div>
+                )}
 
                 {/* Total */}
                 <div className="rounded-xl p-4 flex items-center justify-between"

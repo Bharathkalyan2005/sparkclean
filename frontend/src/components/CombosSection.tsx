@@ -1,9 +1,18 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { COMBOS } from '../data/services';
+type ComboCardProps = {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  bhk: string;
+  badge_text: string;
+  is_popular: boolean;
+  includes: string[];
+};
 
-const ComboCard: React.FC<{ combo: typeof COMBOS[0]; index: number }> = ({ combo, index }) => {
+const ComboCard: React.FC<{ combo: ComboCardProps; index: number }> = ({ combo, index }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -179,6 +188,63 @@ const ComboCard: React.FC<{ combo: typeof COMBOS[0]; index: number }> = ({ combo
 };
 
 const CombosSection: React.FC = () => {
+  const [combos, setCombos] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    import('../lib/axiosInstance').then(({ default: api }) => {
+      api.get('/services/combos')
+        .then(res => setCombos(res.data.combos))
+        .catch(err => console.error(err))
+        .finally(() => setLoading(false));
+    });
+  }, []);
+
+  const getComboIncludes = (name: string) => {
+    const includes: Record<string, string[]> = {
+      '1 BHK Combo': [
+        'Sweeping & mopping',
+        'Dusting & wiping',
+        '1 Bathroom cleaning',
+        'Kitchen basic cleaning',
+        '2 Fans FREE ✦',
+      ],
+      '2 BHK Combo': [
+        'Full house cleaning',
+        '2 Bathrooms cleaning',
+        'Kitchen cleaning',
+        'Dusting & wiping',
+        '4 Fans FREE ✦',
+      ],
+      '3 BHK Combo': [
+        'Full home cleaning',
+        '2-3 Bathrooms cleaning',
+        'Kitchen deep cleaning',
+        'Balcony basic cleaning',
+        '6 Fans FREE ✦',
+      ],
+    };
+    return includes[name] || [];
+  };
+
+  const getBadgeText = (name: string) => {
+    if (name.includes('1 BHK')) return 'Basic Care';
+    if (name.includes('2 BHK')) return 'Most Popular';
+    if (name.includes('3 BHK')) return 'Deep Clean';
+    return 'Special Package';
+  };
+
+  const formattedCombos = combos.map((c, i) => ({
+    id: c.id,
+    name: c.name,
+    price: Number(c.price),
+    originalPrice: c.originalPrice ? Number(c.originalPrice) : undefined,
+    bhk: c.name.split(' ')[0] + ' BHK',
+    badge_text: getBadgeText(c.name),
+    is_popular: i === 1,
+    includes: getComboIncludes(c.name)
+  }));
+
   return (
     <section id="combos" className="py-24 relative overflow-hidden section-dark">
       {/* Decorative orb */}
@@ -208,8 +274,8 @@ const CombosSection: React.FC = () => {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-          {COMBOS.map((combo, i) => (
-            <ComboCard key={combo.id} combo={combo} index={i} />
+          {formattedCombos.map((combo, i) => (
+            <ComboCard key={combo.id} combo={combo as any} index={i} />
           ))}
         </div>
 

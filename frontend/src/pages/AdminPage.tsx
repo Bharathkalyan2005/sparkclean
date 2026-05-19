@@ -63,6 +63,26 @@ export default function AdminPage() {
   const location = useLocation();
   const [adminUser, setAdminUser] = useState<any>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+    if (!token) {
+      navigate('/auth?redirect=/sparkadmin');
+      return;
+    }
+    
+    // Verify admin role
+    axiosInstance.get('/auth/me')
+      .then(res => {
+        if (res.data.role !== 'ADMIN') {
+          toast.error('Admin access required');
+          navigate('/');
+        } else {
+          setAdminUser(res.data);
+        }
+      })
+      .catch(() => navigate('/auth'));
+  }, [navigate]);
+
   // Data states
   const [stats, setStats] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
@@ -150,8 +170,8 @@ export default function AdminPage() {
 
   const fetchServices = async () => {
     try {
-      const { data } = await axiosInstance.get('/admin/services');
-      setServices(data);
+      const { data } = await axiosInstance.get('/services/all');
+      setServices(data.services || data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -279,9 +299,13 @@ export default function AdminPage() {
       name: formData.get('name'),
       category: formData.get('category'),
       price: formData.get('price'),
+      originalPrice: formData.get('originalPrice') ? Number(formData.get('originalPrice')) : undefined,
+      iconName: formData.get('iconName'),
+      unit: formData.get('unit'),
+      description: formData.get('description'),
     };
     try {
-      await axiosInstance.post('/admin/services', data);
+      await axiosInstance.post('/services', data);
       toast.success('Service created successfully');
       fetchServices();
       // @ts-ignore
@@ -293,7 +317,7 @@ export default function AdminPage() {
 
   const handleServiceToggle = async (id: string, currentState: boolean) => {
     try {
-      await axiosInstance.patch(`/admin/services/${id}`, { isActive: !currentState });
+      await axiosInstance.patch(`/services/${id}/toggle`, { isActive: !currentState });
       fetchServices();
     } catch (error) {
       toast.error('Failed to update service status');
@@ -303,7 +327,7 @@ export default function AdminPage() {
   const handleServiceDelete = async (id: string) => {
     if (!window.confirm('Delete this service? Note: This might break past bookings using this service ID.')) return;
     try {
-      await axiosInstance.delete(`/admin/services/${id}`);
+      await axiosInstance.delete(`/services/${id}`);
       toast.success('Service deleted');
       fetchServices();
     } catch (error) {
@@ -839,7 +863,11 @@ export default function AdminPage() {
                   </select>
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <input name="price" type="number" placeholder="Price (₹)" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="originalPrice" type="number" placeholder="Original Price (₹) (Optional)" style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                  </div>
+                  <div style={{ display: 'flex', gap: '12px' }}>
                     <input name="unit" placeholder="Unit (e.g. per session)" style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="iconName" placeholder="Icon Name (e.g. dust, bath, combo)" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
                   </div>
                   <button type="submit" style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>Add Service</button>
                 </form>
@@ -863,7 +891,11 @@ export default function AdminPage() {
                       <td style={{ padding: '16px', fontWeight: 'bold' }}>{s.name}</td>
                       <td style={{ padding: '16px', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: ADMIN_COLORS.muted }} title={s.description || 'No descriptions added'}>{s.description || '-'}</td>
                       <td style={{ padding: '16px' }}>{s.category}</td>
-                      <td style={{ padding: '16px' }}>₹{s.price} {s.unit ? <span style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>/{s.unit}</span> : ''}</td>
+                      <td style={{ padding: '16px' }}>
+                        ₹{s.price} 
+                        {s.originalPrice && <span style={{ color: ADMIN_COLORS.muted, textDecoration: 'line-through', marginLeft: '6px' }}>₹{s.originalPrice}</span>}
+                        {s.unit ? <span style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>/{s.unit}</span> : ''}
+                      </td>
                       <td style={{ padding: '16px' }}>
                         <button onClick={() => handleServiceToggle(s.id, s.isActive)} style={{ padding: '4px 12px', background: s.isActive ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.1)', color: s.isActive ? ADMIN_COLORS.emerald : '#fff', borderRadius: '4px', fontSize: '12px' }}>
                           {s.isActive ? 'Active' : 'Inactive'}

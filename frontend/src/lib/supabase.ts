@@ -30,13 +30,14 @@ export interface Service {
   originalPrice?: number;
   unit: string;
   category: string;
-  icon_name: string;
-  is_active: boolean;
+  iconName: string;
+  isActive: boolean;
   quantity?: number;
   description?: string;
   features?: string[];
   highlight?: string;
   image_url?: string;
+  sortOrder?: number;
 }
 
 export interface Combo {

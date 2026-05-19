@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-18T10:58:55.903Z",
+  "generatedAt": "2026-05-19T06:47:04.581Z",
   "workspaceRoot": "spark clean",
   "stats": {
-    "filesIndexed": 88,
-    "edgesIndexed": 82
+    "filesIndexed": 92,
+    "edgesIndexed": 86
   },
   "nodes": [
     {
@@ -139,7 +139,7 @@
       "id": "backend/tsconfig.json",
       "path": "backend/tsconfig.json",
       "lang": "json",
-      "summary": "{ \"compilerOptions\": { \"target\": \"es2022\", \"module\": \"commonjs\", \"outDir\": \"./dist\", \"rootDir\": \"./src\", \"esModuleInterop\": true, \"forceConsistentCasingInFileNames\": true, \"strict\": true, \"skipLibCheck\": true } }",
+      "summary": "{ \"compilerOptions\": { \"target\": \"es2022\", \"module\": \"commonjs\", \"outDir\": \"./dist\", \"rootDir\": \"./src\",",
       "imports": [],
       "exports": []
     },
@@ -211,10 +211,13 @@
       "id": "backend/src/server.ts",
       "path": "backend/src/server.ts",
       "lang": "ts",
-      "summary": "import express from 'express'; import cors from 'cors'; import dotenv from 'dotenv'; import { PrismaClient } from '@prisma/client'; import passport from './config/passport'; import servicesRoutes from './routes/services.route';",
+      "summary": "import express, { Request, Response, NextFunction } from 'express'; import cors from 'cors'; import helmet from 'helmet'; import rateLimit from 'express-rate-limit'; import hpp from 'hpp'; import dotenv from 'dotenv';",
       "imports": [
         "express",
         "cors",
+        "helmet",
+        "express-rate-limit",
+        "hpp",
         "dotenv",
         "@prisma/client",
         "./config/passport",
@@ -224,6 +227,8 @@
         "./routes/admin.route",
         "./routes/payment.route",
         "./routes/feedback.route",
+        "./routes/location.route",
+        "./routes/config.route",
         "http",
         "socket.io"
       ],
@@ -269,7 +274,7 @@
       "id": "frontend/src/App.tsx",
       "path": "frontend/src/App.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { Toaster } from 'react-hot-toast'; import { CartProvider } fr",
+      "summary": "import React, { useEffect } from 'react'; import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; import { GoogleOAuthProvider } from '@react-oauth/google'; import { Toaster, toast } from 'react-hot-toast'; impo",
       "imports": [
         "react",
         "react-router-dom",
@@ -285,7 +290,8 @@
         "./pages/AuthCallbackPage",
         "./pages/TrackingPage",
         "./pages/FeedbackPage",
-        "./components/AdminRoute"
+        "./components/AdminRoute",
+        "./components/LocationGate"
       ],
       "exports": []
     },
@@ -468,13 +474,15 @@
       "id": "backend/src/middleware/auth.middleware.ts",
       "path": "backend/src/middleware/auth.middleware.ts",
       "lang": "ts",
-      "summary": "import { Request, Response, NextFunction } from 'express'; import jwt from 'jsonwebtoken'; interface AuthRequest extends Request { user?: any; } export const authenticate = (",
+      "summary": "import { Request, Response, NextFunction } from 'express'; import jwt from 'jsonwebtoken'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); interface AuthRequest extends Request { user?: any;",
       "imports": [
         "express",
-        "jsonwebtoken"
+        "jsonwebtoken",
+        "@prisma/client"
       ],
       "exports": [
         "authenticate",
+        "requireAdmin",
         "authorizeAdmin"
       ]
     },
@@ -510,12 +518,23 @@
       "id": "backend/src/routes/booking.route.ts",
       "path": "backend/src/routes/booking.route.ts",
       "lang": "ts",
-      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; import { customAlphabet } from 'nanoid'; const router = Router(); const prisma = new PrismaClient",
+      "summary": "import { Router } from 'express'; import { PrismaClient } from '@prisma/client'; import { authenticate } from '../middleware/auth.middleware'; import { customAlphabet } from 'nanoid'; import { createBookingSchema } from '../validators/booki",
       "imports": [
         "express",
         "@prisma/client",
         "../middleware/auth.middleware",
-        "nanoid"
+        "nanoid",
+        "../validators/booking.validator"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/config.route.ts",
+      "path": "backend/src/routes/config.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express' const router = Router() router.get('/public', async (req, res) => { res.json({ // Only PUBLIC keys safe for frontend googleMapsKey : process.env.GOOGLE_MAPS_PUBLIC_KEY || process.env.REACT_APP_GOOGLE_MAPS_KE",
+      "imports": [
+        "express"
       ],
       "exports": []
     },
@@ -528,6 +547,17 @@
         "express",
         "../middleware/auth.middleware",
         "../controllers/feedback.controller"
+      ],
+      "exports": []
+    },
+    {
+      "id": "backend/src/routes/location.route.ts",
+      "path": "backend/src/routes/location.route.ts",
+      "lang": "ts",
+      "summary": "import { Router } from 'express' import { prisma } from '../lib/prisma' const router = Router(); // Serviceable areas data const SERVICE_AREAS = { LIVE: [",
+      "imports": [
+        "express",
+        "../lib/prisma"
       ],
       "exports": []
     },
@@ -567,6 +597,18 @@
       ],
       "exports": [
         "verifyRazorpaySignature"
+      ]
+    },
+    {
+      "id": "backend/src/validators/booking.validator.ts",
+      "path": "backend/src/validators/booking.validator.ts",
+      "lang": "ts",
+      "summary": "import { z } from 'zod' export const createBookingSchema = z.object({ customerName : z.string().min(2).max(100).trim(), customerPhone : z.string() .regex(/^[6-9]\\d{9}$/, 'Invalid Indian phone number'),",
+      "imports": [
+        "zod"
+      ],
+      "exports": [
+        "createBookingSchema"
       ]
     },
     {
@@ -667,19 +709,6 @@
       "id": "frontend/src/components/Footer.tsx",
       "path": "frontend/src/components/Footer.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES, SERVICE_AREAS } from '../data/services'; import Logo from './Logo'; const Footer: React.FC = () => { const scrollTo = (id: string) => {",
-      "imports": [
-        "react",
-        "react-router-dom",
-        "../data/services",
-        "./Logo"
-      ],
-      "exports": []
-    },
-    {
-      "id": "frontend/src/components/Footer_new.tsx",
-      "path": "frontend/src/components/Footer_new.tsx",
-      "lang": "tsx",
       "summary": "import React from 'react'; import { Link } from 'react-router-dom'; import { SERVICES } from '../data/services'; import Logo from './Logo'; const footerAreas = [ // LIVE cities — with star badge",
       "imports": [
         "react",
@@ -753,6 +782,20 @@
       "exports": []
     },
     {
+      "id": "frontend/src/components/LocationGate.tsx",
+      "path": "frontend/src/components/LocationGate.tsx",
+      "lang": "tsx",
+      "summary": "import { useEffect, useState } from 'react' import { useNavigate } from 'react-router-dom' import api from '../lib/axiosInstance' type LocationStatus = | 'checking' | 'serviceable'",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../lib/axiosInstance"
+      ],
+      "exports": [
+        "LocationGate"
+      ]
+    },
+    {
       "id": "frontend/src/components/LoginPromptModal.tsx",
       "path": "frontend/src/components/LoginPromptModal.tsx",
       "lang": "tsx",
@@ -824,11 +867,12 @@
       "id": "frontend/src/components/ServiceAreas.tsx",
       "path": "frontend/src/components/ServiceAreas.tsx",
       "lang": "tsx",
-      "summary": "import React from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; const CITIES_DATA = [ { name: 'Bengaluru, Karnataka',",
+      "summary": "import React from 'react'; import { motion } from 'framer-motion'; import { useNavigate } from 'react-router-dom'; import SparkCleanMap from './SparkCleanMap'; const CITIES_DATA = [ {",
       "imports": [
         "react",
         "framer-motion",
-        "react-router-dom"
+        "react-router-dom",
+        "./SparkCleanMap"
       ],
       "exports": []
     },
@@ -847,6 +891,19 @@
         "./LoginPromptModal"
       ],
       "exports": []
+    },
+    {
+      "id": "frontend/src/components/SparkCleanMap.tsx",
+      "path": "frontend/src/components/SparkCleanMap.tsx",
+      "lang": "tsx",
+      "summary": "import { GoogleMap, useJsApiLoader, Marker, InfoWindow, } from '@react-google-maps/api'",
+      "imports": [
+        "react",
+        "@react-google-maps/api"
+      ],
+      "exports": [
+        "SparkCleanMap"
+      ]
     },
     {
       "id": "frontend/src/components/StarRating.tsx",
@@ -1033,7 +1090,8 @@
         "../context/CartContext",
         "react-hot-toast",
         "../lib/axiosInstance",
-        "../data/services"
+        "../data/services",
+        "@react-google-maps/api"
       ],
       "exports": []
     },
@@ -1195,6 +1253,16 @@
       "type": "imports"
     },
     {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/location.route.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/server.ts",
+      "to": "backend/src/routes/config.route.ts",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/App.test.tsx",
       "to": "frontend/src/App.tsx",
       "type": "imports"
@@ -1255,6 +1323,11 @@
       "type": "imports"
     },
     {
+      "from": "frontend/src/App.tsx",
+      "to": "frontend/src/components/LocationGate.tsx",
+      "type": "imports"
+    },
+    {
       "from": "frontend/src/index.tsx",
       "to": "frontend/src/App.tsx",
       "type": "imports"
@@ -1302,6 +1375,11 @@
     {
       "from": "backend/src/routes/booking.route.ts",
       "to": "backend/src/middleware/auth.middleware.ts",
+      "type": "imports"
+    },
+    {
+      "from": "backend/src/routes/booking.route.ts",
+      "to": "backend/src/validators/booking.validator.ts",
       "type": "imports"
     },
     {
@@ -1380,16 +1458,6 @@
       "type": "imports"
     },
     {
-      "from": "frontend/src/components/Footer_new.tsx",
-      "to": "frontend/src/data/services.ts",
-      "type": "imports"
-    },
-    {
-      "from": "frontend/src/components/Footer_new.tsx",
-      "to": "frontend/src/components/Logo.tsx",
-      "type": "imports"
-    },
-    {
       "from": "frontend/src/components/Hero.tsx",
       "to": "frontend/src/components/LoginPromptModal.tsx",
       "type": "imports"
@@ -1402,6 +1470,11 @@
     {
       "from": "frontend/src/components/LiveTrackingMap.tsx",
       "to": "frontend/src/lib/mapIcons.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/LocationGate.tsx",
+      "to": "frontend/src/lib/axiosInstance.ts",
       "type": "imports"
     },
     {
@@ -1422,6 +1495,11 @@
     {
       "from": "frontend/src/components/ServiceAreaMap.tsx",
       "to": "frontend/src/lib/mapConfig.ts",
+      "type": "imports"
+    },
+    {
+      "from": "frontend/src/components/ServiceAreas.tsx",
+      "to": "frontend/src/components/SparkCleanMap.tsx",
       "type": "imports"
     },
     {

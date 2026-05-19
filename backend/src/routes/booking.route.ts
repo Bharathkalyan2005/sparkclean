@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate } from '../middleware/auth.middleware';
 import { customAlphabet } from 'nanoid';
+import { createBookingSchema } from '../validators/booking.validator';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -54,6 +55,17 @@ async function generateBookingNumber(): Promise<string> {
 
 router.post('/', authenticate, async (req, res) => {
   try {
+    const validation = createBookingSchema.safeParse(req.body)
+    if (!validation.success) {
+      return res.status(400).json({
+        error : 'Validation failed',
+        issues: validation.error.issues.map(i => ({
+          field  : i.path.join('.'),
+          message: i.message,
+        }))
+      })
+    }
+
     console.log('=== BOOKING REQUEST BODY ===');
     console.log(JSON.stringify(req.body, null, 2));
 

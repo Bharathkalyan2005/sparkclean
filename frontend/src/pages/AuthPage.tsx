@@ -15,6 +15,11 @@ const loginSchema = z.object({
   password: z.string().min(1, "Password is required")
 });
 
+const forgotSchema = z.object({
+  email: z.string().email("Invalid email format"),
+  newPassword: z.string().min(8, "Password must be at least 8 characters")
+});
+
 const signupSchema = z.object({
   fullName: z.string().min(2, "Name is required"),
   phone: z.string().min(10, "Invalid phone (min 10 digits)"),
@@ -29,6 +34,7 @@ const signupSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 type SignupFormValues = z.infer<typeof signupSchema>;
+type ForgotFormValues = z.infer<typeof forgotSchema>;
 
 const Particles = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
@@ -72,6 +78,7 @@ const PasswordStrength = ({ password }: { password?: string }) => {
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgot, setIsForgot] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +109,11 @@ const AuthPage = () => {
   const signupForm = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: { fullName: '', phone: '', email: '', password: '', confirmPassword: '', terms: false }
+  });
+
+  const forgotForm = useForm<ForgotFormValues>({
+    resolver: zodResolver(forgotSchema),
+    defaultValues: { email: '', newPassword: '' }
   });
 
   const onLogin = async (data: LoginFormValues) => {
@@ -182,19 +194,21 @@ const AuthPage = () => {
 
   const handleForgotPass = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const email = loginForm.getValues('email');
-    if (!email) {
-      loginForm.setError('email', { message: "Enter your email first" });
-      return;
+    setIsForgot(true);
+  };
+
+  const onForgotSubmit = async (data: ForgotFormValues) => {
+    setIsLoading(true);
+    try {
+      await api.post(`/auth/reset-password`, { email: data.email, newPassword: data.newPassword });
+      toast.success("Password reset successful! Please login.", { style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' } });
+      setIsForgot(false);
+      forgotForm.reset();
+    } catch (err: any) {
+      toast.error(err.response?.data?.error || "Reset failed");
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Stub for Local API
-    toast.error("Forgot password API endpoint not fully connected yet.");
-    // if (error) {
-    //   toast.error(error.message);
-    // } else {
-    //   toast.success("Reset link sent to your email", { style: { background: '#0AFFE6', color: '#000' } });
-    // }
   };
 
   // Form input classes
@@ -300,14 +314,53 @@ const AuthPage = () => {
             </div>
 
             <h2 className="text-3xl font-['Instrument_Serif'] text-white text-center mb-1">
-              {isLogin ? 'Welcome back' : 'Create account'}
+              {isForgot ? 'Reset password' : isLogin ? 'Welcome back' : 'Create account'}
             </h2>
             <p className="text-[#A0A0A0] text-sm text-center mb-8">
-              {isLogin ? 'Book your next clean in seconds' : 'Join 500+ India homeowners'}
+              {isForgot ? 'Enter your email and a new password' : isLogin ? 'Book your next clean in seconds' : 'Join 500+ India homeowners'}
             </p>
 
             <AnimatePresence mode="wait">
-              {isLogin ? (
+              {isForgot ? (
+                <motion.div
+                  key="forgot"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <form onSubmit={forgotForm.handleSubmit(onForgotSubmit)} className="space-y-4">
+                    <div>
+                      <div className="relative">
+                        <Mail className={iconClass} />
+                        <input {...forgotForm.register('email')} type="email" placeholder="your@email.com" className={inputClass} />
+                      </div>
+                      {forgotForm.formState.errors.email && <p className={errorClass}>{forgotForm.formState.errors.email.message}</p>}
+                    </div>
+                    <div>
+                      <div className="relative">
+                        <Lock className={iconClass} />
+                        <input {...forgotForm.register('newPassword')} type={showPass ? "text" : "password"} placeholder="New Password" className={inputClass} />
+                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors">
+                          {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      <PasswordStrength password={forgotForm.watch('newPassword')} />
+                      {forgotForm.formState.errors.newPassword && <p className={errorClass}>{forgotForm.formState.errors.newPassword.message}</p>}
+                    </div>
+                    <button 
+                      type="submit" 
+                      disabled={isLoading}
+                      className="w-full h-[52px] mt-6 bg-[#0AFFE6] text-black font-semibold rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(10,255,230,0.4)] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {isLoading ? <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" /> : "Reset Password"}
+                    </button>
+                    <button type="button" onClick={() => setIsForgot(false)} className="w-full text-[#A0A0A0] text-sm hover:text-white mt-4 transition-colors">
+                      Back to Login
+                    </button>
+                  </form>
+                </motion.div>
+              ) : isLogin ? (
                 <motion.div
                   key="login"
                   initial={{ opacity: 0, x: -20 }}

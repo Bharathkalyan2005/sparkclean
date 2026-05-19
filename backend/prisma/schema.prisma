@@ -95,6 +95,7 @@ model Service {
   name            String
   description     String?
   price           Decimal  @db.Decimal(10, 2)
+  originalPrice   Decimal? @db.Decimal(10, 2)
   unit            String   @default("per visit")
   category        Category
   iconName        String?
@@ -102,6 +103,7 @@ model Service {
   isActive        Boolean  @default(true)
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Booking {
