@@ -280,7 +280,7 @@ const ServicesSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedService, setSelectedService] = useState<any>(null);
   const [services, setServices] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   React.useEffect(() => {
     import('../lib/axiosInstance').then(({ default: api }) => {
