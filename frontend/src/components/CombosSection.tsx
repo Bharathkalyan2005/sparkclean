@@ -189,7 +189,7 @@ const ComboCard: React.FC<{ combo: ComboCardProps; index: number }> = ({ combo, 
 
 const CombosSection: React.FC = () => {
   const [combos, setCombos] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     import('../lib/axiosInstance').then(({ default: api }) => {
