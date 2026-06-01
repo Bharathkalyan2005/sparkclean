@@ -57,7 +57,7 @@ export default function SuccessPage() {
     // Try ALL possible sources for booking number
     // Priority: URL param -> localStorage -> API fetch
 
-    // Source 1: URL param ?number=SC-XXXX
+    // Source 1: URL param ?number=SH-XXXX
     const numberFromUrl = searchParams.get('number')
 
     // Source 2: localStorage
@@ -263,7 +263,7 @@ export default function SuccessPage() {
             <a
               href={`https://wa.me/919392420643?text=${
                 encodeURIComponent(
-                  `Hi SparkClean! My booking ID is ${
+                  `Hi SuciHome! My booking ID is ${
                     bookingNumber && !bookingNumber.includes('Check') ? bookingNumber : 'just created'
                   }. I need help.`
                 )

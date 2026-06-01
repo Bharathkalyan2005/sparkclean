@@ -1,4 +1,4 @@
-﻿import express, { Router } from 'express';
+import express, { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticate } from '../middleware/auth.middleware';
 import { createRazorpayOrder, verifyRazorpaySignature } from '../services/paymentService';
@@ -92,20 +92,20 @@ router.post('/verify', authenticate, async (req: any, res: any) => {
         .join(', ');
 
       const waMessage = encodeURIComponent(
-`Hi ${booking.customerName}! ✦
+`Hi ${booking.customerName}! ?
 
-Your SparkClean booking is CONFIRMED!
+Your SuciHome booking is CONFIRMED!
 
-🆔 Booking ID : ${booking.bookingNumber}
-📅 Date       : ${new Date(booking.scheduledDate).toLocaleDateString('en-IN')}
-⏰ Time       : ${booking.scheduledTime}  
-📍 Area       : ${booking.area}
-💰 Total      : ₹${booking.totalAmount}
+?? Booking ID : ${booking.bookingNumber}
+?? Date       : ${new Date(booking.scheduledDate).toLocaleDateString('en-IN')}
+? Time       : ${booking.scheduledTime}  
+?? Area       : ${booking.area}
+?? Total      : ?${booking.totalAmount}
 
 Save your Booking ID to track anytime:
-🔗 sparkclean.in/track?id=${booking.bookingNumber}
+?? sucihome.in/track?id=${booking.bookingNumber}
 
-Questions? Call: 9392420643 ✦`);
+Questions? Call: 9392420643 ?`);
 
       // Log WhatsApp link (send via Twilio in production)
       console.log(

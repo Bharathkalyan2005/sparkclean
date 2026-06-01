@@ -64,7 +64,7 @@ export default function AdminPage() {
   const [adminUser, setAdminUser] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
     if (!token) {
       navigate('/auth?redirect=/sparkadmin');
       return;
@@ -99,7 +99,7 @@ export default function AdminPage() {
   const activeTab = currentPath === 'sparkadmin' ? 'dashboard' : currentPath;
 
   useEffect(() => {
-    const token = localStorage.getItem('sparkclean_token');
+    const token = localStorage.getItem('sucihome_token');
     if (token) {
       try {
         const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -200,7 +200,7 @@ export default function AdminPage() {
   }, [activeTab]);
 
   const handleLogout = () => {
-    localStorage.removeItem('sparkclean_token');
+    localStorage.removeItem('sucihome_token');
     navigate('/auth');
   };
 
@@ -373,7 +373,7 @@ export default function AdminPage() {
         <div style={{ padding: '24px', borderBottom: `1px solid ${ADMIN_COLORS.border}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Sparkles color={ADMIN_COLORS.accent} size={24} />
-            <span style={{ fontSize: '20px', fontWeight: 'bold', letterSpacing: '-0.5px' }}>SparkClean</span>
+            <span style={{ fontSize: '20px', fontWeight: 'bold', letterSpacing: '-0.5px' }}>SuciHome</span>
           </div>
           <p style={{ color: ADMIN_COLORS.muted, fontSize: '12px', marginTop: '4px' }}>Admin Panel</p>
         </div>

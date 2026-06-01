@@ -4,7 +4,7 @@ import Hero from '../components/Hero';
 import ServicesSection from '../components/ServicesSection';
 import CombosSection from '../components/CombosSection';
 import HowItWorks from '../components/HowItWorks';
-import WhySparkClean from '../components/WhySparkClean';
+import WhySuciHome from '../components/WhySuciHome';
 import ServiceAreas from '../components/ServiceAreas';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
         <ServicesSection />
         <CombosSection />
         <HowItWorks />
-        <WhySparkClean />
+        <WhySuciHome />
         <ServiceAreas />
         <Testimonials />
         <Contact />
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/919392420643?text=Hi%20SparkClean%2C%20I%20want%20to%20book%20a%20service"
+        href="https://wa.me/919392420643?text=Hi%20SuciHome%2C%20I%20want%20to%20book%20a%20service"
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-btn"

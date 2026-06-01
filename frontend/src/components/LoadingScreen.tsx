@@ -26,7 +26,7 @@ const LoadingScreen: React.FC = () => {
             className="flex flex-col items-center gap-4"
           >
             <div className="relative">
-              <img src="/logo-primary-cropped.png" alt="SparkClean" className="w-16 h-auto relative z-10 animate-pulse" />
+              <img src="/logo-primary-cropped.png" alt="SuciHome" className="w-16 h-auto relative z-10 animate-pulse" />
               {/* Shimmer ring */}
               <div
                 className="absolute inset-0 rounded-full border-2 border-teal-400/30 animate-spin"
@@ -35,7 +35,7 @@ const LoadingScreen: React.FC = () => {
             </div>
 
             <div className="text-center mt-2">
-              <h1 className="font-syne font-bold text-2xl text-white">SparkClean</h1>
+              <h1 className="font-syne font-bold text-2xl text-white">SuciHome</h1>
               <p className="font-dm text-sm mt-0.5" style={{ color: '#00CDB7' }}>India's Cleanest Choice</p>
             </div>
 

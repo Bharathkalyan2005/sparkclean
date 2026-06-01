@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com',
+  baseURL: process.env.REACT_APP_API_URL || 'https://sucihome-x3ze.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   }
@@ -10,7 +10,7 @@ const api = axios.create({
 // Auto-inject token on every request
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
+    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -27,7 +27,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       console.error('401 Unauthorized — clearing token');
-      localStorage.removeItem('sparkclean_token');
+      localStorage.removeItem('sucihome_token');
       localStorage.removeItem('token');
       localStorage.removeItem('authToken');
       window.location.href = '/auth';

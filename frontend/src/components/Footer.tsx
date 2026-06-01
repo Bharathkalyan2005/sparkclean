@@ -196,7 +196,7 @@ const Footer: React.FC = () => {
       <div className="py-5" style={{ borderTop: '1px solid rgba(10,255,230,0.1)' }}>
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="font-dm text-sm text-center md:text-left" style={{ color: '#606060' }}>
-            Serving India with ❤️ | © 2026 SparkClean by VRC Pvt Ltd
+            Serving India with ❤️ | © 2026 SuciHome by VRC Pvt Ltd
           </p>
           <p className="font-dm text-xs" style={{ color: '#606060' }}>
             All rights reserved. GST &amp; business compliant.

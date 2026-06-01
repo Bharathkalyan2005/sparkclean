@@ -95,7 +95,7 @@ const Hero: React.FC = () => {
           <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
             <button
               onClick={() => {
-                const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+                const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
                 if (!token) {
                   setShowLoginModal(true);
                   return;

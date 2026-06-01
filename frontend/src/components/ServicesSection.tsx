@@ -100,7 +100,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
     if (!token) {
       setShowLoginModal(true);
       return;

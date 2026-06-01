@@ -54,7 +54,7 @@ const LoginPromptModal = ({
           marginBottom : '28px',
         }}>
           Please login or create an account
-          to book SparkClean services
+          to book SuciHome services
         </p>
 
         {/* Login Button */}
@@ -76,7 +76,7 @@ const LoginPromptModal = ({
             marginBottom : '12px',
           }}
         >
-          ✦ Login to SparkClean
+          ✦ Login to SuciHome
         </button>
 
         {/* Sign Up Button */}

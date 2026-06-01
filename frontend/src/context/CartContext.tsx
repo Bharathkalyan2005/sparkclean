@@ -21,13 +21,13 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('sparkclean-cart');
+    const saved = localStorage.getItem('sucihome-cart');
     return saved ? JSON.parse(saved) : [];
   });
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('sparkclean-cart', JSON.stringify(items));
+    localStorage.setItem('sucihome-cart', JSON.stringify(items));
   }, [items]);
 
   const addItem = (service: Service, quantity: number = 1) => {
@@ -61,7 +61,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const clearCart = () => {
     setItems([]);
-    localStorage.removeItem('sparkclean-cart');
+    localStorage.removeItem('sucihome-cart');
   };
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);

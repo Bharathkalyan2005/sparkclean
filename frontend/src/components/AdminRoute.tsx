@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = localStorage.getItem('sparkclean_token');
+  const token = localStorage.getItem('sucihome_token');
   
   if (!token) {
     return <Navigate to="/auth?redirect=/sparkadmin"/>;
@@ -19,7 +19,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
     const isExpired = decoded.exp * 1000 < Date.now();
     if (isExpired) {
-      localStorage.removeItem('sparkclean_token');
+      localStorage.removeItem('sucihome_token');
       return <Navigate to="/auth?redirect=/sparkadmin"/>;
     }
 

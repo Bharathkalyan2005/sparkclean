@@ -72,7 +72,7 @@ router.post('/check', async (req, res) => {
       return res.json({
         serviceable  : false,
         status       : 'OUTSIDE_INDIA',
-        message      : 'SparkClean currently operates in India only.',
+        message      : 'SuciHome currently operates in India only.',
         nearestArea  : null,
         comingSoon   : false,
       })

@@ -82,7 +82,7 @@ export default function LiveTrackingMap({
         {cleanerLat && cleanerLng && (
           <Marker position={[cleanerLat, cleanerLng]} icon={cleanerPin}>
             <Popup className="dark-popup">
-              <strong className="text-black">Spark Cleaner</strong>
+              <strong className="text-black">Suci Homeer</strong>
               <br />
               <span className="text-gray-800 tracking-wider">ETA: {eta || 'Arriving Soon'}</span>
             </Popup>

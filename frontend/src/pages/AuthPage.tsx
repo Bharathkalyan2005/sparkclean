@@ -126,7 +126,7 @@ const AuthPage = () => {
 
       const result = response.data;
       
-      localStorage.setItem('sparkclean_token', result.token);
+      localStorage.setItem('sucihome_token', result.token);
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
       
@@ -166,7 +166,7 @@ const AuthPage = () => {
 
       // If backend actually logs in after register, save token. Otherwise just show success.
       if (result.token) {
-        localStorage.setItem('sparkclean_token', result.token);
+        localStorage.setItem('sucihome_token', result.token);
         localStorage.setItem('token', result.token);
         localStorage.setItem('user', JSON.stringify(result.user));
       }
@@ -317,7 +317,7 @@ const AuthPage = () => {
               {isForgot ? 'Reset password' : isLogin ? 'Welcome back' : 'Create account'}
             </h2>
             <p className="text-[#A0A0A0] text-sm text-center mb-8">
-              {isForgot ? 'Enter your email and a new password' : isLogin ? 'Book your next clean in seconds' : 'Join 500+ India homeowners'}
+              {isForgot ? 'Enter your email and a new password' : isLogin ? 'Book your next clean in seconds' : 'Join 500+ happy homeowners'}
             </p>
 
             <AnimatePresence mode="wait">
@@ -400,7 +400,7 @@ const AuthPage = () => {
                       {isLoading ? (
                         <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                       ) : (
-                        <><span className="text-black group-hover:animate-pulse">✦</span> Login to SparkClean</>
+                        <><span className="text-black group-hover:animate-pulse">✦</span> Login to SuciHome</>
                       )}
                     </button>
                   </form>

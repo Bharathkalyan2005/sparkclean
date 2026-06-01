@@ -20,7 +20,7 @@ const TrackingPage: React.FC = () => {
 
     // Reject if too short
     if (trackQuery.length < 5) {
-      setError('Please enter a valid Booking ID (e.g. SC-20260501-XXXXX)');
+      setError('Please enter a valid Booking ID (e.g. SH-20260501-XXXXX)');
       return;
     }
 
@@ -30,7 +30,7 @@ const TrackingPage: React.FC = () => {
     setNotFound(false);
 
     const BASE_URL = process.env.REACT_APP_API_URL 
-      || 'https://sparkclean-x3ze.onrender.com';
+      || 'https://sucihome-x3ze.onrender.com';
 
     try {
       const isPhone = /^\d{10}$/.test(trackQuery);
@@ -108,7 +108,7 @@ const TrackingPage: React.FC = () => {
   // Server health check & wake-up
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_API_URL 
-      || 'https://sparkclean-x3ze.onrender.com';
+      || 'https://sucihome-x3ze.onrender.com';
 
     // Silent wake-up ping
     fetch(`${BASE_URL}/api/health`)
@@ -239,7 +239,7 @@ const TrackingPage: React.FC = () => {
               setNotFound(false)
             }}
             onKeyDown  ={e => e.key === 'Enter' && handleTrack()}
-            placeholder="e.g. SC-20260501-MRRHU4 or 9876543210"
+            placeholder="e.g. SH-20260501-MRRHU4 or 9876543210"
             autoFocus
             style={{
               flex       : 1,
@@ -557,7 +557,7 @@ const TrackingPage: React.FC = () => {
 
             {/* WhatsApp Support */}
             <a 
-              href={`https://wa.me/919392420643?text=Hi SparkClean! My booking ID is ${booking.bookingNumber}. I need help.`}
+              href={`https://wa.me/919392420643?text=Hi SuciHome! My booking ID is ${booking.bookingNumber}. I need help.`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

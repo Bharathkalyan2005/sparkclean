@@ -23,7 +23,7 @@ const FeedbackPage: React.FC = () => {
 
   // Try to pre-fill if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem('sparkclean_token');
+    const token = localStorage.getItem('sucihome_token');
     if (token) {
       try {
         const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -102,7 +102,7 @@ const FeedbackPage: React.FC = () => {
           className="text-center mb-10"
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-3">Share Your Experience</h1>
-          <p style={{ color: '#A0A0A0' }}>Help others know about SparkClean</p>
+          <p style={{ color: '#A0A0A0' }}>Help others know about SuciHome</p>
         </motion.div>
 
         <motion.form

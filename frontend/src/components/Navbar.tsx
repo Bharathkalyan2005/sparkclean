@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     }
   };
 
-  const token = localStorage.getItem('sparkclean_token');
+  const token = localStorage.getItem('sucihome_token');
   const decoded = token ? JSON.parse(atob(token.split('.')[1])) : null;
   const isAdmin = decoded?.role === 'ADMIN';
 
@@ -180,7 +180,7 @@ const Navbar: React.FC = () => {
           
           <button
             onClick={() => {
-              const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token')
+              const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token')
               if (!token) {
                 toast.error('Please login to book a service')
                 navigate('/auth?redirect=/book')
@@ -268,7 +268,7 @@ const Navbar: React.FC = () => {
             <button
               onClick={() => {
                 setMenuOpen(false);
-                const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token')
+                const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token')
                 if (!token) {
                   toast.error('Please login to book a service')
                   navigate('/auth?redirect=/book')

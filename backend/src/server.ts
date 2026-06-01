@@ -92,7 +92,7 @@ app.use('/api/location', locationRoutes);
 app.use('/api/config', configRoutes);
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'SparkClean API', version: '1.0.0' });
+  res.json({ status: 'ok', service: 'SuciHome API', version: '1.0.0' });
 });
 
 // Handle 404 routes

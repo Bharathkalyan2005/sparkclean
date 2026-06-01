@@ -82,7 +82,7 @@ function App() {
             <LocationGate isAdmin={
               (() => {
                 try {
-                  const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
+                  const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
                   if (!token) return false;
                   const decoded = JSON.parse(atob(token.split('.')[1]));
                   return decoded.role === 'ADMIN';

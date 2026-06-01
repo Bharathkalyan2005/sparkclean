@@ -149,7 +149,7 @@ const Testimonials: React.FC = () => {
         {/* CTA section */}
         <div style={{ textAlign:'center', padding:'40px 20px' }}>
           <p style={{ color:'#A0A0A0', fontSize:'15px' }}>
-            Used SparkClean before?
+            Used SuciHome before?
           </p>
           <h3 style={{ color:'#FFFFFF', fontSize:'24px', margin:'8px 0' }}>
             Share your experience ✦

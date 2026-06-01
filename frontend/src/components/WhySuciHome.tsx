@@ -9,7 +9,7 @@ const features = [
       </svg>
     ),
     title: 'Trained & Verified Staff',
-    desc: 'All cleaners are background-checked, trained, and certified before joining SparkClean.',
+    desc: 'All cleaners are background-checked, trained, and certified before joining SuciHome.',
     color: '#0AFFE6',
   },
   {
@@ -65,7 +65,7 @@ const features = [
   },
 ];
 
-const WhySparkClean: React.FC = () => {
+const WhySuciHome: React.FC = () => {
   return (
     <section className="py-24 relative overflow-hidden section-black">
       <div className="absolute inset-0" style={{
@@ -83,10 +83,10 @@ const WhySparkClean: React.FC = () => {
         >
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4"
             style={{ background: 'rgba(10,255,230,0.1)', border: '1px solid rgba(10,255,230,0.3)' }}>
-            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>Why SparkClean</span>
+            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>Why SuciHome</span>
           </div>
           <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
-            The SparkClean <span className="teal-gradient-text">Difference</span>
+            The SuciHome <span className="teal-gradient-text">Difference</span>
           </h2>
           <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#A0A0A0' }}>
             We don't just clean your home — we care for it like our own.
@@ -123,4 +123,4 @@ const WhySparkClean: React.FC = () => {
   );
 };
 
-export default WhySparkClean;
+export default WhySuciHome;

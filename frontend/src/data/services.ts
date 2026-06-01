@@ -19,7 +19,7 @@ export const TESTIMONIALS = [
     customer_name: 'Priya Lakshmi',
     area: 'MVP Colony',
     rating: 5,
-    review_text: 'SparkClean transformed my home! The team was professional and thorough. My kitchen has never been this clean. Highly recommend!',
+    review_text: 'SuciHome transformed my home! The team was professional and thorough. My kitchen has never been this clean. Highly recommend!',
   },
   {
     id: 't2',

@@ -30,7 +30,7 @@ async function generateBookingNumber(): Promise<string> {
     const dateStr  = `${year}${month}${day}`;  // 20260518
     const randomId = nanoid();                 // A3K9P2
     
-    const bookingNumber = `SC-${dateStr}-${randomId}`;
+    const bookingNumber = `SH-${dateStr}-${randomId}`;
     
     // Check uniqueness in database
     const existing = await prisma.booking.findUnique({
@@ -48,7 +48,7 @@ async function generateBookingNumber(): Promise<string> {
   
   // Fallback
   const timestamp = Date.now().toString(36).toUpperCase();
-  const fallback  = `SC-FB-${timestamp}`;
+  const fallback  = `SH-FB-${timestamp}`;
   console.warn(`⚠️ Using fallback ID: ${fallback}`);
   return fallback;
 }

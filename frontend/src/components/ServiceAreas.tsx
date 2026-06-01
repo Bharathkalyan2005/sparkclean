@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import SparkCleanMap from './SparkCleanMap';
+import SuciHomeMap from './SuciHomeMap';
 
 const CITIES_DATA = [
   {
@@ -149,7 +149,7 @@ const ServiceAreas: React.FC = () => {
             overflow     : 'hidden',
             boxShadow    : '0 0 40px rgba(10,255,230,0.05)',
           }}>
-            <SparkCleanMap />
+            <SuciHomeMap />
           </div>
         </div>
         {/* --- MAP END --- */}
@@ -232,7 +232,7 @@ const ServiceAreas: React.FC = () => {
                 </button>
               ) : (
                 <a
-                  href={`https://wa.me/919392420643?text=${encodeURIComponent(`Hi SparkClean! Notify me when you launch in ${city.name.split(',')[0]}`)}`}
+                  href={`https://wa.me/919392420643?text=${encodeURIComponent(`Hi SuciHome! Notify me when you launch in ${city.name.split(',')[0]}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-8 py-3 rounded-xl font-dm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white"

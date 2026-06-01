@@ -80,7 +80,7 @@ const locations = [
   },
 ]
 
-// Dark map style matching SparkClean theme
+// Dark map style matching SuciHome theme
 const darkMapStyle = [
   { elementType: 'geometry',
     stylers: [{ color: '#0a0a0a' }] },
@@ -125,7 +125,7 @@ const defaultCenter = { lat: 20.5937, lng: 78.9629 }
 
 const libraries: any = ['places'];
 
-export default function SparkCleanMap() {
+export default function SuciHomeMap() {
   const [selectedPin, setSelectedPin] = 
     useState<typeof locations[0] | null>(null)
   
@@ -303,7 +303,7 @@ export default function SparkCleanMap() {
               </a>
             ) : (
               <a
-                href={`https://wa.me/919392420643?text=Hi! Notify me when SparkClean launches in ${selectedPin.city}`}
+                href={`https://wa.me/919392420643?text=Hi! Notify me when SuciHome launches in ${selectedPin.city}`}
                 target="_blank"
                 rel="noreferrer"
                 style={{

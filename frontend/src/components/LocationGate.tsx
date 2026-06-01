@@ -181,7 +181,7 @@ export default function LocationGate({
             lineHeight : '1.6',
             marginBottom: '8px',
           }}>
-            SparkClean is currently live in
+            SuciHome is currently live in
             <span style={{
               color      : '#0AFFE6',
               fontWeight : '600',
@@ -270,7 +270,7 @@ export default function LocationGate({
           <a
             href={`https://wa.me/919392420643?text=${
               encodeURIComponent(
-                'Hi SparkClean! I want to be notified when you launch in my city. Please add me to the waitlist.'
+                'Hi SuciHome! I want to be notified when you launch in my city. Please add me to the waitlist.'
               )
             }`}
             target="_blank"
@@ -345,7 +345,7 @@ export default function LocationGate({
             fontFamily : 'Instrument Serif, serif',
             marginBottom: '12px',
           }}>
-            SparkClean is India-only
+            SuciHome is India-only
             for now!
           </h1>
 
@@ -363,7 +363,7 @@ export default function LocationGate({
           <a
             href={`https://wa.me/919392420643?text=${
               encodeURIComponent(
-                'Hi SparkClean! I am accessing from outside India. Please notify me when you expand internationally.'
+                'Hi SuciHome! I am accessing from outside India. Please notify me when you expand internationally.'
               )
             }`}
             target="_blank"

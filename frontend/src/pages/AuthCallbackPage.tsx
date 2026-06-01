@@ -22,9 +22,9 @@ export default function AuthCallbackPage() {
 
     if (token) {
       // Save token to localStorage
-      localStorage.setItem('sparkclean_token', token)
+      localStorage.setItem('sucihome_token', token)
       localStorage.setItem('token', token)
-      if (name) localStorage.setItem('sparkclean_name', name)
+      if (name) localStorage.setItem('sucihome_name', name)
 
       try {
         const decoded = JSON.parse(atob(token.split('.')[1]));

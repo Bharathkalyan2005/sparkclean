@@ -15,9 +15,9 @@ const Logo: React.FC<LogoProps> = ({
 }) => {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <img src="/logo-primary-cropped.png" alt="SparkClean Logo" className={imageClassName} />
+      <img src="/logo-primary-cropped.png" alt="SuciHome Logo" className={imageClassName} />
       <div className="flex flex-col justify-center">
-        <span className={textClassName}>SparkClean</span>
+        <span className={textClassName}>SuciHome</span>
         {subText && <div className="text-xs font-dm -mt-0.5" style={{ color: 'rgba(10,255,230,0.8)' }}>{subText}</div>}
       </div>
     </div>

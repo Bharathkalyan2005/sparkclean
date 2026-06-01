@@ -206,7 +206,7 @@ const BookingPage: React.FC = () => {
   const { items: cartItems, clearCart } = useCart();
 
   useEffect(() => {
-    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
+    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
     if (!token) {
       toast.error('Please login to book a service');
       navigate('/auth?redirect=/book');
@@ -218,13 +218,13 @@ const BookingPage: React.FC = () => {
       const decoded = JSON.parse(atob(token.split('.')[1]));
       const isExpired = decoded.exp * 1000 < Date.now();
       if (isExpired) {
-        localStorage.removeItem('sparkclean_token');
+        localStorage.removeItem('sucihome_token');
         localStorage.removeItem('token');
         toast.error('Session expired. Please login again.');
         navigate('/auth?redirect=/book');
       }
     } catch (e) {
-      localStorage.removeItem('sparkclean_token');
+      localStorage.removeItem('sucihome_token');
       localStorage.removeItem('token');
       navigate('/auth?redirect=/book');
     }
@@ -354,7 +354,7 @@ const handlePayment = async () => {
       key         : keyId,
       amount      : amount,
       currency    : 'INR',
-      name        : 'SparkClean',
+      name        : 'SuciHome',
       description : `Booking #${bookingNumber}`,
       image       : '/logo-primary-cropped.png',
       
@@ -532,7 +532,7 @@ const handleCODBooking = async () => {
 
     // WhatsApp confirmation
     const waMsg = encodeURIComponent(
-      `Hi SparkClean! ✨ I've booked a cleaning service.\n\n` +
+      `Hi SuciHome! ✨ I've booked a cleaning service.\n\n` +
       `📋 Booking ID: ${bookingId}\n` +
       `🏠 Service: ${selectedCombo?.name || selectedServices.map(s => s.name).join(', ')}\n` +
       `📅 Date: ${formatDateDisplay(selectedDate)} at ${selectedTime}\n` +
