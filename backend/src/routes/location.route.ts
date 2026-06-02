@@ -24,6 +24,20 @@ const SERVICE_AREAS = {
     { name: 'Juhu',            city: 'Mumbai',    state: 'Maharashtra',  lat: 19.1075, lng: 72.8263, radius: 5 },
     { name: 'Borivali',        city: 'Mumbai',    state: 'Maharashtra',  lat: 19.2307, lng: 72.8567, radius: 5 },
     { name: 'Worli',           city: 'Mumbai',    state: 'Maharashtra',  lat: 19.0176, lng: 72.8178, radius: 5 },
+
+    // Visakhapatnam
+    { name: 'MVP Colony',      city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7231, lng: 83.3012, radius: 5 },
+    { name: 'Madhurawada',     city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7714, lng: 83.3733, radius: 5 },
+    { name: 'Seethammadhara',  city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7384, lng: 83.3312, radius: 5 },
+    { name: 'Dwaraka Nagar',   city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7326, lng: 83.3162, radius: 5 },
+    { name: 'Gajuwaka',        city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.6917, lng: 83.2115, radius: 5 },
+    { name: 'Rushikonda',      city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7806, lng: 83.3784, radius: 5 },
+    { name: 'Gopalapatnam',    city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7474, lng: 83.2722, radius: 5 },
+    { name: 'Kommadi',         city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7889, lng: 83.3956, radius: 5 },
+    { name: 'NAD Junction',    city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7197, lng: 83.2439, radius: 5 },
+    { name: 'Bheemunipatnam',  city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.8915, lng: 83.4507, radius: 5 },
+    { name: 'Siripuram',       city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7231, lng: 83.3178, radius: 5 },
+    { name: 'Jagadamba',       city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7203, lng: 83.3132, radius: 5 },
   ],
   COMING_SOON: [
     { name: 'Hyderabad', state: 'Telangana'     },

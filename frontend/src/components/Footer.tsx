@@ -8,6 +8,9 @@ const footerAreas = [
   { name: "Indiranagar",    city: "Bengaluru", live: true  },
   { name: "Bandra",         city: "Mumbai",    live: true  },
   { name: "Andheri",        city: "Mumbai",    live: true  },
+  // Visakhapatnam
+  { name: "MVP Colony",     city: "Visakhapatnam", live: true },
+  { name: "Madhurawada",    city: "Visakhapatnam", live: true },
   // Coming Soon
   { name: "Hyderabad",      city: "",          live: false },
   { name: "Chennai",        city: "",          live: false },

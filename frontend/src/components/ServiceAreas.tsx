@@ -17,10 +17,14 @@ const CITIES_DATA = [
     standard: ['Powai', 'Thane', 'Juhu', 'Worli']
   },
   {
-    name: 'Visakhapatnam, Andhra Pradesh',
-    isLive: false,
-    premium: [],
-    standard: ['MVP Colony', 'Madhurawada', 'Seethammadhara', 'Dwaraka Nagar']
+    name: 'Visakhapatnam (Vizag), Andhra Pradesh',
+    isLive: true,
+    premium: ['MVP Colony', 'Madhurawada'],
+    standard: [
+      'Seethammadhara', 'Dwaraka Nagar', 'Gajuwaka', 'Rushikonda',
+      'Gopalapatnam', 'Kommadi', 'NAD Junction', 'Bheemunipatnam',
+      'Siripuram', 'Jagadamba', 'Akkayyapalem', 'Tadi Konda'
+    ]
   },
   {
     name: 'Hyderabad, Telangana',
@@ -71,7 +75,7 @@ const ServiceAreas: React.FC = () => {
             We Serve Across <span className="teal-gradient-text">India</span>
           </h2>
           <p className="text-white/50 text-lg font-dm max-w-2xl mx-auto">
-            Live in Bengaluru & Mumbai — coming soon to more cities
+            Live in Bengaluru, Mumbai & Visakhapatnam — coming soon to more cities
           </p>
         </motion.div>
 

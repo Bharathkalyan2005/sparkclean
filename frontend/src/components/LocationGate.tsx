@@ -186,14 +186,20 @@ export default function LocationGate({
               color      : '#0AFFE6',
               fontWeight : '600',
             }}>
-              {' '}Bengaluru{' '}
+              {' '}Bengaluru,{' '}
+            </span>
+            <span style={{
+              color      : '#0AFFE6',
+              fontWeight : '600',
+            }}>
+              Mumbai{' '}
             </span>
             and
             <span style={{
               color      : '#0AFFE6',
               fontWeight : '600',
             }}>
-              {' '}Mumbai
+              {' '}Visakhapatnam
             </span>
           </p>
 
@@ -251,7 +257,7 @@ export default function LocationGate({
           }}>
             {[
               'Hyderabad', 'Chennai',
-              'Delhi NCR', 'Pune', 'Kolkata'
+              'Delhi NCR', 'Pune'
             ].map(city => (
               <span key={city} style={{
                 background   : 'rgba(255,255,255,0.05)',

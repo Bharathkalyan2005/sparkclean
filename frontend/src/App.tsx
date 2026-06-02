@@ -14,6 +14,7 @@ import TrackingPage from './pages/TrackingPage';
 import FeedbackPage from './pages/FeedbackPage';
 import AdminRoute from './components/AdminRoute';
 import LocationGate from './components/LocationGate';
+import LaunchBanner from './components/LaunchBanner';
 // @ts-ignore
 import './index.css';
 
@@ -54,6 +55,7 @@ function App() {
       <Router>
         <CartProvider>
         <LoadingScreen />
+        <LaunchBanner />
         <Toaster
           position="top-center"
           toastOptions={{

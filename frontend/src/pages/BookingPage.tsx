@@ -43,6 +43,20 @@ const areaCoordinates: Record<string, {
   'Worli'          : { lat: 19.0176, lng: 72.8178, city: 'Mumbai' },
   'Malad'          : { lat: 19.1874, lng: 72.8484, city: 'Mumbai' },
   'Kandivali'      : { lat: 19.2043, lng: 72.8493, city: 'Mumbai' },
+
+  // ── VISAKHAPATNAM (VIZAG) ──
+  'MVP Colony'     : { lat: 17.7231, lng: 83.3012, city: 'Visakhapatnam' },
+  'Madhurawada'    : { lat: 17.7714, lng: 83.3733, city: 'Visakhapatnam' },
+  'Seethammadhara' : { lat: 17.7384, lng: 83.3312, city: 'Visakhapatnam' },
+  'Dwaraka Nagar'  : { lat: 17.7326, lng: 83.3162, city: 'Visakhapatnam' },
+  'Gajuwaka'       : { lat: 17.6917, lng: 83.2115, city: 'Visakhapatnam' },
+  'Rushikonda'     : { lat: 17.7806, lng: 83.3784, city: 'Visakhapatnam' },
+  'Gopalapatnam'   : { lat: 17.7474, lng: 83.2722, city: 'Visakhapatnam' },
+  'Kommadi'        : { lat: 17.7889, lng: 83.3956, city: 'Visakhapatnam' },
+  'NAD Junction'   : { lat: 17.7197, lng: 83.2439, city: 'Visakhapatnam' },
+  'Bheemunipatnam' : { lat: 17.8915, lng: 83.4507, city: 'Visakhapatnam' },
+  'Siripuram'      : { lat: 17.7231, lng: 83.3178, city: 'Visakhapatnam' },
+  'Jagadamba'      : { lat: 17.7203, lng: 83.3132, city: 'Visakhapatnam' },
 };
 
 // Dark map style
@@ -198,6 +212,20 @@ const areas = [
   { name: "Worli",           city: "Mumbai",    premium: false },
   { name: "Malad",           city: "Mumbai",    premium: false },
   { name: "Kandivali",       city: "Mumbai",    premium: false },
+
+  // ── VISAKHAPATNAM (VIZAG) ──
+  { name: "MVP Colony",      city: "Visakhapatnam", premium: true  },
+  { name: "Madhurawada",     city: "Visakhapatnam", premium: true  },
+  { name: "Seethammadhara",  city: "Visakhapatnam", premium: false },
+  { name: "Dwaraka Nagar",   city: "Visakhapatnam", premium: false },
+  { name: "Gajuwaka",        city: "Visakhapatnam", premium: false },
+  { name: "Rushikonda",      city: "Visakhapatnam", premium: false },
+  { name: "Gopalapatnam",    city: "Visakhapatnam", premium: false },
+  { name: "Kommadi",         city: "Visakhapatnam", premium: false },
+  { name: "NAD Junction",    city: "Visakhapatnam", premium: false },
+  { name: "Bheemunipatnam",  city: "Visakhapatnam", premium: false },
+  { name: "Siripuram",       city: "Visakhapatnam", premium: false },
+  { name: "Jagadamba",       city: "Visakhapatnam", premium: false },
 ];
 
 const BookingPage: React.FC = () => {
@@ -825,6 +853,17 @@ const handleCODBooking = async () => {
                     <optgroup label="📍 Mumbai, Maharashtra">
                       {areas
                         .filter(a => a.city === 'Mumbai')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
+
+                    <optgroup label="📍 Visakhapatnam (Vizag), AP">
+                      {areas
+                        .filter(a => a.city === 'Visakhapatnam')
                         .map(a => (
                           <option key={a.name} value={a.name}>
                             {a.premium ? '⭐ ' : ''}{a.name}

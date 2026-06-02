@@ -71,11 +71,28 @@ const Hero: React.FC = () => {
       <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
       <div className="relative z-20 max-w-7xl mx-auto px-4 pt-24 pb-16">
         <div className="max-w-3xl">
+          {/* Celebration Badge for Vizag launch */}
+          <div style={{
+            display      : 'inline-flex',
+            alignItems   : 'center',
+            gap          : '8px',
+            background   : 'rgba(10,255,230,0.1)',
+            border       : '1px solid rgba(10,255,230,0.3)',
+            borderRadius : '20px',
+            padding      : '6px 16px',
+            fontSize     : '13px',
+            color        : '#0AFFE6',
+            fontWeight   : '600',
+            marginBottom : '16px',
+          }}>
+            🎉 Now Open in Vizag! Book your first clean
+          </div>
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
             style={{ background: 'rgba(10,255,230,0.12)', border: '1px solid rgba(10,255,230,0.35)' }}>
             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Serving India</span>
+            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Live in Bengaluru, Mumbai & Vizag 🎉</span>
           </div>
 
           {/* Main Heading */}
@@ -90,7 +107,7 @@ const Hero: React.FC = () => {
             Professional home cleaning services starting at{' '}
             <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.9em' }}>₹249</span>{' '}
             <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
-            Trained staff, eco-friendly products, same-day booking across India.
+            Trained staff, eco-friendly products, same-day booking in Bengaluru, Mumbai & Visakhapatnam.
           </p>
           <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
             <button

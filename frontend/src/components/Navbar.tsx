@@ -33,6 +33,8 @@ const Navbar: React.FC = () => {
   const decoded = token ? JSON.parse(atob(token.split('.')[1])) : null;
   const isAdmin = decoded?.role === 'ADMIN';
 
+  const [bannerVisible, setBannerVisible] = useState(false);
+
   useEffect(() => {
     // Check if user is logged in via localStorage
     syncUserFromStorage();
@@ -40,11 +42,20 @@ const Navbar: React.FC = () => {
     // Listen for custom profile update events
     window.addEventListener('profileUpdated', syncUserFromStorage);
 
+    const checkBanner = () => {
+      const dismissed = localStorage.getItem('vizag_launch_banner_dismissed') === 'true';
+      setBannerVisible(!dismissed);
+    };
+    checkBanner();
+
+    window.addEventListener('launchBannerClosed', checkBanner);
+
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('profileUpdated', syncUserFromStorage);
+      window.removeEventListener('launchBannerClosed', checkBanner);
     };
   }, []);
 
@@ -71,9 +82,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      className="fixed left-0 right-0 z-50 transition-all duration-500"
       style={{
         height: '72px',
+        top: bannerVisible ? '38px' : '0',
         background: scrolled ? 'rgba(10,10,10,0.85)' : 'rgba(10,10,10,0)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',

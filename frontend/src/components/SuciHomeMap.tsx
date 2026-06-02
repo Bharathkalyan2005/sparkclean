@@ -49,7 +49,46 @@ const locations = [
                'Powai', 'Borivali'],
   },
   {
-    id      : 5,
+    id    : 5,
+    name  : 'MVP Colony',
+    city  : 'Visakhapatnam',
+    state : 'Andhra Pradesh',
+    lat   : 17.7231,
+    lng   : 83.3012,
+    status: 'LIVE',
+    areas : [
+      'MVP Colony', 'Madhurawada',
+      'Rushikonda', 'Kommadi'
+    ],
+  },
+  {
+    id    : 6,
+    name  : 'Dwaraka Nagar',
+    city  : 'Visakhapatnam',
+    state : 'Andhra Pradesh',
+    lat   : 17.7326,
+    lng   : 83.3162,
+    status: 'LIVE',
+    areas : [
+      'Dwaraka Nagar', 'Seethammadhara',
+      'Siripuram', 'Jagadamba'
+    ],
+  },
+  {
+    id    : 7,
+    name  : 'Gajuwaka',
+    city  : 'Visakhapatnam',
+    state : 'Andhra Pradesh',
+    lat   : 17.6917,
+    lng   : 83.2115,
+    status: 'LIVE',
+    areas : [
+      'Gajuwaka', 'NAD Junction',
+      'Gopalapatnam', 'Bheemunipatnam'
+    ],
+  },
+  {
+    id      : 8,
     name    : 'Hyderabad',
     city    : 'Hyderabad',
     lat     : 17.3850,
@@ -59,7 +98,7 @@ const locations = [
                'Gachibowli', 'Hitech City'],
   },
   {
-    id      : 6,
+    id      : 9,
     name    : 'Chennai',
     city    : 'Chennai',
     lat     : 13.0827,
@@ -69,7 +108,7 @@ const locations = [
                'Velachery', 'Adyar'],
   },
   {
-    id      : 7,
+    id      : 10,
     name    : 'New Delhi',
     city    : 'Delhi NCR',
     lat     : 28.6139,
