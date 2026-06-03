@@ -71,6 +71,36 @@ const Hero: React.FC = () => {
       <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
       <div className="relative z-20 max-w-7xl mx-auto px-4 pt-24 pb-16">
         <div className="max-w-3xl">
+          {/* Brand Badge */}
+          <div style={{
+            display    : 'inline-flex',
+            alignItems : 'center',
+            gap        : '8px',
+            background : 'rgba(10,255,230,0.1)',
+            border     : '1px solid rgba(10,255,230,0.3)',
+            borderRadius: '20px',
+            padding    : '6px 16px',
+            marginBottom: '16px',
+          }}>
+            <img
+              src  ="/logo.png"
+              alt  =""
+              style={{
+                height: '20px',
+                width : 'auto',
+                filter: 'brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(600%) hue-rotate(115deg)',
+                // Makes logo teal color
+              }}
+            />
+            <span style={{
+              color     : '#0AFFE6',
+              fontSize  : '13px',
+              fontWeight: '700',
+            }}>
+              SuciHome
+            </span>
+          </div>
+
           {/* Celebration Badge for Vizag launch */}
           <div style={{
             display      : 'inline-flex',

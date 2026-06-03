@@ -121,6 +121,18 @@ export default function SuccessPage() {
           borderRadius : '20px',
           marginBottom : '24px',
         }}>
+          <img
+            src  ="/logo.png"
+            alt  ="SuciHome"
+            style={{
+              height      : '50px',
+              width       : 'auto',
+              filter      : 'brightness(0) invert(1)',
+              marginBottom: '16px',
+              marginLeft  : 'auto',
+              marginRight : 'auto',
+            }}
+          />
           {/* Animated checkmark */}
           <div style={{
             width          : '72px',

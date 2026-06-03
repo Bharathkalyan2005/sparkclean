@@ -384,7 +384,7 @@ const handlePayment = async () => {
       currency    : 'INR',
       name        : 'SuciHome',
       description : `Booking #${bookingNumber}`,
-      image       : '/logo-primary-cropped.png',
+      image       : `${window.location.origin}/logo.png`,
       
       order_id: orderId,
       

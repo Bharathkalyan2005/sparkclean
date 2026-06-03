@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Check, ChevronDown } from 'lucide-react';
 import api from '../lib/axiosInstance';
-import Logo from '../components/Logo';
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -241,7 +241,29 @@ const AuthPage = () => {
         <div className="relative z-20 flex-1 flex flex-col justify-between p-12 lg:p-20">
           <div>
             <div className="mb-16">
-              <Logo />
+              <div style={{
+                display    : 'flex',
+                alignItems : 'center',
+                gap        : '10px',
+              }}>
+                <img
+                  src  ="/logo.png"
+                  alt  ="SuciHome"
+                  style={{
+                    height : '48px',
+                    width  : 'auto',
+                    filter : 'brightness(0) invert(1)',
+                  }}
+                />
+                <span style={{
+                  color      : '#FFFFFF',
+                  fontSize   : '24px',
+                  fontWeight : '700',
+                  fontFamily : 'Instrument Serif, serif',
+                }}>
+                  SuciHome
+                </span>
+              </div>
             </div>
             
             <motion.h1 
@@ -286,8 +308,32 @@ const AuthPage = () => {
         
         <div className="w-full max-w-md z-10 relative">
           
-          <div className="md:hidden flex flex-col items-center justify-center mb-10">
-            <Logo className="flex-col !gap-2" imageClassName="h-10 w-auto" />
+          <div className="md:hidden">
+            <div style={{
+              display        : 'flex',
+              alignItems     : 'center',
+              justifyContent : 'center',
+              gap            : '10px',
+              marginBottom   : '24px',
+            }}>
+              <img
+                src  ="/logo.png"
+                alt  ="SuciHome"
+                style={{
+                  height : '48px',
+                  width  : 'auto',
+                  filter : 'brightness(0) invert(1)',
+                }}
+              />
+              <span style={{
+                color      : '#FFFFFF',
+                fontSize   : '24px',
+                fontWeight : '700',
+                fontFamily : 'Instrument Serif, serif',
+              }}>
+                SuciHome
+              </span>
+            </div>
           </div>
 
           {/* Form Card */}

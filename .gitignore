@@ -26,3 +26,7 @@ yarn-error.log*
 *.zip
 extracted_content/
 client_secret_*.json
+
+# Portable node
+node-portable/
+

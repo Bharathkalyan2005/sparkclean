@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from './Logo';
+
 
 const footerAreas = [
   // LIVE cities — with star badge
@@ -40,8 +40,30 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-1">
-            <div className="mb-4">
-              <Logo subText="India's Cleanest Choice" />
+            <div style={{
+              display    : 'flex',
+              alignItems : 'center',
+              gap        : '10px',
+              marginBottom: '16px',
+            }}>
+              <img
+                src  ="/logo.png"
+                alt  ="SuciHome"
+                style={{
+                  height : '40px',
+                  width  : 'auto',
+                  filter : 'brightness(0) invert(1)',
+                  // Makes logo white for dark footer
+                }}
+              />
+              <span style={{
+                color      : '#FFFFFF',
+                fontSize   : '20px',
+                fontWeight : '700',
+                fontFamily : 'Instrument Serif, serif',
+              }}>
+                SuciHome
+              </span>
             </div>
             <p className="font-dm text-sm leading-relaxed mb-5" style={{ color: '#606060' }}>
               India's most trusted home cleaning service. Trained staff, transparent pricing, instant booking.

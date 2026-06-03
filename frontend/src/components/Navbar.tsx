@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { User as UserIcon } from 'lucide-react';
 import ProfileModal from './ProfileModal';
 import toast from 'react-hot-toast';
-import Logo from './Logo';
+
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -95,8 +95,38 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="group mt-2">
-          <Logo textClassName="font-['Syne'] font-bold tracking-wider text-xl transition-colors group-hover:opacity-80 text-white" />
+        <Link
+          to="/"
+          style={{
+            display        : 'flex',
+            alignItems     : 'center',
+            gap            : '10px',
+            textDecoration : 'none',
+          }}
+        >
+          {/* New Logo Image */}
+          <img
+            src   ="/logo.png"
+            alt   ="SuciHome Logo"
+            style={{
+              height    : '42px',
+              width     : 'auto',
+              objectFit : 'contain',
+              // Make logo white/teal to match dark theme:
+              filter    : 'brightness(0) invert(1)',
+            }}
+          />
+
+          {/* Brand name next to logo */}
+          <span style={{
+            color      : '#FFFFFF',
+            fontSize   : '22px',
+            fontWeight : '700',
+            fontFamily : 'Instrument Serif, serif',
+            letterSpacing: '-0.5px',
+          }}>
+            SuciHome
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -235,6 +265,32 @@ const Navbar: React.FC = () => {
               backdropFilter: 'blur(20px)',
             }}
           >
+            {/* Mobile menu brand header logo */}
+            <div style={{
+              display    : 'flex',
+              alignItems : 'center',
+              gap        : '8px',
+              padding    : '16px',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <img
+                src  ="/logo.png"
+                alt  ="SuciHome"
+                style={{
+                  height: '32px',
+                  width : 'auto',
+                  filter: 'brightness(0) invert(1)',
+                }}
+              />
+              <span style={{
+                color     : '#FFFFFF',
+                fontWeight: '700',
+                fontSize  : '18px',
+              }}>
+                SuciHome
+              </span>
+            </div>
+
             {navLinks.map(link => (
               <button
                 key={link.id}
