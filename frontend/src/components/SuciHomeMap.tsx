@@ -152,13 +152,6 @@ const darkMapStyle = [
     stylers: [{ visibility: 'off' }] },
 ]
 
-const mapContainerStyle = {
-  width       : '100%',
-  height      : '450px',
-  borderRadius: '20px',
-  overflow    : 'hidden',
-}
-
 // Center of India
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }
 
@@ -169,6 +162,22 @@ export default function SuciHomeMap() {
     useState<typeof locations[0] | null>(null)
   
   const [mapsKey, setMapsKey] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const dynamicHeight = isMobile ? '300px' : '450px';
+
+  const dynamicMapContainerStyle = {
+    width       : '100%',
+    height      : dynamicHeight,
+    borderRadius: '20px',
+    overflow    : 'hidden',
+  }
 
   useEffect(() => {
     import('../lib/config').then(m => m.getPublicConfig()).then(cfg => {
@@ -187,7 +196,7 @@ export default function SuciHomeMap() {
   if (loadError) {
     return (
       <div style={{
-        height        : '450px',
+        height        : dynamicHeight,
         background    : 'rgba(255,255,255,0.03)',
         border        : '1px solid rgba(255,255,255,0.08)',
         borderRadius  : '20px',
@@ -204,7 +213,7 @@ export default function SuciHomeMap() {
   if (!isLoaded) {
     return (
       <div style={{
-        height        : '450px',
+        height        : dynamicHeight,
         background    : 'rgba(10,255,230,0.03)',
         border        : '1px solid rgba(10,255,230,0.1)',
         borderRadius  : '20px',
@@ -233,7 +242,7 @@ export default function SuciHomeMap() {
 
   return (
     <GoogleMap
-      mapContainerStyle={mapContainerStyle}
+      mapContainerStyle={dynamicMapContainerStyle}
       center           ={defaultCenter}
       zoom             ={5}
       options={{
@@ -243,6 +252,7 @@ export default function SuciHomeMap() {
         mapTypeControl  : false,
         streetViewControl: false,
         fullscreenControl: true,
+        scrollwheel     : false,
       }}
     >
       {/* Render markers for each city */}

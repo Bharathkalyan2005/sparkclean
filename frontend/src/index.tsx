@@ -4,8 +4,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import L from 'leaflet';
+
+if (process.env.NODE_ENV === 'production') {
+  console.log  = () => {}
+  console.warn = () => {}
+  // Keep console.error for debugging
+}
 
 // Fix Leaflet's default icon path issues
 delete (L.Icon.Default.prototype as any)._getIconUrl;

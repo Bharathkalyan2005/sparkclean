@@ -260,9 +260,16 @@ const Navbar: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             className="md:hidden px-4 py-4 flex flex-col gap-4"
             style={{
+              position: 'absolute',
+              top: '72px',
+              left: 0,
+              right: 0,
               background: 'rgba(16,16,16,0.97)',
               borderTop: '1px solid rgba(10,255,230,0.15)',
+              borderBottom: '1px solid rgba(10,255,230,0.15)',
               backdropFilter: 'blur(20px)',
+              maxHeight: 'calc(100vh - 72px)',
+              overflowY: 'auto',
             }}
           >
             {/* Mobile menu brand header logo */}

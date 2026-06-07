@@ -30,7 +30,7 @@ const TrackingPage: React.FC = () => {
     setNotFound(false);
 
     const BASE_URL = process.env.REACT_APP_API_URL 
-      || 'https://sucihome-x3ze.onrender.com';
+      || 'https://sparkclean-x3ze.onrender.com';
 
     try {
       const isPhone = /^\d{10}$/.test(trackQuery);
@@ -108,7 +108,7 @@ const TrackingPage: React.FC = () => {
   // Server health check & wake-up
   useEffect(() => {
     const BASE_URL = process.env.REACT_APP_API_URL 
-      || 'https://sucihome-x3ze.onrender.com';
+      || 'https://sparkclean-x3ze.onrender.com';
 
     // Silent wake-up ping
     fetch(`${BASE_URL}/api/health`)

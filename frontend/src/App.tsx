@@ -15,6 +15,7 @@ import FeedbackPage from './pages/FeedbackPage';
 import AdminRoute from './components/AdminRoute';
 import LocationGate from './components/LocationGate';
 import LaunchBanner from './components/LaunchBanner';
+import ErrorBoundary from './components/ErrorBoundary';
 // @ts-ignore
 import './index.css';
 
@@ -51,7 +52,8 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com">
+    <ErrorBoundary>
+      <GoogleOAuthProvider clientId="134114111752-ottgrphnli54187mcahlt07v7bru5ktc.apps.googleusercontent.com">
       <Router>
         <CartProvider>
         <LoadingScreen />
@@ -105,6 +107,7 @@ function App() {
       </CartProvider>
       </Router>
     </GoogleOAuthProvider>
+    </ErrorBoundary>
   );
 }
 

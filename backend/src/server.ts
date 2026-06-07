@@ -21,10 +21,10 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://sparkclean-orcin.vercel.app',
+  'https://sucihome.vercel.app',
   'http://localhost:3000'
 ].filter(Boolean) as string[];
 
@@ -148,6 +148,7 @@ const io = new Server(httpServer, {
     origin     : [
       process.env.FRONTEND_URL,
       'https://sparkclean-orcin.vercel.app',
+      'https://sucihome.vercel.app',
       'http://localhost:3000'
     ].filter(Boolean) as string[],
     credentials: true,

@@ -62,7 +62,7 @@ export default function SuccessPage() {
 
     // Source 2: localStorage
     const numberFromStorage = 
-      localStorage.getItem('sc_booking_number') ||
+      localStorage.getItem('sh_booking_number') ||
       localStorage.getItem('last_booking_number') ||
       localStorage.getItem('bookingNumber')
 
@@ -84,7 +84,7 @@ export default function SuccessPage() {
           const num = res.data.bookingNumber
           setBookingNumber(num)
           setBookingData(res.data)
-          localStorage.setItem('sc_booking_number', num)
+          localStorage.setItem('sh_booking_number', num)
         })
         .catch(err => {
           console.error('API fetch failed:', err)
@@ -99,6 +99,14 @@ export default function SuccessPage() {
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 5500);
     return () => clearTimeout(timer);
+  }, []);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -173,14 +181,14 @@ export default function SuccessPage() {
               background    : 'rgba(10,255,230,0.08)',
               border        : '1px solid rgba(10,255,230,0.3)',
               borderRadius  : '12px',
-              padding       : '16px 24px',
+              padding       : isMobile ? '12px 16px' : '16px 24px',
               margin        : '16px auto',
-              maxWidth      : '340px',
+              maxWidth      : isMobile ? '290px' : '340px',
               cursor        : bookingNumber && !bookingNumber.includes('Check') ? 'pointer' : 'default',
               display       : 'flex',
               alignItems    : 'center',
               justifyContent: 'center',
-              gap           : '12px',
+              gap           : isMobile ? '8px' : '12px',
               minHeight     : '60px',
             }}
           >
@@ -188,10 +196,11 @@ export default function SuccessPage() {
               <>
                 <span style={{
                   color        : '#0AFFE6',
-                  fontSize     : '20px',
+                  fontSize     : isMobile ? '14px' : '20px',
                   fontWeight   : '700',
                   fontFamily   : 'monospace',
-                  letterSpacing: '2px',
+                  letterSpacing: isMobile ? '1px' : '2px',
+                  wordBreak    : 'break-all',
                 }}>
                   {bookingNumber}
                 </span>

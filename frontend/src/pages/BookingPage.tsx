@@ -439,8 +439,8 @@ const handlePayment = async () => {
           clearCart();
           toast.success('Payment successful! 🎉')
           
-          localStorage.setItem('sc_booking_number', bookingNumber)
-          localStorage.setItem('sc_booking_id', bookingId)
+          localStorage.setItem('sh_booking_number', bookingNumber)
+          localStorage.setItem('sh_booking_id', bookingId)
 
           navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)
 
@@ -513,8 +513,8 @@ const handleCODBooking = async () => {
 
     const { bookingId, bookingNumber } = bookingRes.data
     
-    localStorage.setItem('sc_booking_number', bookingNumber)
-    localStorage.setItem('sc_booking_id', bookingId)
+    localStorage.setItem('sh_booking_number', bookingNumber)
+    localStorage.setItem('sh_booking_id', bookingId)
     
     clearCart();
     navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)

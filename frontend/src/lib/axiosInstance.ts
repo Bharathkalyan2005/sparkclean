@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://sucihome-x3ze.onrender.com',
+  baseURL: process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   }
