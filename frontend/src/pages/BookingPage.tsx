@@ -273,11 +273,28 @@ const BookingPage: React.FC = () => {
     ])
     .then(([svcRes, comboRes]) => {
       setServices(svcRes.data.services);
-      const formattedCombos = comboRes.data.combos.map((c: any, i: number) => ({
-        ...c,
-        price: Number(c.price),
-        is_popular: i === 1
-      }));
+      const formattedCombos = comboRes.data.combos.map((c: any, i: number) => {
+        let price = Number(c.price);
+        let originalPrice = c.originalPrice ? Number(c.originalPrice) : undefined;
+        
+        if (c.name.includes('1 BHK')) {
+          price = 999;
+          originalPrice = 1299;
+        } else if (c.name.includes('2 BHK')) {
+          price = 1499;
+          originalPrice = 1999;
+        } else if (c.name.includes('3 BHK')) {
+          price = 2499;
+          originalPrice = 2999;
+        }
+        
+        return {
+          ...c,
+          price: price,
+          originalPrice: originalPrice,
+          is_popular: i === 1
+        };
+      });
       setCombos(formattedCombos);
     })
     .catch(err => console.error('Services load failed:', err))

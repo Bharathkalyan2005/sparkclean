@@ -234,16 +234,32 @@ const CombosSection: React.FC = () => {
     return 'Special Package';
   };
 
-  const formattedCombos = combos.map((c, i) => ({
-    id: c.id,
-    name: c.name,
-    price: Number(c.price),
-    originalPrice: c.originalPrice ? Number(c.originalPrice) : undefined,
-    bhk: c.name.split(' ')[0] + ' BHK',
-    badge_text: getBadgeText(c.name),
-    is_popular: i === 1,
-    includes: getComboIncludes(c.name)
-  }));
+  const formattedCombos = combos.map((c, i) => {
+    let price = Number(c.price);
+    let originalPrice = c.originalPrice ? Number(c.originalPrice) : undefined;
+    
+    if (c.name.includes('1 BHK')) {
+      price = 999;
+      originalPrice = 1299;
+    } else if (c.name.includes('2 BHK')) {
+      price = 1499;
+      originalPrice = 1999;
+    } else if (c.name.includes('3 BHK')) {
+      price = 2499;
+      originalPrice = 2999;
+    }
+    
+    return {
+      id: c.id,
+      name: c.name,
+      price: price,
+      originalPrice: originalPrice,
+      bhk: c.name.split(' ')[0] + ' BHK',
+      badge_text: getBadgeText(c.name),
+      is_popular: i === 1,
+      includes: getComboIncludes(c.name)
+    };
+  });
 
   return (
     <section id="combos" className="py-24 relative overflow-hidden section-dark">
