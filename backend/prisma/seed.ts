@@ -120,8 +120,8 @@ async function main() {
       {
         name           : '1 BHK Combo',
         description    : 'Sweeping & mopping, Dusting & wiping, 1 Bathroom cleaning, Kitchen basic cleaning. 2 Fans FREE!',
-        price          : 699,
-        originalPrice  : 899,
+        price          : 999,
+        originalPrice  : 1299,
         unit           : 'full package',
         category       : 'COMBO',
         iconName       : '1bhk',
@@ -132,8 +132,8 @@ async function main() {
       {
         name           : '2 BHK Combo',
         description    : 'Full house cleaning, 2 Bathrooms cleaning, Kitchen cleaning, Dusting & wiping. 4 Fans FREE!',
-        price          : 999,
-        originalPrice  : 1299,
+        price          : 1499,
+        originalPrice  : 1999,
         unit           : 'full package',
         category       : 'COMBO',
         iconName       : '2bhk',
@@ -144,8 +144,8 @@ async function main() {
       {
         name           : '3 BHK Combo',
         description    : 'Full home cleaning, 2-3 Bathrooms cleaning, Kitchen deep cleaning, Balcony basic cleaning. 6 Fans FREE!',
-        price          : 1499,
-        originalPrice  : 1899,
+        price          : 2499,
+        originalPrice  : 2999,
         unit           : 'full package',
         category       : 'COMBO',
         iconName       : '3bhk',
