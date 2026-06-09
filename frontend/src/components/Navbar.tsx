@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { User as UserIcon } from 'lucide-react';
 import ProfileModal from './ProfileModal';
 import toast from 'react-hot-toast';
+
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -12,8 +13,6 @@ const Navbar: React.FC = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const { itemCount, setIsOpen } = useCart();
   const navigate = useNavigate();
-  const location = useLocation();
-  const isHome = location.pathname === '/';
 
   const [user, setUser] = useState<{ id: string; email: string; fullName: string; role: string } | null>(null);
 
@@ -87,17 +86,11 @@ const Navbar: React.FC = () => {
       style={{
         height: '72px',
         top: bannerVisible ? '38px' : '0',
-        background: isHome 
-          ? (scrolled ? 'rgba(245,240,232,0.9)' : 'rgba(245,240,232,0)') 
-          : '#0A0A0A',
+        background: scrolled ? 'rgba(10,10,10,0.85)' : 'rgba(10,10,10,0)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        boxShadow: isHome
-          ? (scrolled ? '0 2px 24px rgba(27,67,50,0.08)' : 'none')
-          : (scrolled ? '0 2px 24px rgba(10,255,230,0.12), 0 1px 0 rgba(10,255,230,0.15)' : 'none'),
-        borderBottom: isHome
-          ? (scrolled ? '1px solid rgba(27,67,50,0.15)' : '1px solid transparent')
-          : (scrolled ? '1px solid rgba(10,255,230,0.15)' : '1px solid transparent'),
+        boxShadow: scrolled ? '0 2px 24px rgba(10,255,230,0.12), 0 1px 0 rgba(10,255,230,0.15)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(10,255,230,0.15)' : '1px solid transparent',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
@@ -111,7 +104,7 @@ const Navbar: React.FC = () => {
             textDecoration : 'none',
           }}
         >
-          {/* Logo Image */}
+          {/* New Logo Image */}
           <img
             src   ="/logo.png"
             alt   ="SuciHome Logo"
@@ -119,13 +112,14 @@ const Navbar: React.FC = () => {
               height    : '42px',
               width     : 'auto',
               objectFit : 'contain',
-              filter    : isHome ? 'none' : 'brightness(0) invert(1)',
+              // Make logo white/teal to match dark theme:
+              filter    : 'brightness(0) invert(1)',
             }}
           />
 
           {/* Brand name next to logo */}
           <span style={{
-            color      : isHome ? '#1B4332' : '#FFFFFF',
+            color      : '#FFFFFF',
             fontSize   : '22px',
             fontWeight : '700',
             fontFamily : 'Instrument Serif, serif',
@@ -142,9 +136,9 @@ const Navbar: React.FC = () => {
               key={link.id}
               onClick={() => scrollTo(link.id)}
               className="text-sm font-medium font-dm transition-colors"
-              style={{ color: isHome ? '#1B4332' : '#A0A0A0' }}
-              onMouseEnter={e => (e.currentTarget.style.color = isHome ? '#C9A84C' : '#FFFFFF')}
-              onMouseLeave={e => (e.currentTarget.style.color = isHome ? '#1B4332' : '#A0A0A0')}
+              style={{ color: '#A0A0A0' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#A0A0A0')}
             >
               {link.label}
             </button>
@@ -152,9 +146,9 @@ const Navbar: React.FC = () => {
           <a 
             href="/track"
             className="text-sm font-medium font-dm transition-colors"
-            style={{ color: isHome ? '#1B4332' : '#A0A0A0', textDecoration: 'none' }}
-            onMouseEnter={e => e.currentTarget.style.color = isHome ? '#C9A84C' : '#FFFFFF'}
-            onMouseLeave={e => e.currentTarget.style.color = isHome ? '#1B4332' : '#A0A0A0'}
+            style={{ color: '#A0A0A0', textDecoration: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+            onMouseLeave={e => e.currentTarget.style.color = '#A0A0A0'}
           >
             Track Order
           </a>
@@ -167,20 +161,17 @@ const Navbar: React.FC = () => {
             onClick={() => setIsOpen(true)}
             className="relative p-2 rounded-xl transition-all mr-2"
             style={{
-              background: isHome ? 'rgba(27,67,50,0.08)' : 'rgba(10,255,230,0.08)',
-              border: isHome ? '1px solid rgba(27,67,50,0.25)' : '1px solid rgba(10,255,230,0.25)',
+              background: 'rgba(10,255,230,0.08)',
+              border: '1px solid rgba(10,255,230,0.25)',
             }}
             aria-label="Open cart"
           >
-            <svg className="w-5 h-5" fill="none" stroke={isHome ? '#1B4332' : '#FFFFFF'} viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="#FFFFFF" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             {itemCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 text-xs font-bold rounded-full flex items-center justify-center"
-                style={{ 
-                  background: isHome ? 'linear-gradient(135deg,#1B4332,#2D4A35)' : 'linear-gradient(135deg,#0AFFE6,#00CDB7)', 
-                  color: '#FFFFFF' 
-                }}>
+                style={{ background: 'linear-gradient(135deg,#0AFFE6,#00CDB7)', color: '#0A1628' }}>
                 {itemCount}
               </span>
             )}
@@ -191,22 +182,11 @@ const Navbar: React.FC = () => {
              <div className="hidden md:flex items-center gap-4">
                 <button 
                   onClick={() => setProfileModalOpen(true)} 
-                  className="flex items-center gap-2 text-sm font-medium transition-colors py-1.5 px-3 rounded-full border" 
-                  style={{ 
-                    color: isHome ? '#1B4332' : '#E0E0E0',
-                    background: isHome ? 'rgba(27,67,50,0.05)' : 'rgba(255,255,255,0.05)',
-                    borderColor: isHome ? 'rgba(27,67,50,0.15)' : 'rgba(255,255,255,0.1)'
-                  }}
+                  className="flex items-center gap-2 text-sm font-medium hover:text-[#0AFFE6] transition-colors bg-white/5 py-1.5 px-3 rounded-full border border-white/10" 
+                  style={{ color: '#E0E0E0' }}
                 >
-                  <div style={{
-                    background: isHome ? 'rgba(27,67,50,0.15)' : 'rgba(10,255,230,0.2)',
-                    padding: '6px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <UserIcon className="w-3.5 h-3.5" style={{ color: isHome ? '#1B4332' : '#0AFFE6' }} />
+                  <div className="bg-[#0AFFE6]/20 p-1.5 rounded-full">
+                    <UserIcon className="w-3.5 h-3.5 text-[#0AFFE6]" />
                   </div>
                   {user.fullName.split(' ')[0]}
                 </button>
@@ -214,10 +194,8 @@ const Navbar: React.FC = () => {
           ) : (
             <button
               onClick={() => navigate('/auth')}
-              className="text-sm font-dm transition-colors hidden md:block"
-              style={{ color: isHome ? '#1B4332' : '#0AFFE6' }}
-              onMouseEnter={e => e.currentTarget.style.color = isHome ? '#C9A84C' : '#FFFFFF'}
-              onMouseLeave={e => e.currentTarget.style.color = isHome ? '#1B4332' : '#0AFFE6'}
+              className="text-sm font-dm transition-colors hover:text-white hidden md:block"
+              style={{ color: '#0AFFE6' }}
             >
               Sign In
             </button>
@@ -228,9 +206,9 @@ const Navbar: React.FC = () => {
               onClick={() => navigate('/sparkadmin')}
               className="hidden md:block transition-all"
               style={{
-                background   : isHome ? 'rgba(27,67,50,0.1)' : 'rgba(10,255,230,0.1)',
-                border       : isHome ? '1px solid rgba(27,67,50,0.3)' : '1px solid rgba(10,255,230,0.3)',
-                color        : isHome ? '#1B4332' : '#0AFFE6',
+                background   : 'rgba(10,255,230,0.1)',
+                border       : '1px solid rgba(10,255,230,0.3)',
+                color        : '#0AFFE6',
                 padding      : '8px 16px',
                 borderRadius : '8px',
                 cursor       : 'pointer',
@@ -252,26 +230,7 @@ const Navbar: React.FC = () => {
               }
               navigate('/book')
             }}
-            className="text-sm px-5 py-2.5 hidden md:block ripple ml-2"
-            style={{
-              background   : isHome ? '#1B4332' : 'linear-gradient(135deg,#0AFFE6,#00CDB7)',
-              color        : isHome ? '#FFFFFF' : '#0A1628',
-              border       : 'none',
-              borderRadius : '10px',
-              fontWeight   : '700',
-              cursor       : 'pointer',
-              transition   : 'all 0.3s ease',
-            }}
-            onMouseEnter={e => {
-              if (isHome) {
-                e.currentTarget.style.background = '#C9A84C';
-              }
-            }}
-            onMouseLeave={e => {
-              if (isHome) {
-                e.currentTarget.style.background = '#1B4332';
-              }
-            }}
+            className="btn-teal text-sm px-5 py-2.5 hidden md:block ripple ml-2"
           >
             Book Now
           </button>
@@ -280,16 +239,13 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden p-2 rounded-xl transition-all"
-            style={{ 
-              background: isHome ? 'rgba(27,67,50,0.08)' : 'rgba(10,255,230,0.08)', 
-              border: isHome ? '1px solid rgba(27,67,50,0.2)' : '1px solid rgba(10,255,230,0.2)' 
-            }}
+            style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)' }}
             aria-label="Toggle menu"
           >
             <div className="w-5 h-4 flex flex-col justify-between">
-              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`} style={{ background: isHome ? '#1B4332' : '#FFFFFF' }}></span>
-              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? 'opacity-0' : ''}`} style={{ background: isHome ? '#1B4332' : '#FFFFFF' }}></span>
-              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} style={{ background: isHome ? '#1B4332' : '#FFFFFF' }}></span>
+              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`} style={{ background: '#FFFFFF' }}></span>
+              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? 'opacity-0' : ''}`} style={{ background: '#FFFFFF' }}></span>
+              <span className={`block h-0.5 transition-all rounded-full ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} style={{ background: '#FFFFFF' }}></span>
             </div>
           </button>
         </div>
@@ -308,9 +264,9 @@ const Navbar: React.FC = () => {
               top: '72px',
               left: 0,
               right: 0,
-              background: isHome ? 'rgba(245,240,232,0.98)' : 'rgba(16,16,16,0.97)',
-              borderTop: isHome ? '1px solid rgba(27,67,50,0.15)' : '1px solid rgba(10,255,230,0.15)',
-              borderBottom: isHome ? '1px solid rgba(27,67,50,0.15)' : '1px solid rgba(10,255,230,0.15)',
+              background: 'rgba(16,16,16,0.97)',
+              borderTop: '1px solid rgba(10,255,230,0.15)',
+              borderBottom: '1px solid rgba(10,255,230,0.15)',
               backdropFilter: 'blur(20px)',
               maxHeight: 'calc(100vh - 72px)',
               overflowY: 'auto',
@@ -322,7 +278,7 @@ const Navbar: React.FC = () => {
               alignItems : 'center',
               gap        : '8px',
               padding    : '16px',
-              borderBottom: isHome ? '1px solid rgba(27,67,50,0.08)' : '1px solid rgba(255,255,255,0.08)',
+              borderBottom: '1px solid rgba(255,255,255,0.08)',
             }}>
               <img
                 src  ="/logo.png"
@@ -330,11 +286,11 @@ const Navbar: React.FC = () => {
                 style={{
                   height: '32px',
                   width : 'auto',
-                  filter: isHome ? 'none' : 'brightness(0) invert(1)',
+                  filter: 'brightness(0) invert(1)',
                 }}
               />
               <span style={{
-                color     : isHome ? '#1B4332' : '#FFFFFF',
+                color     : '#FFFFFF',
                 fontWeight: '700',
                 fontSize  : '18px',
               }}>
@@ -347,7 +303,7 @@ const Navbar: React.FC = () => {
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
                 className="text-left text-sm font-medium font-dm transition-colors"
-                style={{ color: isHome ? '#1B4332' : '#A0A0A0' }}
+                style={{ color: '#A0A0A0' }}
               >
                 {link.label}
               </button>
@@ -357,32 +313,19 @@ const Navbar: React.FC = () => {
               href="/track"
               onClick={() => setMenuOpen(false)}
               className="text-left text-sm font-medium font-dm transition-colors"
-              style={{ color: isHome ? '#1B4332' : '#A0A0A0', textDecoration: 'none' }}
+              style={{ color: '#A0A0A0', textDecoration: 'none' }}
             >
               Track Order
             </a>
             
             {user ? (
-              <div className="flex flex-col gap-4 border-t border-[rgba(10,255,230,0.15)] pt-4 mt-2"
-                style={{ borderColor: isHome ? 'rgba(27,67,50,0.15)' : 'rgba(10,255,230,0.15)' }}>
+              <div className="flex flex-col gap-4 border-t border-[rgba(10,255,230,0.15)] pt-4 mt-2">
                  <button 
                    onClick={() => { setMenuOpen(false); setProfileModalOpen(true); }} 
-                   className="flex items-center gap-2 text-sm font-medium hover:text-[#0AFFE6] transition-colors py-2 px-3 rounded-lg border"
-                   style={{
-                     color: isHome ? '#1B4332' : '#FFFFFF',
-                     background: isHome ? 'rgba(27,67,50,0.05)' : 'rgba(255,255,255,0.05)',
-                     borderColor: isHome ? 'rgba(27,67,50,0.15)' : 'rgba(255,255,255,0.1)'
-                   }}
+                   className="flex items-center gap-2 text-sm font-medium text-white hover:text-[#0AFFE6] transition-colors bg-white/5 py-2 px-3 rounded-lg border border-white/10"
                  >
-                   <div style={{
-                     background: isHome ? 'rgba(27,67,50,0.15)' : 'rgba(10,255,230,0.2)',
-                     padding: '6px',
-                     borderRadius: '50%',
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center'
-                   }}>
-                     <UserIcon className="w-4 h-4" style={{ color: isHome ? '#1B4332' : '#0AFFE6' }} />
+                   <div className="bg-[#0AFFE6]/20 p-1.5 rounded-full">
+                     <UserIcon className="w-4 h-4 text-[#0AFFE6]" />
                    </div>
                    My Profile ({user.fullName.split(' ')[0]})
                  </button>
@@ -391,7 +334,7 @@ const Navbar: React.FC = () => {
               <button
                 onClick={() => { navigate('/auth'); setMenuOpen(false); }}
                 className="text-left text-sm font-medium font-dm transition-colors"
-                style={{ color: isHome ? '#1B4332' : '#0AFFE6' }}
+                style={{ color: '#0AFFE6' }}
               >
                 Sign In
               </button>
@@ -408,15 +351,7 @@ const Navbar: React.FC = () => {
                 }
                 navigate('/book');
               }}
-              className="text-sm py-3 text-center"
-              style={{
-                background   : isHome ? '#1B4332' : 'linear-gradient(135deg,#0AFFE6,#00CDB7)',
-                color        : isHome ? '#FFFFFF' : '#0A1628',
-                border       : 'none',
-                borderRadius : '10px',
-                fontWeight   : '700',
-                cursor       : 'pointer',
-              }}
+              className="btn-teal text-sm py-3 text-center"
             >
               Book Now
             </button>
