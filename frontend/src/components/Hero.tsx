@@ -1,216 +1,311 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
-import LoginPromptModal from './LoginPromptModal';
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
-const Hero: React.FC = () => {
-  const navigate = useNavigate();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const badgesRef = useRef<HTMLDivElement>(null);
+// Brand colors from reference image
+const BRAND = {
+  green : '#1B4332',   // dark forest green
+  gold  : '#C9A84C',   // warm gold
+  cream : '#F5F0E8',   // background
+  text  : '#2D4A35',   // body text
+  light : '#5C6B5E',   // muted text
+}
 
-  useEffect(() => {
-    const tl = gsap.timeline({ delay: 1.6 });
-
-    if (headingRef.current) {
-      const words = headingRef.current.querySelectorAll('.word');
-      tl.fromTo(words,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }
-      );
-    }
-    if (subRef.current) {
-      tl.fromTo(subRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
-        '-=0.3'
-      );
-    }
-    if (ctaRef.current) {
-      tl.fromTo(ctaRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-        '-=0.2'
-      );
-    }
-    if (badgesRef.current) {
-      const badges = badgesRef.current.querySelectorAll('.badge');
-      tl.fromTo(badges,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)' },
-        '-=0.2'
-      );
-    }
-  }, []);
-
-  const scrollToServices = () => {
-    const el = document.getElementById('services');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+export default function Hero() {
+  const navigate = useNavigate()
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: '#0A0A0A' }}>
-      {/* Single Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/images/open-page.png"
-          alt="Clean Living Room"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </div>
+    <section style={{
+      minHeight  : '100vh',
+      background : `linear-gradient(135deg, 
+                    ${BRAND.cream} 0%, 
+                    #EDE8DC 50%, 
+                    #F0EBE0 100%)`,
+      position   : 'relative',
+      overflow   : 'hidden',
+      display    : 'flex',
+      flexDirection: 'column',
+    }}>
 
-      {/* Subtle radial overlay — keeps text readable */}
-      <div className="absolute inset-0 z-10" style={{
-        background: 'rgba(10,10,10,0.65)',
-        pointerEvents: 'none'
+      {/* Full background image from reference */}
+      <img
+        src  ="images/hero-bg.png"
+        alt  ="SuciHome Hero"
+        style={{
+          position  : 'absolute',
+          inset     : 0,
+          width     : '100%',
+          height    : '100%',
+          objectFit : 'cover',
+          objectPosition: 'center',
+          zIndex    : 0,
+        }}
+        onError={e => {
+          // Hide if image not found
+          e.currentTarget.style.display = 'none'
+        }}
+      />
+
+      {/* Light overlay for text readability */}
+      <div style={{
+        position  : 'absolute',
+        inset     : 0,
+        background: 'rgba(245,240,232,0.3)',
+        zIndex    : 1,
       }} />
 
-      {/* Content */}
-      <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <div className="relative z-20 max-w-7xl mx-auto px-4 pt-24 pb-16">
-        <div className="max-w-3xl">
-          {/* Brand Badge */}
-          <div style={{
-            display    : 'inline-flex',
-            alignItems : 'center',
-            gap        : '8px',
-            background : 'rgba(10,255,230,0.1)',
-            border     : '1px solid rgba(10,255,230,0.3)',
-            borderRadius: '20px',
-            padding    : '6px 16px',
-            marginBottom: '16px',
-          }}>
+      {/* MAIN CONTENT - centered overlay */}
+      <div style={{
+        position       : 'relative',
+        zIndex         : 2,
+        flex           : 1,
+        display        : 'flex',
+        alignItems     : 'center',
+        justifyContent : 'center',
+        padding        : '100px 24px 60px',
+      }}>
+        <motion.div
+          initial   ={{ opacity: 0, y: 30 }}
+          animate   ={{ opacity: 1, y: 0  }}
+          transition={{ duration: 0.8 }}
+          style={{
+            textAlign  : 'center',
+            maxWidth   : '600px',
+          }}
+        >
+          {/* Logo image */}
+          <motion.div
+            initial   ={{ opacity: 0, scale: 0.8 }}
+            animate   ={{ opacity: 1, scale: 1   }}
+            transition={{ duration: 0.6 }}
+          >
             <img
               src  ="/logo.png"
-              alt  =""
+              alt  ="SuciHome Logo"
               style={{
-                height: '20px',
-                width : 'auto',
-                filter: 'brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(600%) hue-rotate(115deg)',
-                // Makes logo teal color
+                height      : '80px',
+                width       : 'auto',
+                marginBottom: '8px',
               }}
             />
-            <span style={{
-              color     : '#0AFFE6',
-              fontSize  : '13px',
-              fontWeight: '700',
+          </motion.div>
+
+          {/* Brand Name */}
+          <motion.h1
+            initial   ={{ opacity: 0, y: 20 }}
+            animate   ={{ opacity: 1, y: 0  }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className ="hero-brand"
+            style={{
+              fontSize  : '64px',
+              fontWeight: '800',
+              margin    : '0 0 8px',
+              lineHeight: '1',
+              fontFamily: 'Instrument Serif, serif',
+            }}
+          >
+            <span style={{ color: BRAND.green }}>Suci</span>
+            <span style={{ color: BRAND.gold  }}>Home</span>
+          </motion.h1>
+
+          {/* Gold tagline with lines */}
+          <motion.div
+            initial   ={{ opacity: 0 }}
+            animate   ={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{
+              display        : 'flex',
+              alignItems     : 'center',
+              justifyContent : 'center',
+              gap            : '16px',
+              margin         : '12px 0 28px',
+            }}
+          >
+            <div style={{
+              height    : '1px',
+              width     : '70px',
+              background: BRAND.gold,
+            }} />
+            <p style={{
+              color        : BRAND.gold,
+              fontSize     : '11px',
+              fontWeight   : '700',
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              margin       : 0,
             }}>
-              SuciHome
-            </span>
-          </div>
-
-          {/* Celebration Badge for Vizag launch */}
-          <div style={{
-            display      : 'inline-flex',
-            alignItems   : 'center',
-            gap          : '8px',
-            background   : 'rgba(10,255,230,0.1)',
-            border       : '1px solid rgba(10,255,230,0.3)',
-            borderRadius : '20px',
-            padding      : '6px 16px',
-            fontSize     : '13px',
-            color        : '#0AFFE6',
-            fontWeight   : '600',
-            marginBottom : '16px',
-          }}>
-            🎉 Now Open in Vizag! Book your first clean
-          </div>
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
-            style={{ background: 'rgba(10,255,230,0.12)', border: '1px solid rgba(10,255,230,0.35)' }}>
-            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Live in 6 Cities Across India 🎉</span>
-          </div>
+              Clean Homes, Better Lives
+            </p>
+            <div style={{
+              height    : '1px',
+              width     : '70px',
+              background: BRAND.gold,
+            }} />
+          </motion.div>
 
           {/* Main Heading */}
-          <h1 ref={headingRef} className="section-heading text-5xl md:text-7xl leading-tight mb-6 overflow-hidden text-white">
-            <span className="word inline-block mr-4">India's</span>
-            <span className="word inline-block mr-4" style={{ color: '#0AFFE6' }}>Cleanest</span>
+          <motion.h2
+            initial   ={{ opacity: 0, y: 20 }}
+            animate   ={{ opacity: 1, y: 0  }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className ="hero-heading"
+            style={{
+              color      : BRAND.green,
+              fontSize   : '40px',
+              fontWeight : '700',
+              fontFamily : 'Instrument Serif, serif',
+              lineHeight : '1.2',
+              margin     : '0 0 16px',
+            }}
+          >
+            Premium Home Cleaning
+            <br />You Can Trust
+          </motion.h2>
+
+          {/* Subtext */}
+          <motion.p
+            initial   ={{ opacity: 0 }}
+            animate   ={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            style={{
+              color     : BRAND.light,
+              fontSize  : '17px',
+              lineHeight: '1.7',
+              margin    : '0 0 36px',
+            }}
+          >
+            Professional. Reliable. Affordable.
             <br />
-            <span className="word inline-block mr-4 text-white">Choice</span>
-          </h1>
+            Book trusted cleaning experts for your home.
+          </motion.p>
 
-          <p ref={subRef} className="text-lg md:text-xl font-dm leading-relaxed mb-8 max-w-xl" style={{ color: '#A0A0A0' }}>
-            Professional home cleaning services starting at{' '}
-            <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.9em' }}>₹249</span>{' '}
-            <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
-            Trained staff, eco-friendly products, same-day booking in Bengaluru, Mumbai, Visakhapatnam, Hyderabad, Bhopal & Chennai.
-          </p>
-          <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
-            <button
-              onClick={() => {
-                const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
-                if (!token) {
-                  setShowLoginModal(true);
-                  return;
-                }
-                navigate('/book');
-              }}
-              className="btn-teal text-base px-8 py-4 ripple flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Book a Cleaning
-            </button>
-            <button
-              onClick={scrollToServices}
-              className="px-8 py-4 rounded-xl font-dm font-semibold transition-all flex items-center gap-2"
-              style={{
-                background: 'rgba(10,255,230,0.05)',
-                border: '1.5px solid rgba(10,255,230,0.35)',
-                color: '#0AFFE6',
-                backdropFilter: 'blur(8px)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#0AFFE6';
-                e.currentTarget.style.color = '#000000';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'rgba(10,255,230,0.05)';
-                e.currentTarget.style.color = '#0AFFE6';
-              }}
-            >
-              View Services
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
+          {/* BOOK A SERVICE Button */}
+          <motion.button
+            initial   ={{ opacity: 0, scale: 0.9 }}
+            animate   ={{ opacity: 1, scale: 1   }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            whileHover={{ 
+              scale    : 1.05,
+              boxShadow: '0 12px 40px rgba(27,67,50,0.35)',
+            }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/book')}
+            className ="hero-button"
+            style={{
+              background   : BRAND.green,
+              color        : '#FFFFFF',
+              border       : 'none',
+              padding      : '18px 56px',
+              borderRadius : '50px',
+              fontSize     : '16px',
+              fontWeight   : '700',
+              cursor       : 'pointer',
+              letterSpacing: '1.5px',
+              display      : 'inline-flex',
+              alignItems   : 'center',
+              gap          : '10px',
+              marginBottom : '48px',
+              transition   : 'all 0.3s ease',
+            }}
+          >
+            ✦ BOOK A SERVICE
+          </motion.button>
 
-          {/* Trust badges */}
-          <div ref={badgesRef} className="flex flex-wrap gap-3">
+          {/* 3 Trust Badges */}
+          <motion.div
+            initial   ={{ opacity: 0, y: 20 }}
+            animate   ={{ opacity: 1, y: 0  }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            style={{
+              display        : 'flex',
+              justifyContent : 'center',
+              gap            : '0',
+              marginBottom   : '32px',
+            }}
+          >
             {[
-              { icon: '✦', label: '500+ Happy Customers' },
-              { icon: '⚡', label: 'Same-Day Booking' },
-              { icon: '🌿', label: 'Eco-Friendly Products' },
-              { icon: '📍', label: 'Pan India Team' },
+              { icon: '🛡️', title: 'Verified',    sub: 'Experts'       },
+              { icon: '🌿', title: 'Eco-Friendly', sub: 'Cleaning'      },
+              { icon: '👍', title: '100%',         sub: 'Satisfaction Guaranteed' },
             ].map((badge, i) => (
-              <div key={i} className="badge rounded-full px-4 py-2 flex items-center gap-2"
+              <div
+                key  ={badge.title}
                 style={{
-                  background: 'rgba(10,10,10,0.85)',
-                  border: '1px solid rgba(10,255,230,0.3)',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.5)',
+                  display       : 'flex',
+                  flexDirection : 'column',
+                  alignItems    : 'center',
+                  gap           : '8px',
+                  padding       : '0 28px',
+                  borderRight   : i < 2 
+                    ? `1px solid rgba(27,67,50,0.2)` 
+                    : 'none',
+                }}
+              >
+                {/* Circle icon */}
+                <div style={{
+                  width          : '52px',
+                  height         : '52px',
+                  borderRadius   : '50%',
+                  background     : 'rgba(27,67,50,0.08)',
+                  border         : '1px solid rgba(27,67,50,0.15)',
+                  display        : 'flex',
+                  alignItems     : 'center',
+                  justifyContent : 'center',
+                  fontSize       : '22px',
                 }}>
-                <span style={{ color: '#0AFFE6' }}>{badge.icon}</span>
-                <span className="text-xs font-dm font-medium" style={{ color: '#A0A0A0' }}>{badge.label}</span>
+                  {badge.icon}
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{
+                    color     : BRAND.green,
+                    fontSize  : '13px',
+                    fontWeight: '700',
+                    margin    : 0,
+                  }}>
+                    {badge.title}
+                  </p>
+                  <p style={{
+                    color   : BRAND.light,
+                    fontSize: '12px',
+                    margin  : '2px 0 0',
+                  }}>
+                    {badge.sub}
+                  </p>
+                </div>
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+
+          {/* Bottom tagline */}
+          <motion.p
+            initial   ={{ opacity: 0 }}
+            animate   ={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            style={{
+              color        : BRAND.gold,
+              fontSize     : '13px',
+              fontWeight   : '600',
+              letterSpacing: '1.5px',
+              display      : 'flex',
+              alignItems   : 'center',
+              justifyContent: 'center',
+              gap          : '10px',
+            }}
+          >
+            ✦ Making Every Home Spotless ✦
+          </motion.p>
+        </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        <span className="text-xs font-dm tracking-widest uppercase" style={{ color: 'rgba(160,160,160,0.5)' }}>Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-teal-400/80 to-transparent" style={{ animation: 'pulse 2s ease-in-out infinite' }}></div>
-      </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-heading { font-size: 28px !important }
+          .hero-brand   { font-size: 48px !important }
+          .hero-button  { 
+            width: 100% !important; 
+            max-width: 320px !important; 
+          }
+        }
+      `}</style>
     </section>
-  );
-};
-
-export default Hero;
+  )
+}

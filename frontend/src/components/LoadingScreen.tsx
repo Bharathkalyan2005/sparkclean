@@ -5,8 +5,11 @@ const LoadingScreen: React.FC = () => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 2000);
-    return () => clearTimeout(timer);
+    // Force complete after 3 seconds MAX
+    const timer = setTimeout(() => {
+      setVisible(false)
+    }, 3000)
+    return () => clearTimeout(timer)
   }, []);
 
   return (
