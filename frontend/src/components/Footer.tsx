@@ -4,17 +4,22 @@ import { Link } from 'react-router-dom';
 
 const footerAreas = [
   // LIVE cities — with star badge
-  { name: "Koramangala",    city: "Bengaluru", live: true  },
-  { name: "Indiranagar",    city: "Bengaluru", live: true  },
-  { name: "Bandra",         city: "Mumbai",    live: true  },
-  { name: "Andheri",        city: "Mumbai",    live: true  },
-  // Visakhapatnam
-  { name: "MVP Colony",     city: "Visakhapatnam", live: true },
-  { name: "Madhurawada",    city: "Visakhapatnam", live: true },
-  // Coming Soon
-  { name: "Hyderabad",      city: "",          live: false },
-  { name: "Chennai",        city: "",          live: false },
-  { name: "Delhi NCR",      city: "",          live: false },
+  { name: "Koramangala",    city: "Bengaluru",      live: true },
+  { name: "Indiranagar",    city: "Bengaluru",      live: true },
+  { name: "Bandra",         city: "Mumbai",         live: true },
+  { name: "Andheri",        city: "Mumbai",         live: true },
+  { name: "MVP Colony",     city: "Visakhapatnam",  live: true },
+  { name: "Madhurawada",    city: "Visakhapatnam",  live: true },
+
+  // ── ADD NEW
+  { name: 'Banjara Hills',  city: 'Hyderabad',      live: true },
+  { name: 'MP Nagar',       city: 'Bhopal',         live: true },
+  { name: 'Anna Nagar',     city: 'Chennai',        live: true },
+
+  // coming soon
+  { name: 'Delhi NCR',      city: '',               live: false },
+  { name: 'Pune',           city: '',               live: false },
+  { name: 'Kolkata',        city: '',               live: false },
 ];
 
 // Price overrides for display only in footer if needed, otherwise mapping over SERVICES is fine.

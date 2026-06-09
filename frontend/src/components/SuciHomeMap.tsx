@@ -87,28 +87,81 @@ const locations = [
       'Gopalapatnam', 'Bheemunipatnam'
     ],
   },
+
+  // ── HYDERABAD PINS ──
   {
-    id      : 8,
-    name    : 'Hyderabad',
-    city    : 'Hyderabad',
-    lat     : 17.3850,
-    lng     : 78.4867,
-    status  : 'COMING_SOON',
-    areas   : ['Banjara Hills', 'Jubilee Hills',
-               'Gachibowli', 'Hitech City'],
+    id    : 8,
+    name  : 'Banjara Hills',
+    city  : 'Hyderabad',
+    state : 'Telangana',
+    lat   : 17.4156,
+    lng   : 78.4347,
+    status: 'LIVE',
+    areas : [
+      'Banjara Hills', 'Jubilee Hills',
+      'Gachibowli', 'Hitech City',
+    ],
   },
   {
-    id      : 9,
-    name    : 'Chennai',
-    city    : 'Chennai',
-    lat     : 13.0827,
-    lng     : 80.2707,
-    status  : 'COMING_SOON',
-    areas   : ['Anna Nagar', 'T.Nagar',
-               'Velachery', 'Adyar'],
+    id    : 9,
+    name  : 'Kukatpally',
+    city  : 'Hyderabad',
+    state : 'Telangana',
+    lat   : 17.4848,
+    lng   : 78.3990,
+    status: 'LIVE',
+    areas : [
+      'Kukatpally', 'Begumpet',
+      'Secunderabad', 'Ameerpet',
+    ],
+  },
+
+  // ── BHOPAL PIN ──
+  {
+    id    : 10,
+    name  : 'MP Nagar',
+    city  : 'Bhopal',
+    state : 'Madhya Pradesh',
+    lat   : 23.2599,
+    lng   : 77.4126,
+    status: 'LIVE',
+    areas : [
+      'MP Nagar', 'Arera Colony',
+      'Kolar Road', 'Shahpura',
+    ],
+  },
+
+  // ── CHENNAI PINS ──
+  {
+    id    : 11,
+    name  : 'Anna Nagar',
+    city  : 'Chennai',
+    state : 'Tamil Nadu',
+    lat   : 13.0850,
+    lng   : 80.2101,
+    status: 'LIVE',
+    areas : [
+      'Anna Nagar', 'T. Nagar',
+      'Nungambakkam', 'Mylapore',
+    ],
   },
   {
-    id      : 10,
+    id    : 12,
+    name  : 'Velachery',
+    city  : 'Chennai',
+    state : 'Tamil Nadu',
+    lat   : 12.9815,
+    lng   : 80.2180,
+    status: 'LIVE',
+    areas : [
+      'Velachery', 'Adyar',
+      'OMR', 'Sholinganallur',
+    ],
+  },
+
+  // ── DELHI NCR COMING SOON PIN ──
+  {
+    id      : 13,
     name    : 'New Delhi',
     city    : 'Delhi NCR',
     lat     : 28.6139,

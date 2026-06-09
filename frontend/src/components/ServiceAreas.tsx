@@ -23,26 +23,57 @@ const CITIES_DATA = [
     standard: [
       'Seethammadhara', 'Dwaraka Nagar', 'Gajuwaka', 'Rushikonda',
       'Gopalapatnam', 'Kommadi', 'NAD Junction', 'Bheemunipatnam',
-      'Siripuram', 'Jagadamba', 'Akkayyapalem', 'Tadi Konda'
+      'Siripuram', 'Jagadamba'
     ]
   },
   {
     name: 'Hyderabad, Telangana',
-    isLive: false,
-    premium: [],
-    standard: ['Banjara Hills', 'Jubilee Hills', 'Gachibowli', 'Hitech City']
+    isLive: true,
+    badge: '🆕 Now Open!',
+    premium: ['Banjara Hills', 'Jubilee Hills'],
+    standard: [
+      'Gachibowli', 'Hitech City', 'Kondapur', 'Madhapur',
+      'Kukatpally', 'Begumpet', 'Secunderabad', 'Ameerpet'
+    ]
+  },
+  {
+    name: 'Bhopal, Madhya Pradesh',
+    isLive: true,
+    badge: '🆕 Now Open!',
+    premium: ['MP Nagar', 'Arera Colony'],
+    standard: [
+      'Kolar Road', 'Hoshangabad Road', 'Shahpura', 'Misrod',
+      'Ayodhya Bypass', 'Katara Hills', 'Trilanga', 'Chunabhatti'
+    ]
   },
   {
     name: 'Chennai, Tamil Nadu',
-    isLive: false,
-    premium: [],
-    standard: ['Anna Nagar', 'T.Nagar', 'Velachery', 'Adyar']
+    isLive: true,
+    badge: '🆕 Now Open!',
+    premium: ['Anna Nagar', 'T. Nagar'],
+    standard: [
+      'Velachery', 'Adyar', 'Porur', 'OMR',
+      'Nungambakkam', 'Mylapore', 'Perambur', 'Chromepet',
+      'Tambaram', 'Sholinganallur'
+    ]
   },
   {
     name: 'Delhi NCR',
     isLive: false,
     premium: [],
     standard: ['Connaught Place', 'Noida', 'Gurugram', 'Dwarka']
+  },
+  {
+    name: 'Pune, Maharashtra',
+    isLive: false,
+    premium: [],
+    standard: []
+  },
+  {
+    name: 'Kolkata, West Bengal',
+    isLive: false,
+    premium: [],
+    standard: []
   }
 ];
 
@@ -75,7 +106,7 @@ const ServiceAreas: React.FC = () => {
             We Serve Across <span className="teal-gradient-text">India</span>
           </h2>
           <p className="text-white/50 text-lg font-dm max-w-2xl mx-auto">
-            Live in Bengaluru, Mumbai & Visakhapatnam — coming soon to more cities
+            Live in Bengaluru, Mumbai, Visakhapatnam, Hyderabad, Bhopal & Chennai — coming soon to more cities
           </p>
         </motion.div>
 
@@ -173,6 +204,11 @@ const ServiceAreas: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               <span className="font-syne font-bold text-white text-xl">{city.name}</span>
+              {city.badge && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-[#0AFFE6]/20 text-[#0AFFE6] font-dm font-semibold animate-pulse">
+                  {city.badge}
+                </span>
+              )}
             </div>
 
             {city.premium.length > 0 && (

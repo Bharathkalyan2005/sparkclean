@@ -10,3 +10,18 @@ export const APP = {
   year           : '2026',
   supportMessage : 'Hi SuciHome! I need help with my booking.',
 } as const;
+
+export const LIVE_CITIES = [
+  'Bengaluru',
+  'Mumbai',
+  'Visakhapatnam',
+  'Hyderabad',
+  'Bhopal',
+  'Chennai',
+] as const;
+
+export const COMING_SOON_CITIES = [
+  'Delhi NCR',
+  'Pune',
+  'Kolkata',
+] as const;

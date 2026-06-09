@@ -3,50 +3,99 @@ import { Router } from 'express'
 const router = Router();
 
 // Serviceable areas data
-const SERVICE_AREAS = {
-  LIVE: [
-    // Bengaluru
-    { name: 'Koramangala',     city: 'Bengaluru', state: 'Karnataka',    lat: 12.9352, lng: 77.6245, radius: 5 },
-    { name: 'Indiranagar',     city: 'Bengaluru', state: 'Karnataka',    lat: 12.9784, lng: 77.6408, radius: 5 },
-    { name: 'Whitefield',      city: 'Bengaluru', state: 'Karnataka',    lat: 12.9698, lng: 77.7499, radius: 5 },
-    { name: 'HSR Layout',      city: 'Bengaluru', state: 'Karnataka',    lat: 12.9116, lng: 77.6474, radius: 5 },
-    { name: 'Marathahalli',    city: 'Bengaluru', state: 'Karnataka',    lat: 12.9591, lng: 77.6974, radius: 5 },
-    { name: 'BTM Layout',      city: 'Bengaluru', state: 'Karnataka',    lat: 12.9165, lng: 77.6101, radius: 5 },
-    { name: 'Jayanagar',       city: 'Bengaluru', state: 'Karnataka',    lat: 12.9308, lng: 77.5831, radius: 5 },
-    { name: 'Electronic City', city: 'Bengaluru', state: 'Karnataka',    lat: 12.8399, lng: 77.6770, radius: 5 },
+const SUPPORTED_CITIES = [
+  {
+    name    : 'Bengaluru',
+    state   : 'Karnataka',
+    lat     : 12.9716,
+    lng     : 77.5946,
+    radiusKm: 50,
+    areas   : [
+      'Koramangala', 'Indiranagar',
+      'Whitefield', 'HSR Layout',
+      'Marathahalli', 'BTM Layout',
+      'Jayanagar', 'Electronic City',
+    ],
+  },
+  {
+    name    : 'Mumbai',
+    state   : 'Maharashtra',
+    lat     : 19.0760,
+    lng     : 72.8777,
+    radiusKm: 60,
+    areas   : [
+      'Bandra', 'Andheri', 'Powai',
+      'Thane', 'Navi Mumbai', 'Juhu',
+      'Borivali', 'Worli',
+    ],
+  },
+  {
+    name    : 'Visakhapatnam',
+    state   : 'Andhra Pradesh',
+    lat     : 17.6868,
+    lng     : 83.2185,
+    radiusKm: 40,
+    areas   : [
+      'MVP Colony', 'Madhurawada',
+      'Seethammadhara', 'Dwaraka Nagar',
+      'Gajuwaka', 'Rushikonda',
+      'Gopalapatnam', 'Kommadi',
+    ],
+  },
 
-    // Mumbai
-    { name: 'Bandra',          city: 'Mumbai',    state: 'Maharashtra',  lat: 19.0596, lng: 72.8295, radius: 5 },
-    { name: 'Andheri',         city: 'Mumbai',    state: 'Maharashtra',  lat: 19.1136, lng: 72.8697, radius: 5 },
-    { name: 'Powai',           city: 'Mumbai',    state: 'Maharashtra',  lat: 19.1176, lng: 72.9060, radius: 5 },
-    { name: 'Thane',           city: 'Mumbai',    state: 'Maharashtra',  lat: 19.2183, lng: 72.9781, radius: 5 },
-    { name: 'Navi Mumbai',     city: 'Mumbai',    state: 'Maharashtra',  lat: 19.0330, lng: 73.0297, radius: 5 },
-    { name: 'Juhu',            city: 'Mumbai',    state: 'Maharashtra',  lat: 19.1075, lng: 72.8263, radius: 5 },
-    { name: 'Borivali',        city: 'Mumbai',    state: 'Maharashtra',  lat: 19.2307, lng: 72.8567, radius: 5 },
-    { name: 'Worli',           city: 'Mumbai',    state: 'Maharashtra',  lat: 19.0176, lng: 72.8178, radius: 5 },
+  // ── NEW CITIES ──────────────────────────
 
-    // Visakhapatnam
-    { name: 'MVP Colony',      city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7231, lng: 83.3012, radius: 5 },
-    { name: 'Madhurawada',     city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7714, lng: 83.3733, radius: 5 },
-    { name: 'Seethammadhara',  city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7384, lng: 83.3312, radius: 5 },
-    { name: 'Dwaraka Nagar',   city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7326, lng: 83.3162, radius: 5 },
-    { name: 'Gajuwaka',        city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.6917, lng: 83.2115, radius: 5 },
-    { name: 'Rushikonda',      city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7806, lng: 83.3784, radius: 5 },
-    { name: 'Gopalapatnam',    city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7474, lng: 83.2722, radius: 5 },
-    { name: 'Kommadi',         city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7889, lng: 83.3956, radius: 5 },
-    { name: 'NAD Junction',    city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7197, lng: 83.2439, radius: 5 },
-    { name: 'Bheemunipatnam',  city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.8915, lng: 83.4507, radius: 5 },
-    { name: 'Siripuram',       city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7231, lng: 83.3178, radius: 5 },
-    { name: 'Jagadamba',       city: 'Visakhapatnam', state: 'Andhra Pradesh', lat: 17.7203, lng: 83.3132, radius: 5 },
-  ],
-  COMING_SOON: [
-    { name: 'Hyderabad', state: 'Telangana'     },
-    { name: 'Chennai',   state: 'Tamil Nadu'    },
-    { name: 'Delhi NCR', state: 'Delhi'         },
-    { name: 'Pune',      state: 'Maharashtra'   },
-    { name: 'Kolkata',   state: 'West Bengal'   },
-  ]
-};
+  {
+    name    : 'Hyderabad',
+    state   : 'Telangana',
+    lat     : 17.3850,
+    lng     : 78.4867,
+    radiusKm: 55,
+    areas   : [
+      'Banjara Hills', 'Jubilee Hills',
+      'Gachibowli', 'Hitech City',
+      'Kondapur', 'Madhapur',
+      'Kukatpally', 'Begumpet',
+      'Secunderabad', 'Ameerpet',
+      'Manikonda', 'Nallagandla',
+    ],
+  },
+  {
+    name    : 'Bhopal',
+    state   : 'Madhya Pradesh',
+    lat     : 23.2599,
+    lng     : 77.4126,
+    radiusKm: 35,
+    areas   : [
+      'MP Nagar', 'Arera Colony',
+      'Kolar Road', 'Hoshangabad Road',
+      'Shahpura', 'Misrod',
+      'Ayodhya Bypass', 'Katara Hills',
+      'Trilanga', 'Chunabhatti',
+    ],
+  },
+  {
+    name    : 'Chennai',
+    state   : 'Tamil Nadu',
+    lat     : 13.0827,
+    lng     : 80.2707,
+    radiusKm: 50,
+    areas   : [
+      'Anna Nagar', 'T. Nagar',
+      'Velachery', 'Adyar',
+      'Porur', 'OMR',
+      'Nungambakkam', 'Mylapore',
+      'Perambur', 'Chromepet',
+      'Tambaram', 'Sholinganallur',
+    ],
+  },
+]
+
+const COMING_SOON_CITIES = [
+  { name: 'Delhi NCR', state: 'Delhi' },
+  { name: 'Pune',      state: 'Maharashtra' },
+  { name: 'Kolkata',   state: 'West Bengal' },
+]
 
 // Haversine formula to calculate distance
 function getDistance(
@@ -92,26 +141,25 @@ router.post('/check', async (req, res) => {
       })
     }
 
-    // Check distance to each live service area
-    let nearestArea: any   = null
+    // Check distance to each supported city
+    let nearestCity: any   = null
     let minDistance   = Infinity
     let isServiceable = false
 
-    for (const area of SERVICE_AREAS.LIVE) {
+    for (const city of SUPPORTED_CITIES) {
       const distance = getDistance(
         lat, lng,
-        area.lat, area.lng
+        city.lat, city.lng
       )
 
       if (distance < minDistance) {
         minDistance = distance
-        nearestArea = { ...area, distance }
+        nearestCity = { ...city, distance }
       }
 
-      if (distance <= area.radius) {
+      if (distance <= city.radiusKm) {
         isServiceable = true
-        nearestArea   = { ...area, distance }
-        break
+        nearestCity   = { ...city, distance }
       }
     }
 
@@ -119,15 +167,22 @@ router.post('/check', async (req, res) => {
       return res.json({
         serviceable : true,
         status      : 'LIVE',
-        message     : `Great news! We serve ${nearestArea?.name}!`,
-        area        : nearestArea,
+        message     : `Great news! We serve ${nearestCity?.name}!`,
+        area        : {
+          name: nearestCity.name,
+          city: nearestCity.name,
+          state: nearestCity.state,
+          lat: nearestCity.lat,
+          lng: nearestCity.lng,
+          radius: nearestCity.radiusKm,
+        },
         comingSoon  : false,
       })
     }
 
     // Check if in coming soon city
-    const comingSoonMatch = SERVICE_AREAS.COMING_SOON.find(
-      area => minDistance < 50
+    const comingSoonMatch = COMING_SOON_CITIES.find(
+      city => minDistance < 150
     )
 
     return res.json({
@@ -136,7 +191,13 @@ router.post('/check', async (req, res) => {
       message     : comingSoonMatch
         ? `We're launching in your area soon! Stay connected.`
         : `We haven't reached your location yet. Coming soon!`,
-      nearestArea : nearestArea,
+      nearestArea : nearestCity
+        ? {
+            name: nearestCity.name,
+            city: nearestCity.name,
+            state: nearestCity.state,
+          }
+        : null,
       distance    : Math.round(minDistance),
       comingSoon  : true,
     })

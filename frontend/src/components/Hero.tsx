@@ -122,7 +122,7 @@ const Hero: React.FC = () => {
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
             style={{ background: 'rgba(10,255,230,0.12)', border: '1px solid rgba(10,255,230,0.35)' }}>
             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Live in Bengaluru, Mumbai & Vizag 🎉</span>
+            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Live in 6 Cities Across India 🎉</span>
           </div>
 
           {/* Main Heading */}
@@ -137,7 +137,7 @@ const Hero: React.FC = () => {
             Professional home cleaning services starting at{' '}
             <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.9em' }}>₹249</span>{' '}
             <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
-            Trained staff, eco-friendly products, same-day booking in Bengaluru, Mumbai & Visakhapatnam.
+            Trained staff, eco-friendly products, same-day booking in Bengaluru, Mumbai, Visakhapatnam, Hyderabad, Bhopal & Chennai.
           </p>
           <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
             <button

@@ -38,7 +38,7 @@ export default function LaunchBanner() {
       gap            : '8px',
       boxSizing      : 'border-box',
     }}>
-      🎉 SuciHome is NOW LIVE in Visakhapatnam (Vizag)! Book your first clean today →
+      🎉 SuciHome now live in 6 cities! Hyderabad • Bhopal • Chennai just launched →
       <a
         href="/book"
         style={{

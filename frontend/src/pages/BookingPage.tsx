@@ -57,6 +57,46 @@ const areaCoordinates: Record<string, {
   'Bheemunipatnam' : { lat: 17.8915, lng: 83.4507, city: 'Visakhapatnam' },
   'Siripuram'      : { lat: 17.7231, lng: 83.3178, city: 'Visakhapatnam' },
   'Jagadamba'      : { lat: 17.7203, lng: 83.3132, city: 'Visakhapatnam' },
+
+  // ── HYDERABAD ──
+  'Banjara Hills'  : { lat: 17.4156, lng: 78.4347, city: 'Hyderabad' },
+  'Jubilee Hills'  : { lat: 17.4320, lng: 78.4071, city: 'Hyderabad' },
+  'Gachibowli'     : { lat: 17.4401, lng: 78.3489, city: 'Hyderabad' },
+  'Hitech City'    : { lat: 17.4504, lng: 78.3808, city: 'Hyderabad' },
+  'Kondapur'       : { lat: 17.4600, lng: 78.3615, city: 'Hyderabad' },
+  'Madhapur'       : { lat: 17.4489, lng: 78.3911, city: 'Hyderabad' },
+  'Kukatpally'     : { lat: 17.4848, lng: 78.3990, city: 'Hyderabad' },
+  'Begumpet'       : { lat: 17.4418, lng: 78.4632, city: 'Hyderabad' },
+  'Secunderabad'   : { lat: 17.4399, lng: 78.4983, city: 'Hyderabad' },
+  'Ameerpet'       : { lat: 17.4374, lng: 78.4487, city: 'Hyderabad' },
+  'Manikonda'      : { lat: 17.4062, lng: 78.3892, city: 'Hyderabad' },
+  'Nallagandla'    : { lat: 17.4731, lng: 78.3260, city: 'Hyderabad' },
+
+  // ── BHOPAL ──
+  'MP Nagar'       : { lat: 23.2332, lng: 77.4272, city: 'Bhopal' },
+  'Arera Colony'   : { lat: 23.2068, lng: 77.4376, city: 'Bhopal' },
+  'Kolar Road'     : { lat: 23.1793, lng: 77.4431, city: 'Bhopal' },
+  'Hoshangabad Road':{ lat: 23.2072, lng: 77.4697, city: 'Bhopal' },
+  'Shahpura'       : { lat: 23.1882, lng: 77.4329, city: 'Bhopal' },
+  'Misrod'         : { lat: 23.1736, lng: 77.4751, city: 'Bhopal' },
+  'Ayodhya Bypass' : { lat: 23.2476, lng: 77.4638, city: 'Bhopal' },
+  'Katara Hills'   : { lat: 23.1965, lng: 77.4184, city: 'Bhopal' },
+  'Trilanga'       : { lat: 23.1978, lng: 77.4289, city: 'Bhopal' },
+  'Chunabhatti'    : { lat: 23.2145, lng: 77.4521, city: 'Bhopal' },
+
+  // ── CHENNAI ──
+  'Anna Nagar'     : { lat: 13.0850, lng: 80.2101, city: 'Chennai' },
+  'T. Nagar'       : { lat: 13.0418, lng: 80.2341, city: 'Chennai' },
+  'Velachery'      : { lat: 12.9815, lng: 80.2180, city: 'Chennai' },
+  'Adyar'          : { lat: 13.0012, lng: 80.2565, city: 'Chennai' },
+  'Porur'          : { lat: 13.0359, lng: 80.1567, city: 'Chennai' },
+  'OMR'            : { lat: 12.9279, lng: 80.2304, city: 'Chennai' },
+  'Nungambakkam'   : { lat: 13.0569, lng: 80.2425, city: 'Chennai' },
+  'Mylapore'       : { lat: 13.0335, lng: 80.2676, city: 'Chennai' },
+  'Perambur'       : { lat: 13.1181, lng: 80.2344, city: 'Chennai' },
+  'Chromepet'      : { lat: 12.9516, lng: 80.1462, city: 'Chennai' },
+  'Tambaram'       : { lat: 12.9249, lng: 80.1000, city: 'Chennai' },
+  'Sholinganallur' : { lat: 12.9010, lng: 80.2279, city: 'Chennai' },
 };
 
 // Dark map style
@@ -226,6 +266,46 @@ const areas = [
   { name: "Bheemunipatnam",  city: "Visakhapatnam", premium: false },
   { name: "Siripuram",       city: "Visakhapatnam", premium: false },
   { name: "Jagadamba",       city: "Visakhapatnam", premium: false },
+
+  // ── HYDERABAD ── NEW
+  { name: 'Banjara Hills',   city: 'Hyderabad', premium: true  },
+  { name: 'Jubilee Hills',   city: 'Hyderabad', premium: true  },
+  { name: 'Gachibowli',      city: 'Hyderabad', premium: false },
+  { name: 'Hitech City',     city: 'Hyderabad', premium: false },
+  { name: 'Kondapur',        city: 'Hyderabad', premium: false },
+  { name: 'Madhapur',        city: 'Hyderabad', premium: false },
+  { name: 'Kukatpally',      city: 'Hyderabad', premium: false },
+  { name: 'Begumpet',        city: 'Hyderabad', premium: false },
+  { name: 'Secunderabad',    city: 'Hyderabad', premium: false },
+  { name: 'Ameerpet',        city: 'Hyderabad', premium: false },
+  { name: 'Manikonda',       city: 'Hyderabad', premium: false },
+  { name: 'Nallagandla',     city: 'Hyderabad', premium: false },
+
+  // ── BHOPAL ── NEW
+  { name: 'MP Nagar',        city: 'Bhopal',    premium: true  },
+  { name: 'Arera Colony',    city: 'Bhopal',    premium: true  },
+  { name: 'Kolar Road',      city: 'Bhopal',    premium: false },
+  { name: 'Hoshangabad Road',city: 'Bhopal',    premium: false },
+  { name: 'Shahpura',        city: 'Bhopal',    premium: false },
+  { name: 'Misrod',          city: 'Bhopal',    premium: false },
+  { name: 'Ayodhya Bypass',  city: 'Bhopal',    premium: false },
+  { name: 'Katara Hills',    city: 'Bhopal',    premium: false },
+  { name: 'Trilanga',        city: 'Bhopal',    premium: false },
+  { name: 'Chunabhatti',     city: 'Bhopal',    premium: false },
+
+  // ── CHENNAI ── NEW
+  { name: 'Anna Nagar',      city: 'Chennai',   premium: true  },
+  { name: 'T. Nagar',        city: 'Chennai',   premium: true  },
+  { name: 'Velachery',       city: 'Chennai',   premium: false },
+  { name: 'Adyar',           city: 'Chennai',   premium: false },
+  { name: 'Porur',           city: 'Chennai',   premium: false },
+  { name: 'OMR',             city: 'Chennai',   premium: false },
+  { name: 'Nungambakkam',    city: 'Chennai',   premium: false },
+  { name: 'Mylapore',        city: 'Chennai',   premium: false },
+  { name: 'Perambur',        city: 'Chennai',   premium: false },
+  { name: 'Chromepet',       city: 'Chennai',   premium: false },
+  { name: 'Tambaram',        city: 'Chennai',   premium: false },
+  { name: 'Sholinganallur',  city: 'Chennai',   premium: false },
 ];
 
 const BookingPage: React.FC = () => {
@@ -881,6 +961,39 @@ const handleCODBooking = async () => {
                     <optgroup label="📍 Visakhapatnam (Vizag), AP">
                       {areas
                         .filter(a => a.city === 'Visakhapatnam')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
+
+                    <optgroup label="📍 Hyderabad, Telangana">
+                      {areas
+                        .filter(a => a.city === 'Hyderabad')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
+
+                    <optgroup label="📍 Bhopal, Madhya Pradesh">
+                      {areas
+                        .filter(a => a.city === 'Bhopal')
+                        .map(a => (
+                          <option key={a.name} value={a.name}>
+                            {a.premium ? '⭐ ' : ''}{a.name}
+                          </option>
+                        ))
+                      }
+                    </optgroup>
+
+                    <optgroup label="📍 Chennai, Tamil Nadu">
+                      {areas
+                        .filter(a => a.city === 'Chennai')
                         .map(a => (
                           <option key={a.name} value={a.name}>
                             {a.premium ? '⭐ ' : ''}{a.name}
