@@ -4,46 +4,47 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster, toast } from 'react-hot-toast';
 import { CartProvider } from './context/CartContext';
 import LoadingScreen from './components/LoadingScreen';
-import AdminRoute from './components/AdminRoute';
 import LocationGate from './components/LocationGate';
 import LaunchBanner from './components/LaunchBanner';
 import ErrorBoundary from './components/ErrorBoundary';
+import PageSkeleton from './components/PageSkeleton';
 // @ts-ignore
 import './index.css';
 
-const HomePage = lazy(() => import('./pages/HomePage'));
-const BookingPage = lazy(() => import('./pages/BookingPage'));
-const SuccessPage = lazy(() => import('./pages/SuccessPage'));
-const AdminPage = lazy(() => import('./pages/AdminPage'));
-const AuthPage = lazy(() => import('./pages/AuthPage'));
+// Lazy load all pages
+const HomePage         = lazy(() => import('./pages/HomePage'));
+const BookingPage      = lazy(() => import('./pages/BookingPage'));
+const SuccessPage      = lazy(() => import('./pages/SuccessPage'));
+const AdminPage        = lazy(() => import('./pages/AdminPage'));
+const AuthPage         = lazy(() => import('./pages/AuthPage'));
 const AuthCallbackPage = lazy(() => import('./pages/AuthCallbackPage'));
-const TrackingPage = lazy(() => import('./pages/TrackingPage'));
-const FeedbackPage = lazy(() => import('./pages/FeedbackPage'));
+const TrackingPage     = lazy(() => import('./pages/TrackingPage'));
+const FeedbackPage     = lazy(() => import('./pages/FeedbackPage'));
+const ProfilePage      = lazy(() => import('./pages/ProfilePage'));
+const HealthPage       = lazy(() => import('./pages/HealthPage'));
 
-// Simple fallback — black screen
-const Loader = () => (
-  <div style={{
-    minHeight  : '100vh',
-    background : '#0A0A0A',
-    display    : 'flex',
-    alignItems : 'center',
-    justifyContent: 'center',
-  }}>
-    <div style={{
-      width     : '40px',
-      height    : '40px',
-      border    : '3px solid rgba(10,255,230,0.2)',
-      borderTop : '3px solid #0AFFE6',
-      borderRadius: '50%',
-      animation : 'spin 1s linear infinite',
-    }} />
-    <style>{`
-      @keyframes spin {
-        to { transform: rotate(360deg) }
-      }
-    `}</style>
-  </div>
-)
+// Admin route wrapper
+const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem('sparkclean_token') 
+    || localStorage.getItem('sucihome_token') 
+    || localStorage.getItem('token') 
+    || localStorage.getItem('authToken');
+  
+  if (!token) {
+    return <Navigate to="/auth?redirect=/admin" replace />;
+  }
+  
+  try {
+    const decoded = JSON.parse(atob(token.split('.')[1]));
+    if (decoded.role !== 'ADMIN') {
+      toast.error('Admin access required');
+      return <Navigate to="/" replace />;
+    }
+    return <>{children}</>;
+  } catch {
+    return <Navigate to="/auth" replace />;
+  }
+};
 
 function App() {
   useEffect(() => {
@@ -102,18 +103,20 @@ function App() {
             },
           }}
         />
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<PageSkeleton />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/track" element={<TrackingPage />} />
             <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/health" element={<HealthPage />} />
             <Route path="/book" element={
               <LocationGate isAdmin={
                 (() => {
                   try {
-                    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
+                    const token = localStorage.getItem('sparkclean_token') || localStorage.getItem('sucihome_token') || localStorage.getItem('token') || localStorage.getItem('authToken');
                     if (!token) return false;
                     const decoded = JSON.parse(atob(token.split('.')[1]));
                     return decoded.role === 'ADMIN';
@@ -124,12 +127,17 @@ function App() {
               </LocationGate>
             } />
             <Route path="/success" element={<SuccessPage />} />
-            <Route path="/admin" element={<Navigate to="/sparkadmin" replace />} />
-            <Route path="/sparkadmin/*" element={
-              <AdminRoute>
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin/*" element={
+              <RequireAdmin>
                 <AdminPage />
-              </AdminRoute>
-            }/>
+              </RequireAdmin>
+            } />
+            <Route path="/sparkadmin/*" element={
+              <RequireAdmin>
+                <AdminPage />
+              </RequireAdmin>
+            } />
           </Routes>
         </Suspense>
       </CartProvider>

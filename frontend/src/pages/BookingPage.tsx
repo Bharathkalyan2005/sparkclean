@@ -411,16 +411,39 @@ const BookingPage: React.FC = () => {
     ? selectedCombo.price
     : selectedServices.reduce((sum, s) => sum + s.price * (s.quantity || 1), 0);
 
+  // Wake backend and preload Razorpay script when user reaches Step 3
+  useEffect(() => {
+    if (step === 3) {
+      // Pre-warm server 
+      fetch(`${process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'}/api/health`)
+        .catch(() => {})
+      
+      // Pre-load Razorpay script
+      if (!(window as any).Razorpay) {
+        const script = document.createElement('script')
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+        script.async = true
+        document.head.appendChild(script)
+      }
+    }
+  }, [step]);
+
   // ── Pay Online via Razorpay checkout modal ────────────────────
 const handlePayment = async () => {
   setLoading(true)
   setBookingStep('creating')
+
   try {
+    // Step 0: Wake backend first
+    await fetch(
+      `${process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'}/api/health`
+    ).catch(() => {})
+
     // Step 1: Create booking
     const bookingRes = await api.post('/bookings', {
       customerName  : form.name,
       customerPhone : form.phone,
-      customerEmail : form.email,
+      customerEmail : form.email || '',
       address       : form.address,
       area          : form.area,
       city          : form.city || 'India',
@@ -438,112 +461,100 @@ const handlePayment = async () => {
 
     const { bookingId, bookingNumber } = bookingRes.data
     
-    // Store for success page
+    // Save immediately
+    localStorage.setItem('sc_booking_number', bookingNumber)
+    localStorage.setItem('sc_booking_id', bookingId)
+    localStorage.setItem('sh_booking_number', bookingNumber)
+    localStorage.setItem('sh_booking_id', bookingId)
     localStorage.setItem('last_booking_number', bookingNumber)
     localStorage.setItem('last_booking_id',     bookingId)
+
+    setBookingStep('payment')
+
+    // Step 2: Create Razorpay order with retry
+    let orderRes
+    let retries = 0
     
-    console.log('New Booking ID:', bookingNumber)
-
-    // Show booking ID to user immediately
-    toast.success(
-      `Booking created! ID: ${bookingNumber}`,
-      { duration: 5000 }
-    )
-
-    // Step 2: Create Razorpay order
-    const orderRes = await api.post('/payments/create-order', {
-      bookingId
-    })
-
-    const {
-      orderId,
-      amount,
-      keyId,
-      customerName,
-      customerPhone,
-      customerEmail,
-    } = orderRes.data
-
-    console.log('✅ Razorpay order:', orderId)
-
-    // Step 3: Check Razorpay is loaded
-    if (!(window as any).Razorpay) {
-      toast.error('Payment gateway not loaded. Refresh and try again.')
-      setLoading(false)
-      return
+    while (retries < 3) {
+      try {
+        orderRes = await api.post(
+          '/payments/create-order', 
+          { bookingId }
+        )
+        break
+      } catch (err) {
+        retries++
+        if (retries === 3) throw err
+        // Wait 2 seconds before retry
+        await new Promise(r => setTimeout(r, 2000))
+      }
     }
 
-    // Step 4: Open Razorpay checkout
-    setBookingStep('payment')
+    const {
+      orderId, amount, currency,
+      keyId, customerName,
+      customerPhone, customerEmail,
+    } = orderRes!.data
+
+    // Step 3: Check Razorpay loaded
+    if (!(window as any).Razorpay) {
+      // Load script dynamically
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = 
+          'https://checkout.razorpay.com/v1/checkout.js'
+        script.onload  = resolve
+        script.onerror = reject
+        document.head.appendChild(script)
+      })
+    }
+
+    // Step 4: Open Razorpay
     const options = {
-      key         : keyId,
-      amount      : amount,
-      currency    : 'INR',
-      name        : 'SuciHome',
-      description : `Booking #${bookingNumber}`,
-      image       : `${window.location.origin}/logo.png`,
-      
-      order_id: orderId,
-      
+      key        : keyId,
+      amount     : amount,
+      currency   : currency || 'INR',
+      name       : 'SuciHome',
+      description: `Booking ${bookingNumber}`,
+      image      : `${window.location.origin}/logo.png`,
+      order_id   : orderId,
       prefill: {
         name   : customerName,
         email  : customerEmail  || '',
         contact: customerPhone,
       },
-      
-      notes: {
-        booking_number: bookingNumber,
-        area          : form.area,
-        address       : form.address,
-      },
-
-      theme: {
-        color    : '#0AFFE6',
-        hide_topbar: false,
-      },
-
-      retry: {
-        enabled: true,
-        max_count: 3,
-      },
-
+      theme: { color: '#0AFFE6' },
       modal: {
-        confirm_close : true,
-        animation     : true,
-        backdropclose : false,
-        escape        : false,
-        handleback    : true,
-        ondismiss     : () => {
-          console.log('Razorpay modal closed')
+        confirm_close: true,
+        ondismiss    : () => {
           setLoading(false)
           setBookingStep('idle')
+          toast.error('Payment cancelled')
         }
       },
-
       handler: async (response: any) => {
+        setBookingStep('verifying')
         try {
-          setLoading(true)
-          setBookingStep('verifying')
-          console.log('Payment success:', response)
-
           await api.post('/payments/verify', {
-            razorpay_order_id  : response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature : response.razorpay_signature,
+            razorpay_order_id  : 
+              response.razorpay_order_id,
+            razorpay_payment_id: 
+              response.razorpay_payment_id,
+            razorpay_signature : 
+              response.razorpay_signature,
             bookingId,
           })
-
-          clearCart();
+          clearCart()
           toast.success('Payment successful! 🎉')
-          
-          localStorage.setItem('sh_booking_number', bookingNumber)
-          localStorage.setItem('sh_booking_id', bookingId)
-
-          navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)
-
-        } catch (err) {
-          console.error('Verification failed:', err)
-          toast.error('Payment done but verification failed. Contact support.')
+          navigate(
+            `/success?booking=${bookingId}` +
+            `&number=${bookingNumber}`
+          )
+        } catch {
+          toast.error(
+            'Payment done but verification failed.' +
+            ' Contact: 9392420643'
+          )
           setLoading(false)
           setBookingStep('idle')
         }
@@ -551,36 +562,37 @@ const handlePayment = async () => {
     }
 
     const rzp = new (window as any).Razorpay(options)
-
     rzp.on('payment.failed', (response: any) => {
-      const { code, description } = response.error
-      console.error('Payment failed:', code, description)
-
-      // Show specific error to user
-      const errorMessages: Record<string, string> = {
-        'BAD_REQUEST_ERROR'    : 'Invalid payment details. Please retry.',
-        'GATEWAY_ERROR'        : 'Bank gateway error. Please try another method.',
-        'NETWORK_ERROR'        : 'Network issue. Check connection and retry.',
-        'SERVER_ERROR'         : 'Payment server error. Please retry.',
-      }
-
       toast.error(
-        errorMessages[code] || 
-        description || 
-        'Payment failed. Please try again.'
+        'Payment failed: ' + 
+        response.error.description
       )
       setLoading(false)
       setBookingStep('idle')
     })
-
     rzp.open()
 
   } catch (error: any) {
     console.error('Payment error:', error)
-    toast.error(
-      error.response?.data?.message || 
-      'Something went wrong'
-    )
+    
+    const msg = error.response?.data?.error 
+      || error.response?.data?.message
+      || error.message 
+      || 'Something went wrong'
+    
+    if (msg.includes('401') || 
+        msg.includes('Unauthorized')) {
+      toast.error('Session expired. Please login again.')
+      navigate('/auth?redirect=/book')
+    } else if (msg.includes('network') || 
+               msg.includes('fetch')) {
+      toast.error(
+        'Server is starting up. ' +
+        'Please wait 30 seconds and retry.'
+      )
+    } else {
+      toast.error(msg)
+    }
     setLoading(false)
     setBookingStep('idle')
   }

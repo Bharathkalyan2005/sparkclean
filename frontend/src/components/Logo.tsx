@@ -20,6 +20,8 @@ const Logo: React.FC<LogoProps> = ({
         alt="SuciHome Logo"
         className={imageClassName}
         style={{ filter: 'brightness(0) invert(1)' }}
+        loading="lazy"
+        decoding="async"
       />
       <div className="flex flex-col justify-center">
         <span className={textClassName}>SuciHome</span>

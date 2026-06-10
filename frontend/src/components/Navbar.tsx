@@ -108,6 +108,8 @@ const Navbar: React.FC = () => {
           <img
             src   ="/logo.png"
             alt   ="SuciHome Logo"
+            loading="lazy"
+            decoding="async"
             style={{
               height    : '42px',
               width     : 'auto',
@@ -283,6 +285,8 @@ const Navbar: React.FC = () => {
               <img
                 src  ="/logo.png"
                 alt  ="SuciHome"
+                loading="lazy"
+                decoding="async"
                 style={{
                   height: '32px',
                   width : 'auto',

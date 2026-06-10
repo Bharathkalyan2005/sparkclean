@@ -24,6 +24,7 @@ export default function AuthCallbackPage() {
       // Save token to localStorage
       localStorage.setItem('sucihome_token', token)
       localStorage.setItem('token', token)
+      localStorage.setItem('sparkclean_token', token)
       if (name) localStorage.setItem('sucihome_name', name)
 
       try {

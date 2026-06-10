@@ -128,6 +128,7 @@ const AuthPage = () => {
       
       localStorage.setItem('sucihome_token', result.token);
       localStorage.setItem('token', result.token);
+      localStorage.setItem('sparkclean_token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
       
       toast.success("Welcome back! Redirecting...", {
@@ -168,6 +169,7 @@ const AuthPage = () => {
       if (result.token) {
         localStorage.setItem('sucihome_token', result.token);
         localStorage.setItem('token', result.token);
+        localStorage.setItem('sparkclean_token', result.token);
         localStorage.setItem('user', JSON.stringify(result.user));
       }
 
@@ -232,6 +234,8 @@ const AuthPage = () => {
             src="/images/login-page.jpeg" 
             alt="Premium Home Cleaning"
             className="w-full h-full object-cover opacity-60"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.6), transparent)' }} />
         </div>
@@ -249,6 +253,8 @@ const AuthPage = () => {
                 <img
                   src  ="/logo.png"
                   alt  ="SuciHome"
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     height : '48px',
                     width  : 'auto',
@@ -319,6 +325,8 @@ const AuthPage = () => {
               <img
                 src  ="/logo.png"
                 alt  ="SuciHome"
+                loading="lazy"
+                decoding="async"
                 style={{
                   height : '48px',
                   width  : 'auto',

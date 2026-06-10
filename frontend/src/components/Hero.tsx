@@ -1,7 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import LoginPromptModal from './LoginPromptModal';
+
+const HeroScene = lazy(() => 
+  import('./HeroScene').catch(() => ({
+    default: () => null // Fails silently
+  }))
+);
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
@@ -58,8 +64,15 @@ const Hero: React.FC = () => {
           src="/images/open-page.png"
           alt="Clean Living Room"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </div>
+
+      {/* 3D Scene */}
+      <Suspense fallback={null}>
+        <HeroScene />
+      </Suspense>
 
       {/* Subtle radial overlay — keeps text readable */}
       <div className="absolute inset-0 z-10" style={{
@@ -85,6 +98,8 @@ const Hero: React.FC = () => {
             <img
               src  ="/logo.png"
               alt  =""
+              loading="lazy"
+              decoding="async"
               style={{
                 height: '20px',
                 width : 'auto',

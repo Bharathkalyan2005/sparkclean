@@ -54,9 +54,27 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const secret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-2026';
-    const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, secret, { expiresIn: '1d' });
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email : user.email,
+        role  : user.role,
+        name  : user.fullName,
+      },
+      secret,
+      { expiresIn: '7d' }
+    );
 
-    res.status(200).json({ token, user: { id: user.id, email: user.email, role: user.role, fullName: user.fullName } });
+    res.status(200).json({
+      token,
+      user: {
+        id      : user.id,
+        email   : user.email,
+        name    : user.fullName,
+        role    : user.role,
+        avatar  : user.avatarUrl,
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: 'Server error during login' });
   }

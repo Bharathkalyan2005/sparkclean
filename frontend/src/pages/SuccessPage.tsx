@@ -132,6 +132,8 @@ export default function SuccessPage() {
           <img
             src  ="/logo.png"
             alt  ="SuciHome"
+            loading="lazy"
+            decoding="async"
             style={{
               height      : '50px',
               width       : 'auto',

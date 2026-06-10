@@ -391,7 +391,7 @@ const ServicesSection: React.FC = () => {
                 {/* Image Section */}
                 <div className="w-full md:w-5/12 relative bg-[#1a1a1a] flex items-center justify-center border-b md:border-b-0 md:border-r" style={{ borderColor: 'rgba(10,255,230,0.2)' }}>
                   {selectedService.image_url ? (
-                    <img src={selectedService.image_url} alt={selectedService.name} className="w-full h-full object-cover max-h-[300px] md:max-h-none" />
+                    <img src={selectedService.image_url} alt={selectedService.name} className="w-full h-full object-cover max-h-[300px] md:max-h-none" loading="lazy" decoding="async" />
                   ) : (
                     <div className="p-12 text-teal-400 opacity-50 flex items-center justify-center h-[200px] md:h-full">
                       <ServiceIcon name={selectedService.iconName} />

@@ -54,6 +54,8 @@ const Footer: React.FC = () => {
               <img
                 src  ="/logo.png"
                 alt  ="SuciHome"
+                loading="lazy"
+                decoding="async"
                 style={{
                   height : '40px',
                   width  : 'auto',

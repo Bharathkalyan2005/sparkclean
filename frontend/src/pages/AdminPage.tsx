@@ -62,25 +62,37 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [adminUser, setAdminUser] = useState<any>(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('sparkclean_token')
+      || localStorage.getItem('sucihome_token')
+      || localStorage.getItem('token')
+      || localStorage.getItem('authToken');
+    
     if (!token) {
-      navigate('/auth?redirect=/sparkadmin');
+      navigate('/auth?redirect=/admin');
       return;
     }
-    
-    // Verify admin role
-    axiosInstance.get('/auth/me')
-      .then(res => {
-        if (res.data.role !== 'ADMIN') {
-          toast.error('Admin access required');
-          navigate('/');
-        } else {
-          setAdminUser(res.data);
-        }
-      })
-      .catch(() => navigate('/auth'));
+
+    try {
+      const decoded = JSON.parse(
+        atob(token.split('.')[1])
+      );
+      
+      console.log('User role:', decoded.role);
+      
+      if (decoded.role !== 'ADMIN') {
+        toast.error('Admin access required');
+        navigate('/');
+        return;
+      }
+      
+      setIsAuthorized(true);
+      setAdminUser(decoded);
+    } catch (err) {
+      navigate('/auth');
+    }
   }, [navigate]);
 
   // Data states
@@ -364,6 +376,14 @@ export default function AdminPage() {
       </button>
     );
   };
+
+  if (!isAuthorized) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: ADMIN_COLORS.bg }}>
+        <Loader2 className="animate-spin" color={ADMIN_COLORS.accent} size={40} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: ADMIN_COLORS.bg, color: ADMIN_COLORS.text, fontFamily: 'Inter, sans-serif' }}>

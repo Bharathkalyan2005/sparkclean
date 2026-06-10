@@ -17,28 +17,19 @@
     <link rel="canonical" href="https://sparkclean-orcin.vercel.app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Razorpay Checkout -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Preload Razorpay -->
+    <link rel="preconnect" 
+      href="https://checkout.razorpay.com" />
+    <script 
+      src="https://checkout.razorpay.com/v1/checkout.js"
+      async
+      defer>
+    </script>
     <title>SuciHome — India's #1 Home Cleaning Service</title>
   </head>
-  <body style="background:#0A0A0A; margin:0">
-    <style>
-      body {
-        background-color: #0A0A0A !important;
-        margin: 0;
-        padding: 0;
-      }
-      #root:empty::before {
-        content: '';
-        display: flex;
-        position: fixed;
-        inset: 0;
-        background: #0A0A0A;
-        z-index: 9999;
-      }
-    </style>
+  <body style="background:#0A0A0A;margin:0;padding:0">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="scroll-progress"></div>
-    <div id="root"></div>
+    <div id="root" style="min-height:100vh;background:#0A0A0A"></div>
   </body>
 </html>
