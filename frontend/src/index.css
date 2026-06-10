@@ -23,11 +23,37 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ONLY hero page is light */
+/* All other pages keep dark #0A0A0A */
+
 body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: #0A0A0A;
+  margin    : 0;
+  padding   : 0;
+  background: #0A0A0A; /* default dark */
+  font-family: 'Inter', sans-serif;
   color: #A0A0A0;
   overflow-x: hidden;
+}
+
+/* Hero section override */
+.hero-section {
+  background: #F5F0E8 !important;
+}
+
+@media (max-width: 768px) {
+  .hero-right {
+    display: none;
+  }
+  .hero-section {
+    background-image: url('./images/hero-cleaner.png') !important;
+    background-size: cover !important;
+    background-position: center right !important;
+  }
+  .hero-left {
+    background: rgba(245,240,232,0.92) !important;
+    padding: 24px !important;
+    border-radius: 20px !important;
+  }
 }
 
 /* ─── Glassmorphism — dark mode ─── */

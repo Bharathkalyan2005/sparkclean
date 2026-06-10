@@ -1,231 +1,396 @@
-import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
-import LoginPromptModal from './LoginPromptModal';
 
-const HeroScene = lazy(() => 
-  import('./HeroScene').catch(() => ({
-    default: () => null // Fails silently
-  }))
-);
+const COLORS = {
+  green    : '#1B4332',
+  gold     : '#C9A84C',
+  cream    : '#F5F0E8',
+  darkText : '#0D2B1F',
+  bodyText : '#2D4A35',
+  mutedText: '#5C6B5E',
+};
 
-const Hero: React.FC = () => {
+export default function Hero() {
   const navigate = useNavigate();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const badgesRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 1.6 });
-
-    if (headingRef.current) {
-      const words = headingRef.current.querySelectorAll('.word');
-      tl.fromTo(words,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }
-      );
-    }
-    if (subRef.current) {
-      tl.fromTo(subRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
-        '-=0.3'
-      );
-    }
-    if (ctaRef.current) {
-      tl.fromTo(ctaRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-        '-=0.2'
-      );
-    }
-    if (badgesRef.current) {
-      const badges = badgesRef.current.querySelectorAll('.badge');
-      tl.fromTo(badges,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)' },
-        '-=0.2'
-      );
-    }
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const scrollToServices = () => {
-    const el = document.getElementById('services');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: '#0A0A0A' }}>
-      {/* Single Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/images/open-page.png"
-          alt="Clean Living Room"
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
+    <section 
+      className="hero-section"
+      style={{
+        minHeight  : '100vh',
+        background : COLORS.cream,
+        display    : 'flex',
+        flexDirection: 'column',
+        paddingTop : '72px', // navbar height
+        overflow   : 'hidden',
+        position   : 'relative',
+        backgroundImage: isMobile ? "url('/images/hero-cleaner.png')" : "none",
+        backgroundSize: isMobile ? "cover" : "none",
+        backgroundPosition: isMobile ? "center right" : "none",
+      }}
+    >
+      {/* Mobile Dark Overlay for readability */}
+      {isMobile && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(245,240,232,0.85)',
+          zIndex: 1
+        }} />
+      )}
 
-      {/* 3D Scene */}
-      <Suspense fallback={null}>
-        <HeroScene />
-      </Suspense>
-
-      {/* Subtle radial overlay — keeps text readable */}
-      <div className="absolute inset-0 z-10" style={{
-        background: 'rgba(10,10,10,0.65)',
-        pointerEvents: 'none'
-      }} />
-
-      {/* Content */}
-      <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <div className="relative z-20 max-w-7xl mx-auto px-4 pt-24 pb-16">
-        <div className="max-w-3xl">
-          {/* Brand Badge */}
+      {/* MAIN HERO CONTENT */}
+      <div 
+        className="hero-container"
+        style={{
+          flex          : 1,
+          display       : 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
+          maxWidth      : '1400px',
+          margin        : '0 auto',
+          width         : '100%',
+          padding       : isMobile ? '24px 20px' : '0 40px',
+          alignItems    : 'center',
+          minHeight     : 'calc(100vh - 72px)',
+          position      : 'relative',
+          zIndex        : 2,
+        }}
+      >
+        {/* LEFT — Text Content */}
+        <motion.div
+          className="hero-left"
+          initial   ={{ opacity: 0, x: -30 }}
+          animate   ={{ opacity: 1, x: 0   }}
+          transition={{ duration: 0.7 }}
+          style={{ 
+            paddingRight: isMobile ? '0' : '40px',
+            zIndex: 2,
+          }}
+        >
+          {/* Top badges */}
           <div style={{
-            display    : 'inline-flex',
-            alignItems : 'center',
-            gap        : '8px',
-            background : 'rgba(10,255,230,0.1)',
-            border     : '1px solid rgba(10,255,230,0.3)',
-            borderRadius: '20px',
-            padding    : '6px 16px',
-            marginBottom: '16px',
+            display    : 'flex',
+            gap        : '10px',
+            marginBottom: '28px',
+            flexWrap   : 'wrap',
           }}>
-            <img
-              src  ="/logo.png"
-              alt  =""
-              loading="lazy"
-              decoding="async"
-              style={{
-                height: '20px',
-                width : 'auto',
-                filter: 'brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(600%) hue-rotate(115deg)',
-                // Makes logo teal color
-              }}
-            />
+            {/* SuciHome badge */}
             <span style={{
-              color     : '#0AFFE6',
-              fontSize  : '13px',
-              fontWeight: '700',
+              display     : 'inline-flex',
+              alignItems  : 'center',
+              gap         : '6px',
+              background  : COLORS.green,
+              color       : '#FFFFFF',
+              borderRadius: '20px',
+              padding     : '6px 14px',
+              fontSize    : isMobile ? '11px' : '13px',
+              fontWeight  : '700',
             }}>
-              SuciHome
+              ✦ SuciHome
+            </span>
+
+            {/* Trust badge */}
+            <span style={{
+              display     : 'inline-flex',
+              alignItems  : 'center',
+              background  : 'transparent',
+              color       : COLORS.darkText,
+              border      : '1px solid rgba(27,67,50,0.3)',
+              borderRadius: '20px',
+              padding     : '6px 14px',
+              fontSize    : isMobile ? '11px' : '13px',
+              fontWeight  : '500',
+            }}>
+              India's Most Trusted Home Cleaning Service
             </span>
           </div>
 
-          {/* Celebration Badge for Vizag launch */}
-          <div style={{
-            display      : 'inline-flex',
-            alignItems   : 'center',
-            gap          : '8px',
-            background   : 'rgba(10,255,230,0.1)',
-            border       : '1px solid rgba(10,255,230,0.3)',
-            borderRadius : '20px',
-            padding      : '6px 16px',
-            fontSize     : '13px',
-            color        : '#0AFFE6',
-            fontWeight   : '600',
-            marginBottom : '16px',
-          }}>
-            🎉 Now Open in Vizag! Book your first clean
-          </div>
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6"
-            style={{ background: 'rgba(10,255,230,0.12)', border: '1px solid rgba(10,255,230,0.35)' }}>
-            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-sm font-medium font-dm" style={{ color: '#0AFFE6' }}>Now Live in 6 Cities Across India 🎉</span>
-          </div>
-
           {/* Main Heading */}
-          <h1 ref={headingRef} className="section-heading text-5xl md:text-7xl leading-tight mb-6 overflow-hidden text-white">
-            <span className="word inline-block mr-4">India's</span>
-            <span className="word inline-block mr-4" style={{ color: '#0AFFE6' }}>Cleanest</span>
-            <br />
-            <span className="word inline-block mr-4 text-white">Choice</span>
-          </h1>
+          <div style={{ marginBottom: '8px' }}>
+            <h1 style={{
+              margin    : 0,
+              lineHeight: '1.05',
+            }}>
+              {/* Line 1: India's */}
+              <span style={{
+                display   : 'block',
+                color     : COLORS.darkText,
+                fontSize  : isMobile ? '48px' : '72px',
+                fontWeight: '800',
+                fontFamily: 'Instrument Serif, serif',
+              }}>
+                India's
+              </span>
 
-          <p ref={subRef} className="text-lg md:text-xl font-dm leading-relaxed mb-8 max-w-xl" style={{ color: '#A0A0A0' }}>
-            Professional home cleaning services starting at{' '}
-            <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.9em' }}>₹249</span>{' '}
-            <span className="font-semibold" style={{ color: '#0AFFE6' }}>₹149</span>.
-            Trained staff, eco-friendly products, same-day booking in Bengaluru, Mumbai, Visakhapatnam, Hyderabad, Bhopal & Chennai.
-          </p>
-          <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
-            <button
-              onClick={() => {
-                const token = localStorage.getItem('sucihome_token') || localStorage.getItem('token');
-                if (!token) {
-                  setShowLoginModal(true);
-                  return;
-                }
-                navigate('/book');
-              }}
-              className="btn-teal text-base px-8 py-4 ripple flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Book a Cleaning
-            </button>
-            <button
-              onClick={scrollToServices}
-              className="px-8 py-4 rounded-xl font-dm font-semibold transition-all flex items-center gap-2"
-              style={{
-                background: 'rgba(10,255,230,0.05)',
-                border: '1.5px solid rgba(10,255,230,0.35)',
-                color: '#0AFFE6',
-                backdropFilter: 'blur(8px)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#0AFFE6';
-                e.currentTarget.style.color = '#000000';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'rgba(10,255,230,0.05)';
-                e.currentTarget.style.color = '#0AFFE6';
-              }}
-            >
-              View Services
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+              {/* Line 2: Cleanest (green) */}
+              <span style={{
+                display   : 'block',
+                color     : COLORS.green,
+                fontSize  : isMobile ? '48px' : '72px',
+                fontWeight: '800',
+                fontFamily: 'Instrument Serif, serif',
+                position  : 'relative',
+                width     : 'max-content',
+              }}>
+                Cleanest
+                {/* Gold sparkle */}
+                <span style={{
+                  position : 'absolute',
+                  top      : '-10px',
+                  right    : '-30px',
+                  color    : COLORS.gold,
+                  fontSize : '28px',
+                }}>✦</span>
+              </span>
+
+              {/* Line 3: Choice (gold) */}
+              <span style={{
+                display   : 'block',
+                color     : COLORS.gold,
+                fontSize  : isMobile ? '48px' : '72px',
+                fontWeight: '800',
+                fontFamily: 'Instrument Serif, serif',
+              }}>
+                Choice
+              </span>
+            </h1>
+
+            {/* Underline decoration */}
+            <div style={{
+              width       : '120px',
+              height      : '3px',
+              background  : `linear-gradient(90deg, 
+                             ${COLORS.green}, ${COLORS.gold})`,
+              borderRadius: '2px',
+              marginTop   : '8px',
+            }} />
           </div>
 
-          {/* Trust badges */}
-          <div ref={badgesRef} className="flex flex-wrap gap-3">
+          {/* Subtext */}
+          <p style={{
+            color      : COLORS.mutedText,
+            fontSize   : isMobile ? '14px' : '16px',
+            lineHeight : '1.7',
+            margin     : '24px 0 32px',
+            maxWidth   : '480px',
+          }}>
+            Professional home cleaning services 
+            starting at{' '}
+            <span style={{
+              textDecoration: 'line-through',
+              color         : 'rgba(93,107,94,0.5)',
+            }}>
+              ₹249
+            </span>{' '}
+            <strong style={{ color: COLORS.darkText }}>
+              ₹149.
+            </strong>
+            {' '}Trained staff, eco-friendly products, 
+            same-day booking in{' '}
+            <strong style={{ color: COLORS.green }}>
+              Bengaluru, Mumbai, Visakhapatnam, 
+              Hyderabad, Bhopal & Chennai.
+            </strong>
+          </p>
+
+          {/* CTA Buttons */}
+          <div style={{
+            display : 'flex',
+            gap     : '16px',
+            flexWrap: 'wrap',
+          }}>
+            {/* Book a Cleaning — dark green */}
+            <motion.button
+              whileHover={{ 
+                scale    : 1.03,
+                boxShadow: '0 8px 30px rgba(27,67,50,0.3)',
+              }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/book')}
+              style={{
+                display     : 'flex',
+                alignItems  : 'center',
+                gap         : '8px',
+                background  : COLORS.green,
+                color       : '#FFFFFF',
+                border      : 'none',
+                borderRadius: '50px',
+                padding     : '16px 32px',
+                fontSize    : '16px',
+                fontWeight  : '700',
+                cursor      : 'pointer',
+              }}
+            >
+              📅 Book a Cleaning
+            </motion.button>
+
+            {/* View Services — outline */}
+            <motion.button
+              whileHover={{ background: 'rgba(27,67,50,0.08)' }}
+              onClick={() => {
+                document.getElementById('services')
+                  ?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              style={{
+                display     : 'flex',
+                alignItems  : 'center',
+                gap         : '8px',
+                background  : 'transparent',
+                color       : COLORS.darkText,
+                border      : '1px solid rgba(27,67,50,0.3)',
+                borderRadius: '50px',
+                padding     : '16px 32px',
+                fontSize    : '16px',
+                fontWeight  : '600',
+                cursor      : 'pointer',
+              }}
+            >
+              View Services →
+            </motion.button>
+          </div>
+
+          {/* 4 Trust badges row */}
+          <div style={{
+            display        : 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+            gap            : '12px',
+            marginTop      : '40px',
+          }}>
             {[
-              { icon: '✦', label: '500+ Happy Customers' },
-              { icon: '⚡', label: 'Same-Day Booking' },
-              { icon: '🌿', label: 'Eco-Friendly Products' },
-              { icon: '📍', label: 'Pan India Team' },
-            ].map((badge, i) => (
-              <div key={i} className="badge rounded-full px-4 py-2 flex items-center gap-2"
+              { icon: '👥', title: '500+',       sub: 'Happy Customers'  },
+              { icon: '⚡', title: 'Same-Day',   sub: 'Booking'          },
+              { icon: '🌿', title: 'Eco-Friendly',sub: 'Products'        },
+              { icon: '🛡️', title: 'Trusted &',  sub: 'Verified Experts' },
+            ].map(badge => (
+              <div
+                key  ={badge.title}
                 style={{
-                  background: 'rgba(10,10,10,0.85)',
-                  border: '1px solid rgba(10,255,230,0.3)',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.5)',
-                }}>
-                <span style={{ color: '#0AFFE6' }}>{badge.icon}</span>
-                <span className="text-xs font-dm font-medium" style={{ color: '#A0A0A0' }}>{badge.label}</span>
+                  background  : '#FFFFFF',
+                  borderRadius: '14px',
+                  padding     : '14px 12px',
+                  boxShadow   : '0 2px 12px rgba(27,67,50,0.08)',
+                  border      : '1px solid rgba(27,67,50,0.08)',
+                  display     : 'flex',
+                  alignItems  : 'center',
+                  gap         : '10px',
+                }}
+              >
+                <span style={{ fontSize: '20px' }}>
+                  {badge.icon}
+                </span>
+                <div>
+                  <p style={{
+                    color     : COLORS.darkText,
+                    fontSize  : '13px',
+                    fontWeight: '700',
+                    margin    : 0,
+                  }}>
+                    {badge.title}
+                  </p>
+                  <p style={{
+                    color   : COLORS.mutedText,
+                    fontSize: '11px',
+                    margin  : '2px 0 0',
+                  }}>
+                    {badge.sub}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        <span className="text-xs font-dm tracking-widest uppercase" style={{ color: 'rgba(160,160,160,0.5)' }}>Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-teal-400/80 to-transparent" style={{ animation: 'pulse 2s ease-in-out infinite' }}></div>
+        {/* RIGHT — Cleaner Photo */}
+        {!isMobile && (
+          <motion.div
+            className="hero-right"
+            initial   ={{ opacity: 0, x: 30 }}
+            animate   ={{ opacity: 1, x: 0  }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            style={{
+              position    : 'relative',
+              height      : 'calc(100vh - 120px)',
+              borderRadius: '32px',
+              overflow    : 'hidden',
+            }}
+          >
+            {/* Main hero image — uploaded cleaner photo */}
+            <img
+              src  ="/images/hero-cleaner.png"
+              alt  ="SuciHome Professional Cleaner"
+              loading="lazy"
+              decoding="async"
+              style={{
+                width        : '100%',
+                height       : '100%',
+                objectFit    : 'cover',
+                objectPosition: 'center top',
+                borderRadius : '32px',
+              }}
+            />
+
+            {/* Subtle green overlay at bottom */}
+            <div style={{
+              position  : 'absolute',
+              bottom    : 0,
+              left      : 0,
+              right     : 0,
+              height    : '200px',
+              background: 'linear-gradient(to top, rgba(13,43,31,0.3), transparent)',
+              borderRadius: '0 0 32px 32px',
+            }} />
+
+            {/* WhatsApp badge floating */}
+            <div style={{
+              position    : 'absolute',
+              bottom      : '24px',
+              right       : '24px',
+              background  : '#25D366',
+              borderRadius: '16px',
+              padding     : '12px 16px',
+              display     : 'flex',
+              alignItems  : 'center',
+              gap         : '10px',
+              boxShadow   : '0 4px 20px rgba(0,0,0,0.2)',
+              cursor      : 'pointer',
+            }}
+            onClick={() => window.open(
+              'https://wa.me/919392420643?text=' +
+              encodeURIComponent(
+                'Hi SuciHome! I want to book a service.'
+              )
+            )}
+            >
+              <span style={{ fontSize: '24px' }}>💬</span>
+              <div>
+                <p style={{
+                  color     : '#FFFFFF',
+                  fontSize  : '13px',
+                  fontWeight: '700',
+                  margin    : 0,
+                }}>
+                  Chat with us
+                </p>
+                <p style={{
+                  color  : 'rgba(255,255,255,0.85)',
+                  fontSize:'11px',
+                  margin : '2px 0 0',
+                }}>
+                  We're here to help!
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );
-};
-
-export default Hero;
+}
