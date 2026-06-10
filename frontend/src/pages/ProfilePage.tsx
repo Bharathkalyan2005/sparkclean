@@ -54,6 +54,7 @@ export default function ProfilePage() {
     };
     
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
