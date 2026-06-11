@@ -66,28 +66,28 @@ export default function CleanerApp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-6 font-mono flex flex-col items-center justify-center">
-      <div className="w-full max-w-md bg-[#111111] border border-[#0AFFE6]/30 p-8 rounded-2xl shadow-[0_0_30px_rgba(10,255,230,0.1)]">
-        <h1 className="text-2xl font-bold tracking-widest text-[#0AFFE6] mb-6 flex items-center gap-3">
-          <span className="w-3 h-3 bg-[#0AFFE6] rounded-full animate-pulse"></span>
+    <div className="min-h-screen bg-[#F5F0E8] p-6 font-mono flex flex-col items-center justify-center">
+      <div className="w-full max-w-md bg-white border border-[#EDE8DC] p-8 rounded-2xl shadow-md text-[#2D4A35]">
+        <h1 className="text-2xl font-bold tracking-widest text-[#1B4332] mb-6 flex items-center gap-3">
+          <span className="w-3 h-3 bg-[#1B4332] rounded-full animate-pulse"></span>
           CLEANER TERMINAL
         </h1>
 
         <div className="mb-6">
-          <label className="block text-gray-400 text-xs mb-2">TARGET BOOKING ID</label>
+          <label className="block text-[#5C6B5E] text-xs mb-2">TARGET BOOKING ID</label>
           <input 
             type="text" 
             value={bookingId}
             onChange={(e) => setBookingId(e.target.value)}
             disabled={isActive}
-            className="w-full bg-black/50 border border-white/10 p-3 rounded text-white focus:outline-none focus:border-[#0AFFE6] disabled:opacity-50"
+            className="w-full bg-white border border-[#EDE8DC] p-3 rounded text-[#2D4A35] focus:outline-none focus:border-[#1B4332] disabled:opacity-50"
             placeholder="Enter UUID..."
           />
         </div>
 
-        <div className="mb-8 p-4 bg-black/30 border border-white/5 rounded-lg flex flex-col items-center justify-center min-h-[100px]">
-          <div className="text-xs text-gray-500 mb-1">SYSTEM STATUS</div>
-          <div className={`text-sm ${isActive ? 'text-[#0AFFE6]' : 'text-yellow-500'} text-center`}>
+        <div className="mb-8 p-4 bg-[#EDE8DC]/50 border border-[#EDE8DC] rounded-lg flex flex-col items-center justify-center min-h-[100px]">
+          <div className="text-xs text-[#5C6B5E] mb-1">SYSTEM STATUS</div>
+          <div className={`text-sm ${isActive ? 'text-[#1B4332] font-bold' : 'text-amber-600'} text-center`}>
             {statusText}
           </div>
         </div>
@@ -96,14 +96,14 @@ export default function CleanerApp() {
           <button 
             onClick={startTracking}
             disabled={!bookingId}
-            className="w-full py-4 bg-[#0AFFE6] text-black font-bold tracking-widest rounded-lg hover:bg-[#0AFFE6]/90 transition-colors disabled:opacity-50"
+            className="w-full py-4 bg-[#1B4332] text-white font-bold tracking-widest rounded-lg hover:bg-[#0D2B1F] transition-colors disabled:opacity-50"
           >
             INITIALIZE TRACKING
           </button>
         ) : (
           <button 
             onClick={stopTracking}
-            className="w-full py-4 bg-red-500/20 text-red-500 border border-red-500/50 font-bold tracking-widest rounded-lg hover:bg-red-500/30 transition-colors"
+            className="w-full py-4 bg-red-50 text-red-700 border border-red-200 font-bold tracking-widest rounded-lg hover:bg-red-100 transition-colors"
           >
             TERMINATE CONNECTION
           </button>

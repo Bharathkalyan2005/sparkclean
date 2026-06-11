@@ -32,12 +32,12 @@ export default function HealthPage() {
   return (
     <div style={{
       minHeight : '100vh',
-      background: '#0A0A0A',
+      background: '#F5F0E8',
       padding   : '100px 24px',
       fontFamily: 'monospace',
-      color     : '#FFFFFF',
+      color     : '#2D4A35',
     }}>
-      <h1 style={{ color:'#0AFFE6', marginBottom:'24px' }}>
+      <h1 style={{ color:'#1B4332', marginBottom:'24px' }}>
         SuciHome System Health
       </h1>
       {Object.entries(status).map(([key, val]) => (
@@ -45,11 +45,12 @@ export default function HealthPage() {
           display      : 'flex',
           gap          : '16px',
           padding      : '12px',
-          background   : 'rgba(255,255,255,0.03)',
+          background   : '#FFFFFF',
+          border       : '1px solid #EDE8DC',
           borderRadius : '8px',
           marginBottom : '8px',
         }}>
-          <span style={{ color:'#A0A0A0', width:'120px' }}>
+          <span style={{ color:'#5C6B5E', width:'120px' }}>
             {key}:
           </span>
           <span>{String(val)}</span>
@@ -60,8 +61,8 @@ export default function HealthPage() {
         style={{
           marginTop   : '24px',
           padding     : '12px 24px',
-          background  : '#0AFFE6',
-          color       : '#000',
+          background  : '#1B4332',
+          color       : '#FFFFFF',
           border      : 'none',
           borderRadius: '10px',
           cursor      : 'pointer',

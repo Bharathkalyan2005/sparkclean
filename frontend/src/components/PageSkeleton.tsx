@@ -3,24 +3,35 @@ import React from 'react';
 export default function PageSkeleton() {
   return (
     <div style={{
-      minHeight  : '100vh',
-      background : '#0A0A0A',
-      padding    : '80px 24px',
+      minHeight : '100vh',
+      background: '#F5F0E8',
+      padding   : '120px 40px 40px',
     }}>
-      {[1,2,3].map(i => (
+      {/* Navbar skeleton */}
+      <div style={{
+        position  : 'fixed',
+        top       : 0, left: 0, right: 0,
+        height    : '72px',
+        background: 'rgba(245,240,232,0.95)',
+        zIndex    : 999,
+      }} />
+
+      {/* Content skeletons */}
+      {[300, 200, 250].map((h, i) => (
         <div key={i} style={{
-          height      : '200px',
-          background  : 'rgba(255,255,255,0.03)',
-          borderRadius: '16px',
-          marginBottom: '16px',
+          height      : `${h}px`,
+          background  : 'rgba(27,67,50,0.06)',
+          borderRadius: '20px',
+          marginBottom: '20px',
           animation   : 'shimmer 1.5s infinite',
         }} />
       ))}
+
       <style>{`
         @keyframes shimmer {
-          0%   { opacity: 0.4 }
-          50%  { opacity: 0.8 }
-          100% { opacity: 0.4 }
+          0%  { opacity: 0.4 }
+          50% { opacity: 0.8 }
+          100%{ opacity: 0.4 }
         }
       `}</style>
     </div>

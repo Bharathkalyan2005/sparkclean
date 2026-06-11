@@ -16,20 +16,21 @@ const LoginPromptModal = ({
     <div style={{
       position  : 'fixed',
       inset     : 0,
-      background: 'rgba(0,0,0,0.7)',
+      background: 'rgba(0,0,0,0.4)',
       display   : 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       zIndex    : 9999,
     }}>
       <div style={{
-        background   : '#111111',
-        border       : '1px solid rgba(10,255,230,0.3)',
+        background   : '#FFFFFF',
+        border       : '1px solid #EDE8DC',
         borderRadius : '20px',
         padding      : '40px',
         maxWidth     : '400px',
         width        : '90%',
         textAlign    : 'center',
+        boxShadow    : '0 8px 30px rgba(27,67,50,0.1)',
       }}>
         {/* Icon */}
         <div style={{ fontSize: '48px', marginBottom: '16px' }}>
@@ -38,7 +39,7 @@ const LoginPromptModal = ({
 
         {/* Title */}
         <h2 style={{
-          color      : '#FFFFFF',
+          color      : '#1B4332',
           fontSize   : '24px',
           fontFamily : 'Instrument Serif, serif',
           marginBottom: '12px',
@@ -48,7 +49,7 @@ const LoginPromptModal = ({
 
         {/* Message */}
         <p style={{
-          color        : 'rgba(255,255,255,0.6)',
+          color        : '#5C6B5E',
           fontSize     : '15px',
           lineHeight   : '1.6',
           marginBottom : '28px',
@@ -66,8 +67,8 @@ const LoginPromptModal = ({
           style={{
             width        : '100%',
             padding      : '14px',
-            background   : '#0AFFE6',
-            color        : '#000000',
+            background   : '#1B4332',
+            color        : '#FFFFFF',
             fontWeight   : '700',
             fontSize     : '15px',
             borderRadius : '12px',
@@ -89,11 +90,11 @@ const LoginPromptModal = ({
             width        : '100%',
             padding      : '14px',
             background   : 'transparent',
-            color        : '#0AFFE6',
+            color        : '#1B4332',
             fontWeight   : '600',
             fontSize     : '15px',
             borderRadius : '12px',
-            border       : '1px solid rgba(10,255,230,0.3)',
+            border       : '1px solid #1B4332',
             cursor       : 'pointer',
             marginBottom : '12px',
           }}
@@ -107,7 +108,7 @@ const LoginPromptModal = ({
           style={{
             background : 'transparent',
             border     : 'none',
-            color      : 'rgba(255,255,255,0.4)',
+            color      : '#5C6B5E',
             cursor     : 'pointer',
             fontSize   : '14px',
           }}

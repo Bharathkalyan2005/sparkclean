@@ -111,7 +111,7 @@ export default function SuccessPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative"
-      style={{ background: '#0A0A0A' }}>
+      style={{ background: '#F5F0E8' }}>
 
       {showConfetti && <Confetti />}
 
@@ -124,10 +124,11 @@ export default function SuccessPage() {
         <div style={{
           textAlign    : 'center',
           padding      : '32px',
-          background   : 'rgba(10,255,230,0.05)',
-          border       : '1px solid rgba(10,255,230,0.3)',
+          background   : '#FFFFFF',
+          border       : '1px solid #EDE8DC',
           borderRadius : '20px',
           marginBottom : '24px',
+          boxShadow    : '0 10px 30px rgba(27,67,50,0.05)',
         }}>
           <img
             src  ="/logo.png"
@@ -137,7 +138,7 @@ export default function SuccessPage() {
             style={{
               height      : '50px',
               width       : 'auto',
-              filter      : 'brightness(0) invert(1)',
+              filter      : 'none',
               marginBottom: '16px',
               marginLeft  : 'auto',
               marginRight : 'auto',
@@ -148,27 +149,30 @@ export default function SuccessPage() {
             width          : '72px',
             height         : '72px',
             borderRadius   : '50%',
-            background     : 'rgba(34,197,94,0.15)',
-            border         : '2px solid #22C55E',
+            background     : 'rgba(27,67,50,0.1)',
+            border         : '2px solid #1B4332',
+            color          : '#1B4332',
             display        : 'flex',
             alignItems     : 'center',
             justifyContent : 'center',
             margin         : '0 auto 20px',
             fontSize       : '32px',
+            fontWeight     : 'bold',
           }}>
             ✓
           </div>
 
           <h2 style={{
-            color      : '#FFFFFF',
+            color      : '#2D4A35',
             fontSize   : '28px',
             fontFamily : 'Instrument Serif, serif',
+            fontWeight : 'bold',
             marginBottom: '8px',
           }}>
             Booking Confirmed!
           </h2>
 
-          <p style={{ color: '#A0A0A0', fontSize: '15px' }}>
+          <p style={{ color: '#5C6B5E', fontSize: '15px' }}>
             Your unique Booking ID
           </p>
 
@@ -180,8 +184,8 @@ export default function SuccessPage() {
               }
             }}
             style={{
-              background    : 'rgba(10,255,230,0.08)',
-              border        : '1px solid rgba(10,255,230,0.3)',
+              background    : 'rgba(27,67,50,0.05)',
+              border        : '1px solid #EDE8DC',
               borderRadius  : '12px',
               padding       : isMobile ? '12px 16px' : '16px 24px',
               margin        : '16px auto',
@@ -197,7 +201,7 @@ export default function SuccessPage() {
             {bookingNumber && bookingNumber !== 'undefined' ? (
               <>
                 <span style={{
-                  color        : '#0AFFE6',
+                  color        : '#1B4332',
                   fontSize     : isMobile ? '14px' : '20px',
                   fontWeight   : '700',
                   fontFamily   : 'monospace',
@@ -206,7 +210,7 @@ export default function SuccessPage() {
                 }}>
                   {bookingNumber}
                 </span>
-                <span style={{ color: '#A0A0A0', fontSize: '16px' }}>
+                <span style={{ color: '#5C6B5E', fontSize: '16px' }}>
                   📋
                 </span>
               </>
@@ -225,11 +229,11 @@ export default function SuccessPage() {
                 >
                   <circle 
                     cx="12" cy="12" r="10"
-                    stroke="#0AFFE6" strokeWidth="3"
+                    stroke="#1B4332" strokeWidth="3"
                     strokeDasharray="50 30"
                   />
                 </svg>
-                <span style={{ color: '#A0A0A0', fontSize: '14px' }}>
+                <span style={{ color: '#5C6B5E', fontSize: '14px' }}>
                   Loading your Booking ID...
                 </span>
               </div>
@@ -244,7 +248,7 @@ export default function SuccessPage() {
           `}</style>
           
           <p style={{ 
-            color   : '#A0A0A0', 
+            color   : '#5C6B5E', 
             fontSize: '12px' 
           }}>
             Tap to copy • Use this ID to track your booking
@@ -267,8 +271,8 @@ export default function SuccessPage() {
               style={{
                 flex        : 1,
                 padding     : '14px',
-                background  : '#0AFFE6',
-                color       : '#000',
+                background  : '#1B4332',
+                color       : '#FFFFFF',
                 fontWeight  : '700',
                 borderRadius: '12px',
                 border      : 'none',
@@ -314,26 +318,27 @@ export default function SuccessPage() {
         </div>
 
         <div style={{
-          background   : '#161616',
-          border       : '1px solid rgba(10,255,230,0.2)',
+          background   : '#FFFFFF',
+          border       : '1px solid #EDE8DC',
           borderRadius : '16px',
           padding      : '24px',
           textAlign    : 'center',
           marginTop    : '24px',
           marginBottom : '24px',
+          boxShadow    : '0 10px 30px rgba(27,67,50,0.05)',
         }}>
           <p style={{ fontSize:'32px' }}>⭐</p>
-          <h3 style={{ color:'#FFFFFF' }} className="font-syne font-bold text-xl mt-2">
+          <h3 style={{ color:'#2D4A35' }} className="font-syne font-bold text-xl mt-2">
             How are we doing?
           </h3>
-          <p style={{ color:'#A0A0A0', fontSize:'14px' }} className="font-dm mt-1">
+          <p style={{ color:'#5C6B5E', fontSize:'14px' }} className="font-dm mt-1">
             Take 30 seconds to share your experience
           </p>
           <button 
             onClick={() => setShowFeedback(true)}
             style={{
-              background   : '#0AFFE6',
-              color        : '#000',
+              background   : '#C9A84C',
+              color        : '#FFFFFF',
               fontWeight   : '700',
               padding      : '12px 32px',
               borderRadius : '10px',
@@ -341,19 +346,19 @@ export default function SuccessPage() {
               cursor       : 'pointer',
               marginTop    : '16px',
             }}
-            className="font-dm"
+            className="font-dm hover:bg-[#B3933B] transition-colors"
           >
             ✦ Leave a Review
           </button>
           <p 
             onClick={() => navigate('/')}
             style={{ 
-              color    : '#A0A0A0',
+              color    : '#5C6B5E',
               fontSize : '13px',
               cursor   : 'pointer',
               marginTop: '12px',
             }}
-            className="font-dm hover:text-white transition-colors"
+            className="font-dm hover:text-[#2D4A35] transition-colors"
           >
             Skip for now
           </p>

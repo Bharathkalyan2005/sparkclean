@@ -121,37 +121,37 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] w-full max-w-md bg-[#0D1D3E] border border-white/10 rounded-2xl shadow-2xl overflow-hidden font-sans"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] w-full max-w-md bg-white border border-[#EDE8DC] rounded-2xl shadow-2xl overflow-hidden font-sans"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
-              <h2 className="text-xl font-bold text-white tracking-tight">Your Profile</h2>
-              <button onClick={onClose} className="p-2 text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/10">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#EDE8DC] bg-[#F5F0E8]">
+              <h2 className="text-xl font-bold text-[#1B4332] tracking-tight">Your Profile</h2>
+              <button onClick={onClose} className="p-2 text-[#5C6B5E] hover:text-[#1B4332] transition-colors rounded-full hover:bg-black/5">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {initialLoading ? (
               <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="w-10 h-10 text-[#0AFFE6] animate-spin mb-4" />
-                <p className="text-sm text-gray-400">Loading your details...</p>
+                <Loader2 className="w-10 h-10 text-[#1B4332] animate-spin mb-4" />
+                <p className="text-sm text-[#5C6B5E]">Loading your details...</p>
               </div>
             ) : (
               <div className="p-6">
                 <form className="space-y-5" onSubmit={handleSubmit}>
                   <div>
-                    <label htmlFor="fullName" className="block text-[13px] font-medium text-gray-300 mb-1.5">
+                    <label htmlFor="fullName" className="block text-[13px] font-medium text-[#2D4A35] mb-1.5">
                       Full Name
                     </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-4 w-4 text-gray-400" />
+                        <User className="h-4 w-4 text-[#5C6B5E]" />
                       </div>
                       <input
                         id="fullName"
@@ -160,19 +160,19 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                         required
                         value={formData.fullName}
                         onChange={handleChange}
-                        className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                        className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-2.5 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                         placeholder="John Doe"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-[13px] font-medium text-gray-300 mb-1.5">
+                    <label htmlFor="phone" className="block text-[13px] font-medium text-[#2D4A35] mb-1.5">
                       Phone Number
                     </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Phone className="h-4 w-4 text-gray-400" />
+                        <Phone className="h-4 w-4 text-[#5C6B5E]" />
                       </div>
                       <input
                         id="phone"
@@ -180,19 +180,19 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                         type="tel"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                        className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-2.5 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                         placeholder="+1 (555) 000-0000"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="address" className="block text-[13px] font-medium text-gray-300 mb-1.5">
+                    <label htmlFor="address" className="block text-[13px] font-medium text-[#2D4A35] mb-1.5">
                       Home Address
                     </label>
                     <div className="relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <MapPin className="h-4 w-4 text-gray-400" />
+                        <MapPin className="h-4 w-4 text-[#5C6B5E]" />
                       </div>
                       <input
                         id="address"
@@ -200,7 +200,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                         type="text"
                         value={formData.address}
                         onChange={handleChange}
-                        className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                        className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-2.5 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                         placeholder="123 Main St, City, State 12345"
                       />
                     </div>
@@ -210,7 +210,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-[#0A1628] bg-[#0AFFE6] hover:bg-[#00E5CC] focus:outline-none transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#1B4332] hover:bg-[#0D2B1F] focus:outline-none transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {loading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -224,11 +224,11 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                   </div>
                 </form>
                 
-                <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-3">
+                <div className="mt-6 pt-6 border-t border-[#EDE8DC] flex flex-col gap-3">
                   {userRole === 'ADMIN' && (
                     <button 
                       onClick={() => { onClose(); navigate('/admin'); }}
-                      className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-[#0AFFE6] bg-[#0AFFE6]/10 hover:bg-[#0AFFE6]/20 transition-colors"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-[#1B4332] bg-[#1B4332]/10 hover:bg-[#1B4332]/20 transition-colors"
                     >
                       <Shield className="w-4 h-4" />
                       Admin Dashboard
@@ -236,7 +236,7 @@ export default function ProfileModal({ isOpen, onClose, onLogout, userRole }: Pr
                   )}
                   <button 
                     onClick={onLogout}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-red-400 bg-red-400/10 hover:bg-red-400/20 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     Secure Logout

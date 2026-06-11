@@ -99,23 +99,23 @@ const areaCoordinates: Record<string, {
   'Sholinganallur' : { lat: 12.9010, lng: 80.2279, city: 'Chennai' },
 };
 
-// Dark map style
-const darkMapStyle = [
+// Light map style
+const lightMapStyle = [
   { elementType: 'geometry',
-    stylers: [{ color: '#0a0a0a' }] },
+    stylers: [{ color: '#F5F0E8' }] },
   { elementType: 'labels.text.stroke',
-    stylers: [{ color: '#0a0a0a' }] },
+    stylers: [{ color: '#F5F0E8' }] },
   { elementType: 'labels.text.fill',
-    stylers: [{ color: '#9ca5b3' }] },
+    stylers: [{ color: '#2D4A35' }] },
   { featureType: 'road',
     elementType: 'geometry',
-    stylers: [{ color: '#1a1a1a' }] },
+    stylers: [{ color: '#FFFFFF' }] },
   { featureType: 'road.highway',
     elementType: 'geometry',
-    stylers: [{ color: '#1a1a2e' }] },
+    stylers: [{ color: '#EDE8DC' }] },
   { featureType: 'water',
     elementType: 'geometry',
-    stylers: [{ color: '#0a1628' }] },
+    stylers: [{ color: '#D2E2D7' }] },
   { featureType: 'poi',
     stylers: [{ visibility: 'off' }] },
   { featureType: 'transit',
@@ -145,8 +145,8 @@ function BookingMap({ area, address }: BookingMapProps) {
       <div style={{
         height        : '220px',
         borderRadius  : '14px',
-        background    : 'rgba(10,255,230,0.03)',
-        border        : '1px solid rgba(10,255,230,0.15)',
+        background    : 'rgba(27,67,50,0.02)',
+        border        : '1px solid #EDE8DC',
         display       : 'flex',
         alignItems    : 'center',
         justifyContent: 'center',
@@ -158,11 +158,11 @@ function BookingMap({ area, address }: BookingMapProps) {
           style={{ animation: 'spin 1s linear infinite' }}
         >
           <circle cx="12" cy="12" r="10"
-            stroke="#0AFFE6" strokeWidth="3"
+            stroke="#1B4332" strokeWidth="3"
             strokeDasharray="50 30"
           />
         </svg>
-        <span style={{ color: '#A0A0A0', fontSize: '13px' }}>
+        <span style={{ color: '#5C6B5E', fontSize: '13px' }}>
           Loading map...
         </span>
       </div>
@@ -179,7 +179,7 @@ function BookingMap({ area, address }: BookingMapProps) {
       center ={{ lat: coords.lat, lng: coords.lng }}
       zoom   ={14}
       options={{
-        styles           : darkMapStyle,
+        styles           : lightMapStyle,
         disableDefaultUI : true,
         zoomControl      : true,
         scrollwheel      : false,
@@ -194,7 +194,7 @@ function BookingMap({ area, address }: BookingMapProps) {
         icon={{
           path: window.google.maps.SymbolPath.CIRCLE,
           scale       : 12,
-          fillColor   : '#0AFFE6',
+          fillColor   : '#1B4332',
           fillOpacity : 1,
           strokeColor : '#FFFFFF',
           strokeWeight: 2,
@@ -206,9 +206,9 @@ function BookingMap({ area, address }: BookingMapProps) {
         center ={{ lat: coords.lat, lng: coords.lng }}
         radius ={2000}
         options={{
-          fillColor   : '#0AFFE6',
+          fillColor   : '#1B4332',
           fillOpacity : 0.06,
-          strokeColor : '#0AFFE6',
+          strokeColor : '#1B4332',
           strokeOpacity: 0.3,
           strokeWeight: 1,
         }}
@@ -523,7 +523,7 @@ const handlePayment = async () => {
         email  : customerEmail  || '',
         contact: customerPhone,
       },
-      theme: { color: '#0AFFE6' },
+      theme: { color: '#1B4332' },
       modal: {
         confirm_close: true,
         ondismiss    : () => {
@@ -697,23 +697,23 @@ const handleCODBooking = async () => {
   const isStep2Valid = form.name && form.phone && form.address && form.area && selectedDate && selectedTime && (form.area !== 'Other (Not listed)' || customArea.trim() !== '');
 
   // ── Shared style tokens ──────────────────────────────────────
-  const cardSelected = { border: '1.5px solid #0AFFE6', background: 'rgba(10,255,230,0.06)', borderRadius: 14 };
-  const cardDefault = { border: '1.5px solid rgba(10,255,230,0.18)', background: '#FFFFFF', borderRadius: 14 };
+  const cardSelected = { border: '1.5px solid #1B4332', background: 'rgba(27,67,50,0.05)', borderRadius: 14 };
+  const cardDefault = { border: '1.5px solid #EDE8DC', background: '#FFFFFF', borderRadius: 14 };
 
   return (
-    <div className="min-h-screen" style={{ background: '#F0FFFE' }}>
+    <div className="min-h-screen" style={{ background: '#F5F0E8' }}>
       {/* Top nav */}
-      <div className="px-4 py-4" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(10,255,230,0.2)', boxShadow: '0 1px 16px rgba(10,255,230,0.08)' }}>
+      <div className="px-4 py-4" style={{ background: '#FFFFFF', borderBottom: '1px solid #EDE8DC', boxShadow: '0 4px 20px rgba(27,67,50,0.03)' }}>
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <button onClick={() => navigate('/')} className="flex items-center gap-2 transition-colors" style={{ color: '#4A4A6A' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#00897B')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#4A4A6A')}>
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 transition-colors" style={{ color: '#5C6B5E' }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#1B4332')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#5C6B5E')}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             <span className="font-dm text-sm">Back to Home</span>
           </button>
-          <span className="font-syne font-bold" style={{ color: '#1A1A2E' }}>Book a Cleaning</span>
+          <span className="font-syne font-bold text-[#2D4A35]" style={{ fontSize: '18px' }}>Book a Cleaning</span>
           <div></div>
         </div>
       </div>
@@ -727,9 +727,9 @@ const handleCODBooking = async () => {
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center font-syne font-bold text-sm transition-all duration-300`}
                   style={{
-                    background: step > i + 1 ? 'rgba(10,255,230,0.2)' : step === i + 1 ? 'linear-gradient(135deg,#0AFFE6,#00CDB7)' : 'rgba(10,255,230,0.06)',
-                    border: `2px solid ${step >= i + 1 ? '#0AFFE6' : 'rgba(10,255,230,0.2)'}`,
-                    color: step === i + 1 ? '#0A1628' : step > i + 1 ? '#00897B' : 'rgba(26,26,46,0.35)',
+                    background: step > i + 1 ? 'rgba(27,67,50,0.1)' : step === i + 1 ? 'linear-gradient(135deg,#1B4332,#0D2B1F)' : 'rgba(27,67,50,0.03)',
+                    border: `2px solid ${step >= i + 1 ? '#1B4332' : '#EDE8DC'}`,
+                    color: step === i + 1 ? '#FFFFFF' : step > i + 1 ? '#1B4332' : '#5C6B5E',
                   }}
                 >
                   {step > i + 1 ? (
@@ -739,11 +739,11 @@ const handleCODBooking = async () => {
                   ) : i + 1}
                 </div>
                 <span className={`text-sm font-dm hidden sm:block`}
-                  style={{ color: step === i + 1 ? '#1A1A2E' : 'rgba(26,26,46,0.35)' }}>{label}</span>
+                  style={{ color: step === i + 1 ? '#2D4A35' : '#5C6B5E' }}>{label}</span>
               </div>
               {i < STEPS.length - 1 && (
                 <div className="flex-1 h-0.5 mx-3 transition-all duration-500 rounded-full"
-                  style={{ background: step > i + 1 ? 'linear-gradient(90deg,#0AFFE6,#00CDB7)' : 'rgba(10,255,230,0.15)' }} />
+                  style={{ background: step > i + 1 ? 'linear-gradient(90deg,#1B4332,#0D2B1F)' : '#EDE8DC' }} />
               )}
             </React.Fragment>
           ))}
@@ -754,25 +754,25 @@ const handleCODBooking = async () => {
           {/* STEP 1 */}
           {step === 1 && (
             <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.3 }}>
-              <h2 className="font-syne font-bold text-2xl mb-6" style={{ color: '#1A1A2E' }}>Choose Your Services</h2>
+              <h2 className="font-syne font-bold text-2xl mb-6 text-[#2D4A35]">Choose Your Services</h2>
 
               {/* Combos */}
               <div className="mb-8">
-                <h3 className="text-xs font-dm uppercase tracking-wider mb-4" style={{ color: '#00897B' }}>Combo Packages</h3>
+                <h3 className="text-xs font-dm font-semibold uppercase tracking-wider mb-4 text-[#1B4332]">Combo Packages</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {loadingSvc ? <p className="text-sm">Loading...</p> : combos.map(combo => (
+                  {loadingSvc ? <p className="text-sm text-[#5C6B5E]">Loading...</p> : combos.map(combo => (
                     <button
                       key={combo.id}
                       onClick={() => { setSelectedCombo(selectedCombo?.id === combo.id ? null : combo); setSelectedServices([]); }}
-                      className="p-4 text-left transition-all duration-300 card-glow"
+                      className="p-4 text-left transition-all duration-300 card-glow bg-white shadow-sm hover:shadow-md"
                       style={selectedCombo?.id === combo.id ? cardSelected : cardDefault}
                     >
                       {combo.is_popular && (
-                        <span className="text-xs px-2 py-0.5 rounded-full font-dm font-semibold mb-2 inline-block"
-                          style={{ background: 'rgba(10,255,230,0.15)', color: '#00897B' }}>★ Popular</span>
+                        <span className="text-xs px-2.5 py-0.5 rounded-full font-dm font-semibold mb-2 inline-block"
+                          style={{ background: 'rgba(201,168,76,0.15)', color: '#1B4332' }}>★ Popular</span>
                       )}
-                      <p className="font-syne font-bold" style={{ color: '#1A1A2E' }}>{combo.name}</p>
-                      <p className="font-syne font-bold text-xl" style={{ color: '#0AFFE6' }}>₹{combo.price}</p>
+                      <p className="font-syne font-bold text-[#2D4A35]">{combo.name}</p>
+                      <p className="font-syne font-bold text-xl text-[#1B4332] mt-1">₹{combo.price}</p>
                     </button>
                   ))}
                 </div>
@@ -780,30 +780,30 @@ const handleCODBooking = async () => {
 
               {/* Individual services */}
               <div>
-                <h3 className="text-xs font-dm uppercase tracking-wider mb-4" style={{ color: '#00897B' }}>Individual Services</h3>
+                <h3 className="text-xs font-dm font-semibold uppercase tracking-wider mb-4 text-[#1B4332]">Individual Services</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {loadingSvc ? <p className="text-sm">Loading...</p> : services.map(service => {
+                  {loadingSvc ? <p className="text-sm text-[#5C6B5E]">Loading...</p> : services.map(service => {
                     const isSelected = selectedServices.some(s => s.id === service.id);
                     return (
                       <button
                         key={service.id}
                         onClick={() => toggleService(service)}
-                        className="p-4 text-left flex items-center gap-4 transition-all duration-300"
+                        className="p-4 text-left flex items-center gap-4 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
                         style={isSelected ? cardSelected : cardDefault}
                       >
                         <div className="w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all"
-                          style={{ background: isSelected ? '#0AFFE6' : 'transparent', borderColor: isSelected ? '#0AFFE6' : 'rgba(10,255,230,0.3)' }}>
+                          style={{ background: isSelected ? '#1B4332' : 'transparent', borderColor: isSelected ? '#1B4332' : '#EDE8DC' }}>
                           {isSelected && (
-                            <svg className="w-3 h-3" fill="none" stroke="#0A1628" viewBox="0 0 24 24">
+                            <svg className="w-3 h-3" fill="none" stroke="#FFFFFF" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           )}
                         </div>
                         <div className="flex-1">
-                          <p className="font-dm font-medium text-sm" style={{ color: '#1A1A2E' }}>{service.name}</p>
-                          <p className="text-xs font-dm" style={{ color: '#8A8AAA' }}>{service.unit}</p>
+                          <p className="font-dm font-medium text-sm text-[#2D4A35]">{service.name}</p>
+                          <p className="text-xs font-dm text-[#5C6B5E]">{service.unit}</p>
                         </div>
-                        <span className="font-syne font-bold flex-shrink-0" style={{ color: '#0AFFE6' }}>
+                        <span className="font-syne font-bold flex-shrink-0 text-[#1B4332]">
                           ₹{service.unit === 'per cloth' ? '10/cloth' : Number(service.price)}
                         </span>
                       </button>
@@ -815,19 +815,22 @@ const handleCODBooking = async () => {
               {/* Selected summary */}
               {(selectedCombo || selectedServices.length > 0) && (
                 <div className="mt-6 rounded-xl p-4 flex items-center justify-between"
-                  style={{ background: 'rgba(10,255,230,0.08)', border: '1.5px solid rgba(10,255,230,0.3)' }}>
-                  <span className="font-dm text-sm" style={{ color: '#00897B' }}>
+                  style={{ background: 'rgba(27,67,50,0.05)', border: '1.5px solid rgba(27,67,50,0.2)' }}>
+                  <span className="font-dm text-sm text-[#2D4A35]">
                     {selectedCombo ? selectedCombo.name : `${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''} selected`}
                   </span>
-                  <span className="font-syne font-bold text-xl" style={{ color: '#0AFFE6' }}>{formatIndianCurrency(total)}</span>
+                  <span className="font-syne font-bold text-xl text-[#1B4332]">{formatIndianCurrency(total)}</span>
                 </div>
               )}
 
               <button
                 disabled={!isStep1Valid}
                 onClick={() => setStep(2)}
-                className={`mt-6 w-full py-4 rounded-xl font-dm font-semibold text-base transition-all ${isStep1Valid ? 'btn-teal' : ''}`}
-                style={!isStep1Valid ? { background: 'rgba(10,255,230,0.08)', color: 'rgba(26,26,46,0.3)', border: '1.5px solid rgba(10,255,230,0.15)', cursor: 'not-allowed', borderRadius: 12 } : {}}
+                className={`mt-6 w-full py-4 rounded-xl font-dm font-semibold text-base transition-all duration-300 shadow-md ${
+                  isStep1Valid 
+                    ? 'bg-[#1B4332] text-white hover:bg-[#0D2B1F] cursor-pointer' 
+                    : 'bg-[#1B4332]/10 text-[#5C6B5E]/50 border border-[#EDE8DC] cursor-not-allowed'
+                }`}
               >
                 Continue →
               </button>
@@ -837,31 +840,31 @@ const handleCODBooking = async () => {
           {/* STEP 2 */}
           {step === 2 && (
             <motion.div key="step2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.3 }}>
-              <h2 className="font-syne font-bold text-2xl mb-6" style={{ color: '#1A1A2E' }}>Your Details</h2>
+              <h2 className="font-syne font-bold text-2xl mb-6 text-[#2D4A35]">Your Details</h2>
 
-              <div className="space-y-5">
+              <div className="space-y-5 bg-white p-6 md:p-8 rounded-2xl border border-[#EDE8DC] shadow-sm">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Full Name *</label>
+                    <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Full Name *</label>
                     <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                      placeholder="Your full name" className="form-input light" required />
+                      placeholder="Your full name" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" required />
                   </div>
                   <div>
-                    <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Phone Number *</label>
+                    <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Phone Number *</label>
                     <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-                      placeholder="10-digit mobile" className="form-input light" required />
+                      placeholder="10-digit mobile" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" required />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Email (optional — for payment receipt)</label>
+                  <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Email (optional — for payment receipt)</label>
                   <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                    placeholder="your@email.com" className="form-input light" />
+                    placeholder="your@email.com" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" />
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-dm" style={{ color: '#4A4A6A' }}>Full Address *</label>
+                    <label className="block text-xs font-dm text-[#5C6B5E]">Full Address *</label>
                     <button
                       type="button"
                       onClick={() => {
@@ -910,17 +913,17 @@ const handleCODBooking = async () => {
                           toast.error('Geolocation is not supported by this browser.');
                         }
                       }}
-                      className="text-xs font-semibold px-3 py-1 rounded-full bg-[#0AFFE6]/20 text-[#07A696] hover:bg-[#0AFFE6]/30 transition-colors"
+                      className="text-xs font-semibold px-3 py-1 rounded-full bg-[#1B4332]/10 text-[#1B4332] hover:bg-[#1B4332]/20 transition-all"
                     >
                       📍 Auto-detect
                     </button>
                   </div>
                   <textarea value={form.address} onChange={e => setForm({ ...form, address: e.target.value })}
-                    placeholder="House/flat no., street, landmark..." className="form-input light min-h-[80px]" required />
+                    placeholder="House/flat no., street, landmark..." className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner min-h-[80px]" required />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-dm mb-1.5" style={{ color: '#4A4A6A' }}>Area *</label>
+                  <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Area *</label>
                   <select
                     value={form.area}
                     onChange={e => {
@@ -937,10 +940,10 @@ const handleCODBooking = async () => {
                       width        : '100%',
                       padding      : '14px 16px',
                       background   : 'white',
-                      border       : '2px solid #e2e8f0',
+                      border       : '1.5px solid #EDE8DC',
                       borderRadius : '12px',
                       fontSize     : '15px',
-                      color        : '#1a1a2e',
+                      color        : '#2D4A35',
                       cursor       : 'pointer',
                       outline      : 'none',
                     }}
@@ -1021,7 +1024,7 @@ const handleCODBooking = async () => {
                       <input
                         type="text"
                         placeholder="Enter your custom area or city"
-                        className="form-input light"
+                        className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner"
                         value={customArea}
                         onChange={(e) => setCustomArea(e.target.value)}
                         required
@@ -1047,14 +1050,14 @@ const handleCODBooking = async () => {
                         <span style={{ fontSize: '16px' }}>📍</span>
                         <div>
                           <p style={{
-                            color     : '#1A1A2E',
+                            color     : '#2D4A35',
                             fontSize  : '14px',
                             fontWeight: '600',
                           }}>
                             {form.area}
                           </p>
                           <p style={{
-                            color   : '#4A4A6A',
+                            color   : '#5C6B5E',
                             fontSize: '12px',
                           }}>
                             {areaCoordinates[form.area]?.city}, India
@@ -1064,9 +1067,9 @@ const handleCODBooking = async () => {
 
                       {/* Live service badge */}
                       <span style={{
-                        background   : 'rgba(10,255,230,0.12)',
-                        color        : '#00897B',
-                        border       : '1px solid rgba(10,255,230,0.3)',
+                        background   : 'rgba(27,67,50,0.1)',
+                        color        : '#1B4332',
+                        border       : '1px solid rgba(27,67,50,0.2)',
                         borderRadius : '20px',
                         padding      : '3px 10px',
                         fontSize     : '11px',
@@ -1085,10 +1088,10 @@ const handleCODBooking = async () => {
                         exit       ={{ opacity: 0, y: -10             }}
                         transition ={{ duration: 0.3, ease: 'easeOut' }}
                         style={{
-                          border      : '1px solid rgba(10,255,230,0.2)',
+                          border      : '1px solid #EDE8DC',
                           borderRadius: '14px',
                           overflow    : 'hidden',
-                          boxShadow   : '0 0 20px rgba(10,255,230,0.05)',
+                          boxShadow   : '0 4px 20px rgba(27,67,50,0.03)',
                         }}
                       >
                         <BookingMap
@@ -1100,20 +1103,20 @@ const handleCODBooking = async () => {
                 
                     {/* Service radius note */}
                     <p style={{
-                      color     : 'rgba(26,26,46,0.5)',
+                      color     : '#5C6B5E',
                       fontSize  : '12px',
                       textAlign : 'center',
                       marginTop : '8px',
                       display   : 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap       : '4px',
+                      gap       : '6px',
                     }}>
                       <span style={{
                         width       : '8px',
                         height      : '8px',
                         borderRadius: '50%',
-                        background  : 'rgba(10,255,230,0.4)',
+                        background  : '#1B4332',
                         display     : 'inline-block',
                       }} />
                       Teal circle shows our ~2km service coverage area
@@ -1123,7 +1126,7 @@ const handleCODBooking = async () => {
 
                 {/* Date Picker */}
                 <div>
-                  <label className="block text-xs font-dm mb-2" style={{ color: '#4A4A6A' }}>Select Date *</label>
+                  <label className="block text-xs font-dm mb-2 text-[#5C6B5E]">Select Date *</label>
                   <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                     {nextDates.map(date => (
                       <button
@@ -1131,8 +1134,8 @@ const handleCODBooking = async () => {
                         onClick={() => setSelectedDate(date)}
                         className="rounded-xl p-2 text-center transition-all duration-200"
                         style={selectedDate === date
-                          ? { border: '1.5px solid #0AFFE6', background: 'rgba(10,255,230,0.1)', color: '#00897B' }
-                          : { border: '1.5px solid rgba(10,255,230,0.18)', background: '#FFFFFF', color: '#4A4A6A' }}
+                          ? { border: '1.5px solid #1B4332', background: 'rgba(27,67,50,0.1)', color: '#1B4332' }
+                          : { border: '1.5px solid #EDE8DC', background: '#FFFFFF', color: '#5C6B5E' }}
                       >
                         <div className="text-xs font-dm">{formatDateDisplay(date).split(' ')[0]}</div>
                         <div className="font-syne font-bold text-sm">{formatDateDisplay(date).split(' ')[1]}</div>
@@ -1144,7 +1147,7 @@ const handleCODBooking = async () => {
 
                 {/* Time Slots */}
                 <div>
-                  <label className="block text-xs font-dm mb-2" style={{ color: '#4A4A6A' }}>Select Time Slot *</label>
+                  <label className="block text-xs font-dm mb-2 text-[#5C6B5E]">Select Time Slot *</label>
                   <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                     {TIME_SLOTS.map(time => (
                       <button
@@ -1152,8 +1155,8 @@ const handleCODBooking = async () => {
                         onClick={() => setSelectedTime(time)}
                         className="rounded-xl py-2.5 px-3 text-sm font-dm font-medium transition-all duration-200"
                         style={selectedTime === time
-                          ? { border: '1.5px solid #0AFFE6', background: 'rgba(10,255,230,0.1)', color: '#00897B' }
-                          : { border: '1.5px solid rgba(10,255,230,0.18)', background: '#FFFFFF', color: '#4A4A6A' }}
+                          ? { border: '1.5px solid #1B4332', background: 'rgba(27,67,50,0.1)', color: '#1B4332' }
+                          : { border: '1.5px solid #EDE8DC', background: '#FFFFFF', color: '#5C6B5E' }}
                       >
                         {time}
                       </button>
@@ -1163,8 +1166,8 @@ const handleCODBooking = async () => {
               </div>
 
               <div className="flex gap-3 mt-6">
-                <button onClick={() => setStep(1)} className="flex-1 py-4 rounded-xl font-dm transition-colors"
-                  style={{ background: '#FFFFFF', border: '1.5px solid rgba(10,255,230,0.2)', color: '#4A4A6A' }}>
+                <button onClick={() => setStep(1)} className="flex-1 py-4 rounded-xl font-dm transition-colors bg-white hover:bg-gray-50"
+                  style={{ border: '1.5px solid #EDE8DC', color: '#5C6B5E' }}>
                   ← Back
                 </button>
                 <button
@@ -1176,8 +1179,11 @@ const handleCODBooking = async () => {
                     }
                     setStep(3);
                   }}
-                  className={`flex-[2] py-4 rounded-xl font-dm font-semibold text-base transition-all ${isStep2Valid ? 'btn-teal' : ''}`}
-                  style={!isStep2Valid ? { background: 'rgba(10,255,230,0.08)', color: 'rgba(26,26,46,0.3)', border: '1.5px solid rgba(10,255,230,0.15)', cursor: 'not-allowed', borderRadius: 12 } : { borderRadius: 12 }}
+                  className={`flex-[2] py-4 rounded-xl font-dm font-semibold text-base transition-all duration-300 shadow-md ${
+                    isStep2Valid 
+                      ? 'bg-[#1B4332] text-white hover:bg-[#0D2B1F] cursor-pointer' 
+                      : 'bg-[#1B4332]/10 text-[#5C6B5E]/50 border border-[#EDE8DC] cursor-not-allowed'
+                  }`}
                 >
                   Continue to Payment →
                 </button>
@@ -1188,28 +1194,27 @@ const handleCODBooking = async () => {
           {/* STEP 3: Summary + Payment */}
           {step === 3 && (
             <motion.div key="step3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.3 }}>
-              <h2 className="font-syne font-bold text-2xl mb-6" style={{ color: '#1A1A2E' }}>Order Summary</h2>
+              <h2 className="font-syne font-bold text-2xl mb-6 text-[#2D4A35]">Order Summary</h2>
 
-              <div className="rounded-2xl p-6 mb-6 space-y-4"
-                style={{ background: '#FFFFFF', border: '1.5px solid rgba(10,255,230,0.2)', boxShadow: '0 4px 24px rgba(10,255,230,0.08)' }}>
+              <div className="rounded-2xl p-6 mb-6 space-y-4 bg-white border border-[#EDE8DC] shadow-sm">
                 {/* Service */}
                 <div>
-                  <p className="text-xs font-dm uppercase tracking-wider mb-2" style={{ color: '#8A8AAA' }}>Service</p>
+                  <p className="text-xs font-dm uppercase tracking-wider mb-2 text-[#5C6B5E]">Service</p>
                   {selectedCombo ? (
                     <div className="flex items-center justify-between">
-                      <p className="font-dm font-medium" style={{ color: '#1A1A2E' }}>{selectedCombo.name}</p>
-                      <p className="font-syne font-bold" style={{ color: '#0AFFE6' }}>₹{selectedCombo.price}</p>
+                      <p className="font-dm font-medium text-[#2D4A35]">{selectedCombo.name}</p>
+                      <p className="font-syne font-bold text-[#1B4332]">₹{selectedCombo.price}</p>
                     </div>
                   ) : (
                     selectedServices.map(s => (
                       <div key={s.id} className="flex items-center justify-between py-1">
-                        <p className="font-dm text-sm" style={{ color: '#4A4A6A' }}>{s.name} × {s.quantity}</p>
-                        <p className="font-dm font-medium text-sm" style={{ color: '#1A1A2E' }}>{formatIndianCurrency(s.price * s.quantity)}</p>
+                        <p className="font-dm text-sm text-[#5C6B5E]">{s.name} × {s.quantity}</p>
+                        <p className="font-dm font-medium text-sm text-[#2D4A35]">{formatIndianCurrency(s.price * s.quantity)}</p>
                       </div>
                     ))
                   )}
                 </div>
-                <div className="h-px" style={{ background: 'rgba(10,255,230,0.15)' }} />
+                <div className="h-px bg-[#EDE8DC]" />
 
                 {/* Customer details */}
                 <div className="grid grid-cols-2 gap-3">
@@ -1220,24 +1225,18 @@ const handleCODBooking = async () => {
                     { label: 'Date & Time', value: `${formatDateDisplay(selectedDate)} at ${selectedTime}` },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <p className="text-xs font-dm" style={{ color: '#8A8AAA' }}>{label}</p>
-                      <p className="font-dm text-sm font-medium" style={{ color: '#1A1A2E' }}>{value}</p>
+                      <p className="text-xs font-dm text-[#5C6B5E]">{label}</p>
+                      <p className="font-dm text-sm font-medium text-[#2D4A35]">{value}</p>
                     </div>
                   ))}
                 </div>
-                <div className="h-px" style={{ background: 'rgba(10,255,230,0.15)' }} />
+                <div className="h-px bg-[#EDE8DC]" />
 
                 {/* Order Summary Map */}
                 {form.area && areaCoordinates[form.area] && (
-                  <div style={{
-                    background   : 'rgba(10,255,230,0.02)',
-                    border       : '1px solid rgba(10,255,230,0.08)',
-                    borderRadius : '14px',
-                    padding      : '16px',
-                    marginBottom : '16px',
-                  }}>
+                  <div className="bg-[#1B4332]/5 border border-[#EDE8DC] rounded-xl p-4 mb-4">
                     <p style={{
-                      color        : '#00897B',
+                      color        : '#1B4332',
                       fontSize     : '12px',
                       fontWeight   : '600',
                       letterSpacing: '1px',
@@ -1253,7 +1252,7 @@ const handleCODBooking = async () => {
                       borderRadius: '10px',
                       overflow    : 'hidden',
                       marginBottom: '10px',
-                      border      : '1px solid rgba(10,255,230,0.15)',
+                      border      : '1px solid #EDE8DC',
                     }}>
                       <BookingMap
                         area   ={form.area}
@@ -1267,19 +1266,19 @@ const handleCODBooking = async () => {
                       alignItems   : 'flex-start',
                       gap          : '8px',
                     }}>
-                      <span style={{ color: '#0AFFE6', fontSize: '16px' }}>
+                      <span style={{ fontSize: '16px' }}>
                         📍
                       </span>
                       <div>
                         <p style={{
-                          color     : '#1A1A2E',
+                          color     : '#2D4A35',
                           fontSize  : '14px',
                           fontWeight: '500',
                         }}>
                           {form.address}
                         </p>
                         <p style={{
-                          color   : '#4A4A6A',
+                          color   : '#5C6B5E',
                           fontSize: '13px',
                           marginTop: '2px',
                         }}>
@@ -1307,15 +1306,15 @@ const handleCODBooking = async () => {
                         marginTop      : '8px',
                         padding        : '8px',
                         background     : 'transparent',
-                        border         : '1px solid rgba(10,255,230,0.3)',
+                        border         : '1px solid #1B4332',
                         borderRadius   : '10px',
-                        color          : '#00897B',
+                        color          : '#1B4332',
                         fontSize       : '12px',
                         textDecoration : 'none',
                         transition     : 'all 0.2s',
                       }}
                       onMouseEnter={e => {
-                        e.currentTarget.style.background = 'rgba(10,255,230,0.05)'
+                        e.currentTarget.style.background = 'rgba(27,67,50,0.05)'
                       }}
                       onMouseLeave={e => {
                         e.currentTarget.style.background = 'transparent'
@@ -1328,9 +1327,9 @@ const handleCODBooking = async () => {
 
                 {/* Total */}
                 <div className="rounded-xl p-4 flex items-center justify-between"
-                  style={{ background: 'rgba(10,255,230,0.08)', border: '1.5px solid rgba(10,255,230,0.25)' }}>
-                  <span className="font-dm font-semibold" style={{ color: '#1A1A2E' }}>Total Amount</span>
-                  <span className="font-syne font-bold text-3xl" style={{ color: '#0AFFE6' }}>{formatIndianCurrency(total)}</span>
+                  style={{ background: 'rgba(27,67,50,0.05)', border: '1.5px solid rgba(27,67,50,0.15)' }}>
+                  <span className="font-dm font-semibold text-[#2D4A35]">Total Amount</span>
+                  <span className="font-syne font-bold text-3xl text-[#1B4332]">{formatIndianCurrency(total)}</span>
                 </div>
               </div>
 
@@ -1340,20 +1339,20 @@ const handleCODBooking = async () => {
                 <button
                   onClick={handlePayment}
                   disabled={loading}
-                  className="w-full bg-[#0AFFE6] text-black 
+                  className="w-full bg-[#1B4332] text-white 
                             font-bold py-4 rounded-xl text-base
-                            hover:brightness-110 transition-all
-                            disabled:opacity-50 disabled:cursor-not-allowed"
+                            hover:bg-[#0D2B1F] transition-all shadow-md
+                            disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-5 w-5" 
+                      <svg className="animate-spin h-5 w-5 text-white" 
                           viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="10"
-                          stroke="currentColor" strokeWidth="4"
-                          className="opacity-25"/>
-                        <path fill="currentColor" className="opacity-75"
-                          d="M4 12a8 8 0 018-8v8z"/>
+                      <circle cx="12" cy="12" r="10"
+                        stroke="currentColor" strokeWidth="4"
+                        className="opacity-25"/>
+                      <path fill="currentColor" className="opacity-75"
+                        d="M4 12a8 8 0 018-8v8z"/>
                       </svg>
                       {
                         {
@@ -1373,23 +1372,21 @@ const handleCODBooking = async () => {
                 <button
                   onClick={handleCODBooking}
                   disabled={loading}
-                  className="w-full border border-[#0AFFE6] 
-                            text-[#0AFFE6] font-semibold py-4 
-                            rounded-xl mt-3 hover:bg-[#0AFFE6] 
-                            hover:text-black transition-all
-                            disabled:opacity-50"
+                  className="w-full border border-[#1B4332] 
+                            text-[#1B4332] font-semibold py-4 
+                            rounded-xl mt-3 hover:bg-[#1B4332] 
+                            hover:text-white transition-all duration-300
+                            disabled:opacity-50 cursor-pointer"
                 >
                   Pay at Doorstep (Cash on Service)
                 </button>
               </div>
 
-              <p className="text-center text-xs font-dm" style={{ color: '#8A8AAA' }}>
+              <p className="text-center text-xs font-dm text-[#5C6B5E]">
                 🔒 Secure payments powered by Razorpay. We'll send a WhatsApp confirmation instantly.
               </p>
 
-              <button onClick={() => setStep(2)} className="mt-4 w-full text-sm font-dm transition-colors" style={{ color: '#8A8AAA' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#1A1A2E')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#8A8AAA')}>
+              <button onClick={() => setStep(2)} className="mt-4 w-full text-sm font-dm transition-colors text-[#5C6B5E] hover:text-[#2D4A35]">
                 ← Change details
               </button>
             </motion.div>

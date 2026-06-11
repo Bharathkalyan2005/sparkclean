@@ -15,7 +15,7 @@ class ErrorBoundary extends Component<
       return (
         <div style={{
           minHeight      : '100vh',
-          background     : '#0A0A0A',
+          background     : '#F5F0E8',
           display        : 'flex',
           alignItems     : 'center',
           justifyContent : 'center',
@@ -27,21 +27,21 @@ class ErrorBoundary extends Component<
         }}>
           <span style={{ fontSize: '48px' }}>⚠️</span>
           <h2 style={{
-            color     : '#FFFFFF',
+            color     : '#1B4332',
             fontSize  : '24px',
             fontFamily: 'Instrument Serif, serif',
           }}>
             Something went wrong
           </h2>
-          <p style={{ color: '#A0A0A0', fontSize: '15px' }}>
+          <p style={{ color: '#5C6B5E', fontSize: '15px' }}>
             Please refresh the page or contact support
           </p>
           <button
             onClick={() => window.location.reload()}
             style={{
               padding      : '12px 28px',
-              background   : '#0AFFE6',
-              color        : '#000',
+              background   : '#1B4332',
+              color        : '#FFFFFF',
               fontWeight   : '700',
               borderRadius : '12px',
               border       : 'none',
@@ -54,9 +54,10 @@ class ErrorBoundary extends Component<
           <a
             href={`https://wa.me/919392420643?text=Hi SuciHome! The website has an error.`}
             style={{
-              color         : '#0AFFE6',
+              color         : '#1B4332',
               fontSize      : '14px',
               textDecoration: 'none',
+              fontWeight    : '600'
             }}
           >
             💬 Contact Support

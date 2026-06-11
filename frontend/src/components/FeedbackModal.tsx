@@ -43,21 +43,20 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, bookingId, onClos
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.8)' }}>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.4)' }}>
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="relative max-w-md w-full rounded-2xl p-8 text-center shadow-2xl"
-          style={{ background: '#0A0A0A', border: '1px solid rgba(10,255,230,0.2)' }}
+          className="relative max-w-md w-full rounded-2xl p-8 text-center shadow-2xl bg-white border border-[#EDE8DC]"
         >
           {/* Logo / Header */}
-          <div className="mx-auto w-12 h-12 flex items-center justify-center mb-4 rounded-full" style={{ background: 'rgba(10,255,230,0.1)' }}>
-            <span style={{ color: '#0AFFE6', fontSize: '24px' }}>✦</span>
+          <div className="mx-auto w-12 h-12 flex items-center justify-center mb-4 rounded-full" style={{ background: 'rgba(27,67,50,0.1)' }}>
+            <span style={{ color: '#1B4332', fontSize: '24px' }}>✦</span>
           </div>
           
-          <h2 className="text-2xl font-bold mb-2 text-white">How was your experience?</h2>
-          <p style={{ color: '#A0A0A0' }} className="mb-6">Your feedback helps us improve</p>
+          <h2 className="text-2xl font-bold mb-2 text-[#1B4332]">How was your experience?</h2>
+          <p style={{ color: '#5C6B5E' }} className="mb-6">Your feedback helps us improve</p>
 
           <div className="flex justify-center mb-6">
             <StarRating value={rating} onChange={setRating} />
@@ -67,7 +66,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, bookingId, onClos
             <select
               value={serviceName}
               onChange={(e) => setServiceName(e.target.value)}
-              className="w-full p-3 rounded-xl bg-[#161616] text-white border border-white/10 outline-none focus:border-[#0AFFE6]/50 transition-colors"
+              className="w-full p-3 rounded-xl bg-white text-[#2D4A35] border border-[#EDE8DC] outline-none focus:border-[#1B4332] transition-colors"
             >
               <option value="">Select Service Used (Optional)</option>
               <option value="Home Deep Cleaning">Home Deep Cleaning</option>
@@ -82,10 +81,10 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, bookingId, onClos
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Tell us about your experience..."
-              className="w-full p-4 rounded-xl bg-[#161616] text-white border border-white/10 outline-none focus:border-[#0AFFE6]/50 transition-colors h-32 resize-none"
+              className="w-full p-4 rounded-xl bg-white text-[#2D4A35] border border-[#EDE8DC] outline-none focus:border-[#1B4332] transition-colors h-32 resize-none"
               maxLength={500}
             />
-            <div className="absolute bottom-3 right-3 text-xs" style={{ color: comment.length < 10 ? '#EF4444' : '#A0A0A0' }}>
+            <div className="absolute bottom-3 right-3 text-xs" style={{ color: comment.length < 10 ? '#C62828' : '#5C6B5E' }}>
               {comment.length}/500
             </div>
           </div>
@@ -93,16 +92,15 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, bookingId, onClos
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full py-3 rounded-xl font-bold text-black mb-3 transition-opacity disabled:opacity-50"
-            style={{ background: '#0AFFE6' }}
+            className="w-full py-3 rounded-xl font-bold text-white mb-3 transition-opacity disabled:opacity-50 bg-[#1B4332] hover:bg-[#0D2B1F]"
           >
             {loading ? 'Submitting...' : 'Submit Feedback'}
           </button>
 
           <button
             onClick={onClose}
-            className="text-sm transition-colors"
-            style={{ color: '#A0A0A0', background: 'transparent' }}
+            className="text-sm transition-colors hover:text-[#1B4332]"
+            style={{ color: '#5C6B5E', background: 'transparent' }}
           >
             Maybe Later
           </button>

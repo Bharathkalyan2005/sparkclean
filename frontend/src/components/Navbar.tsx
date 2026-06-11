@@ -405,7 +405,7 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col gap-4 border-t border-[rgba(27,67,50,0.15)] pt-4 mt-2">
                  <button 
                    onClick={() => { setMenuOpen(false); setProfileModalOpen(true); }} 
-                   className="flex items-center gap-2 text-sm font-medium text-white hover:text-[#0AFFE6] transition-colors bg-white/5 py-2 px-3 rounded-lg border border-white/10"
+                   className="flex items-center gap-2 text-sm font-medium text-white hover:text-[#1B4332] transition-colors bg-white/5 py-2 px-3 rounded-lg border border-white/10"
                    style={{
                      background: 'rgba(27,67,50,0.08)',
                      border: '1px solid rgba(27,67,50,0.15)',

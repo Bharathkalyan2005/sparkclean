@@ -128,7 +128,7 @@ const TrackingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pt-32 pb-24" style={{ background: '#0A0A0A' }}>
+    <div className="min-h-screen pt-32 pb-24" style={{ background: '#F5F0E8' }}>
       <div className="max-w-3xl mx-auto px-4">
         
         {/* Header */}
@@ -136,7 +136,7 @@ const TrackingPage: React.FC = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-syne font-bold text-4xl mb-4 text-white"
+            className="font-syne font-bold text-4xl mb-4 text-[#2D4A35]"
           >
             Track Your Booking
           </motion.h1>
@@ -144,7 +144,7 @@ const TrackingPage: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-white/50 font-dm"
+            className="text-[#5C6B5E] font-dm"
           >
             Enter your Booking ID or Phone Number to check status
           </motion.p>
@@ -153,15 +153,15 @@ const TrackingPage: React.FC = () => {
         {/* ONLY show banner if offline (NOT checking): */}
         {apiStatus === 'offline' && (
           <div style={{
-            background   : 'rgba(239,68,68,0.1)',
-            border       : '1px solid rgba(239,68,68,0.3)',
+            background   : 'rgba(220,38,38,0.05)',
+            border       : '1px solid rgba(220,38,38,0.25)',
             borderRadius : '12px',
             padding      : '12px 20px',
             textAlign    : 'center',
             maxWidth     : '600px',
             margin       : '0 auto 24px',
             fontSize     : '14px',
-            color        : '#FCA5A5',
+            color        : '#B91C1C',
           }}>
             ⚠️ Server is starting up...
             Please wait 30 seconds and try again.
@@ -172,7 +172,7 @@ const TrackingPage: React.FC = () => {
         {apiStatus === 'checking' && (
           <p style={{
             textAlign  : 'center',
-            color      : 'rgba(255,255,255,0.3)',
+            color      : '#5C6B5E',
             fontSize   : '12px',
             marginBottom: '12px',
           }}>
@@ -184,7 +184,7 @@ const TrackingPage: React.FC = () => {
         {apiStatus === 'online' && (
           <p style={{
             textAlign  : 'center',
-            color      : '#22C55E',
+            color      : '#16A34A',
             fontSize   : '12px',
             marginBottom: '12px',
             display    : 'flex',
@@ -196,7 +196,7 @@ const TrackingPage: React.FC = () => {
               width       : '8px',
               height      : '8px',
               borderRadius: '50%',
-              background  : '#22C55E',
+              background  : '#16A34A',
               display     : 'inline-block',
               animation   : 'pulse 2s infinite',
             }} />
@@ -210,20 +210,21 @@ const TrackingPage: React.FC = () => {
           gap          : '0',
           maxWidth     : '600px',
           margin       : '0 auto',
-          background   : 'rgba(255,255,255,0.05)',
+          background   : '#FFFFFF',
           border       : `1px solid ${error 
-                          ? '#EF4444' 
-                          : 'rgba(10,255,230,0.25)'}`,
+                          ? '#DC2626' 
+                          : '#EDE8DC'}`,
           borderRadius : '14px',
           overflow     : 'hidden',
           padding      : '4px',
+          boxShadow    : '0 4px 20px rgba(0,0,0,0.02)',
         }}>
           {/* Search Icon */}
           <span style={{
             padding    : '0 12px',
             display    : 'flex',
             alignItems : 'center',
-            color      : '#0AFFE6',
+            color      : '#1B4332',
             fontSize   : '18px',
           }}>
             🔍
@@ -246,7 +247,7 @@ const TrackingPage: React.FC = () => {
               background : 'transparent',
               border     : 'none',
               outline    : 'none',
-              color      : '#FFFFFF',
+              color      : '#2D4A35',
               fontSize   : '15px',
               padding    : '14px 8px',
             }}
@@ -259,9 +260,9 @@ const TrackingPage: React.FC = () => {
             style={{
               padding      : '12px 28px',
               background   : loading 
-                            ? 'rgba(10,255,230,0.5)' 
-                            : '#0AFFE6',
-              color        : '#000000',
+                            ? 'rgba(27,67,50,0.5)' 
+                            : '#1B4332',
+              color        : '#FFFFFF',
               fontWeight   : '700',
               fontSize     : '15px',
               border       : 'none',
@@ -281,13 +282,13 @@ const TrackingPage: React.FC = () => {
             textAlign    : 'center',
             marginTop    : '20px',
             padding      : '20px',
-            background   : 'rgba(239,68,68,0.05)',
-            border       : '1px solid rgba(239,68,68,0.2)',
+            background   : 'rgba(220,38,38,0.05)',
+            border       : '1px solid rgba(220,38,38,0.15)',
             borderRadius : '12px',
             maxWidth     : '500px',
             margin       : '20px auto 0',
           }}>
-            <p style={{ color: '#FCA5A5', fontSize: '14px' }}>
+            <p style={{ color: '#B91C1C', fontSize: '14px' }}>
               ⚠️ {error}
             </p>
             <button
@@ -296,8 +297,8 @@ const TrackingPage: React.FC = () => {
                 marginTop    : '12px',
                 padding      : '8px 20px',
                 background   : 'transparent',
-                border       : '1px solid rgba(239,68,68,0.4)',
-                color        : '#FCA5A5',
+                border       : '1px solid rgba(220,38,38,0.3)',
+                color        : '#B91C1C',
                 borderRadius : '8px',
                 cursor       : 'pointer',
                 fontSize     : '13px',
@@ -314,17 +315,18 @@ const TrackingPage: React.FC = () => {
             textAlign    : 'center',
             marginTop    : '40px',
             padding      : '32px',
-            background   : 'rgba(239,68,68,0.05)',
-            border       : '1px solid rgba(239,68,68,0.2)',
+            background   : '#FFFFFF',
+            border       : '1px solid #EDE8DC',
             borderRadius : '16px',
             maxWidth     : '500px',
             margin       : '40px auto 0',
+            boxShadow    : '0 4px 20px rgba(0,0,0,0.02)',
           }}>
             <p style={{ fontSize: '40px' }}>🔍</p>
-            <p style={{ color: '#FFFFFF', fontWeight: '600', fontSize: '18px' }}>
+            <p style={{ color: '#2D4A35', fontWeight: '600', fontSize: '18px' }}>
               Booking Not Found
             </p>
-            <p style={{ color: '#A0A0A0', fontSize: '14px', marginTop: '8px' }}>
+            <p style={{ color: '#5C6B5E', fontSize: '14px', marginTop: '8px' }}>
               Check your Booking ID or use the phone 
               number you registered with
             </p>
@@ -356,8 +358,8 @@ const TrackingPage: React.FC = () => {
 
             {/* Booking ID Card */}
             <div style={{
-              background   : 'rgba(10,255,230,0.06)',
-              border       : '1px solid rgba(10,255,230,0.25)',
+              background   : 'rgba(27,67,50,0.05)',
+              border       : '1px solid rgba(27,67,50,0.15)',
               borderRadius : '16px',
               padding      : '24px',
               marginBottom : '24px',
@@ -368,11 +370,11 @@ const TrackingPage: React.FC = () => {
               gap          : '12px',
             }}>
               <div>
-                <p style={{ color: '#A0A0A0', fontSize: '12px' }}>
+                <p style={{ color: '#5C6B5E', fontSize: '12px', fontWeight: '500' }}>
                   BOOKING ID
                 </p>
                 <p style={{
-                  color        : '#0AFFE6',
+                  color        : '#1B4332',
                   fontSize     : '20px',
                   fontWeight   : '700',
                   fontFamily   : 'monospace',
@@ -389,27 +391,27 @@ const TrackingPage: React.FC = () => {
                 fontSize     : '13px',
                 fontWeight   : '700',
                 background   : booking.status === 'COMPLETED' 
-                  ? 'rgba(34,197,94,0.15)'
+                  ? '#D1FAE5'
                   : booking.status === 'CONFIRMED'
-                  ? 'rgba(10,255,230,0.15)'
+                  ? '#D1E7DD'
                   : booking.status === 'CANCELLED'
-                  ? 'rgba(239,68,68,0.15)'
-                  : 'rgba(245,158,11,0.15)',
+                  ? '#F8D7DA'
+                  : '#FFF3CD',
                 color: booking.status === 'COMPLETED' 
-                  ? '#22C55E'
+                  ? '#065F46'
                   : booking.status === 'CONFIRMED'
-                  ? '#0AFFE6'
+                  ? '#0F5132'
                   : booking.status === 'CANCELLED'
-                  ? '#EF4444'
-                  : '#F59E0B',
+                  ? '#842029'
+                  : '#664D03',
                 border: `1px solid ${
                   booking.status === 'COMPLETED' 
-                  ? 'rgba(34,197,94,0.3)'
+                  ? '#A7F3D0'
                   : booking.status === 'CONFIRMED'
-                  ? 'rgba(10,255,230,0.3)'
+                  ? '#A3CFBB'
                   : booking.status === 'CANCELLED'
-                  ? 'rgba(239,68,68,0.3)'
-                  : 'rgba(245,158,11,0.3)'
+                  ? '#F5C2C7'
+                  : '#FFE69C'
                 }`,
               }}>
                 {booking.status}
@@ -469,16 +471,18 @@ const TrackingPage: React.FC = () => {
                     height       : '28px',
                     borderRadius : '50%',
                     background   : step.done 
-                                  ? '#0AFFE6' 
-                                  : 'rgba(255,255,255,0.1)',
+                                  ? '#1B4332' 
+                                  : 'rgba(27,67,50,0.05)',
                     border       : step.done 
                                   ? 'none' 
-                                  : '2px solid rgba(255,255,255,0.2)',
+                                  : '2px solid #EDE8DC',
+                    color        : step.done ? '#FFFFFF' : '#5C6B5E',
                     display      : 'flex',
                     alignItems   : 'center',
                     justifyContent:'center',
                     fontSize     : '13px',
                     flexShrink   : 0,
+                    fontWeight   : 'bold',
                   }}>
                     {step.done ? '✓' : i + 1}
                   </div>
@@ -487,8 +491,8 @@ const TrackingPage: React.FC = () => {
                       width     : '2px',
                       height    : '40px',
                       background: step.done 
-                                  ? '#0AFFE6' 
-                                  : 'rgba(255,255,255,0.1)',
+                                  ? '#1B4332' 
+                                  : '#EDE8DC',
                       margin    : '4px 0',
                     }} />
                   )}
@@ -497,14 +501,14 @@ const TrackingPage: React.FC = () => {
                 {/* Content */}
                 <div style={{ paddingTop: '4px' }}>
                   <p style={{
-                    color     : step.done ? '#FFFFFF' : '#A0A0A0',
+                    color     : step.done ? '#2D4A35' : '#5C6B5E',
                     fontWeight: '600',
                     fontSize  : '15px',
                   }}>
                     {step.label}
                   </p>
                   <p style={{
-                    color    : '#A0A0A0',
+                    color    : '#5C6B5E',
                     fontSize : '13px',
                     marginTop: '2px',
                   }}>
@@ -516,11 +520,12 @@ const TrackingPage: React.FC = () => {
 
             {/* Booking Details */}
             <div style={{
-              background   : 'rgba(255,255,255,0.03)',
-              border       : '1px solid rgba(255,255,255,0.08)',
+              background   : '#FFFFFF',
+              border       : '1px solid #EDE8DC',
               borderRadius : '16px',
               padding      : '20px',
               marginTop    : '24px',
+              boxShadow    : '0 4px 20px rgba(0,0,0,0.02)',
             }}>
               {[
                 ['Services',  (booking.services as any[])
@@ -537,13 +542,13 @@ const TrackingPage: React.FC = () => {
                   display        : 'flex',
                   justifyContent : 'space-between',
                   padding        : '10px 0',
-                  borderBottom   : '1px solid rgba(255,255,255,0.05)',
+                  borderBottom   : '1px solid #EDE8DC',
                 }}>
-                  <span style={{ color: '#A0A0A0', fontSize: '14px' }}>
+                  <span style={{ color: '#5C6B5E', fontSize: '14px' }}>
                     {label}
                   </span>
                   <span style={{
-                    color     : '#FFFFFF',
+                    color     : '#2D4A35',
                     fontSize  : '14px',
                     fontWeight: '500',
                     maxWidth  : '60%',

@@ -59,9 +59,9 @@ const ServiceIcon: React.FC<IconProps> = ({ name }) => {
     aftersparty: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
         <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round"/>
-        <circle cx="20" cy="6" r="2" fill="#0AFFE6"/>
-        <circle cx="20" cy="12" r="2" fill="#0AFFE6"/>
-        <circle cx="20" cy="18" r="2" fill="#0AFFE6"/>
+        <circle cx="20" cy="6" r="2" fill="#C9A84C"/>
+        <circle cx="20" cy="12" r="2" fill="#C9A84C"/>
+        <circle cx="20" cy="18" r="2" fill="#C9A84C"/>
       </svg>
     ),
     iron: (
@@ -96,6 +96,8 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
   const isIroning = service.id === 'svc-9';
   const [quantity, setQuantity] = useState(isIroning ? 5 : 1);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [btnHover, setBtnHover] = useState(false);
   const inCart = items.some(i => i.id === service.id);
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -114,16 +116,22 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
     <LoginPromptModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     <motion.div
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5 }}
-      className="rounded-2xl p-6 card-glow transition-all duration-300 cursor-pointer group relative overflow-hidden"
-      style={{ background: '#161616', border: '1px solid rgba(10,255,230,0.2)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', borderLeft: '3px solid #0AFFE6' }}
+      className="rounded-2xl p-6 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+      style={{
+        background: '#FFFFFF',
+        border: hovered ? '1px solid rgba(27,67,50,0.3)' : '1px solid rgba(27,67,50,0.1)',
+        boxShadow: hovered ? '0 8px 40px rgba(27,67,50,0.15)' : '0 4px 20px rgba(27,67,50,0.06)'
+      }}
     >
       {/* Background glow */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(10,255,230,0.07) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(27,67,50,0.03) 0%, transparent 70%)' }}
       />
 
       {/* LIMITED OFFER Badge */}
@@ -132,8 +140,8 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
           position   : 'absolute',
           top        : '12px',
           right      : '12px',
-          background : 'linear-gradient(135deg, #0AFFE6, #088C7A)',
-          color      : '#000000',
+          background : '#C9A84C',
+          color      : '#0D2B1F',
           fontSize   : '10px',
           fontWeight : '700',
           padding    : '3px 10px',
@@ -147,13 +155,13 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
 
       {/* Icon */}
       <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-        style={{ background: 'rgba(10,255,230,0.1)', border: '1.5px solid rgba(10,255,230,0.25)', color: '#0AFFE6' }}>
+        style={{ background: 'rgba(27,67,50,0.08)', border: '1.5px solid rgba(27,67,50,0.15)', color: '#1B4332' }}>
         <ServiceIcon name={service.iconName} />
       </div>
 
       {/* Info */}
-      <h3 className="font-syne font-bold text-lg mb-1" style={{ color: '#FFFFFF' }}>{service.name}</h3>
-      <p className="text-xs font-dm mb-4" style={{ color: '#A0A0A0' }}>{service.unit}</p>
+      <h3 className="font-syne font-bold text-lg mb-1" style={{ color: '#0D2B1F' }}>{service.name}</h3>
+      <p className="text-xs font-dm mb-4" style={{ color: '#5C6B5E' }}>{service.unit}</p>
 
       {/* Price */}
       {service.originalPrice ? (
@@ -161,7 +169,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
           {/* Original price crossed out */}
           <span style={{
             textDecoration : 'line-through',
-            color          : 'rgba(255,255,255,0.35)',
+            color          : 'rgba(93,107,94,0.5)',
             fontSize       : '14px',
           }}>
             ₹{service.originalPrice}
@@ -169,7 +177,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
 
           {/* New discounted price */}
           <span style={{
-            color      : '#0AFFE6',
+            color      : '#1B4332',
             fontSize   : '28px',
             fontWeight : '700',
           }}>
@@ -183,9 +191,9 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
 
           {/* Save badge */}
           <span style={{
-            background   : 'rgba(34,197,94,0.15)',
-            color        : '#22C55E',
-            border       : '1px solid rgba(34,197,94,0.3)',
+            background   : 'rgba(27,67,50,0.1)',
+            color        : '#1B4332',
+            border       : '1px solid rgba(27,67,50,0.2)',
             borderRadius : '20px',
             padding      : '2px 8px',
             fontSize     : '11px',
@@ -197,10 +205,10 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
         </div>
       ) : (
         <div className="flex items-end gap-1 mt-2 mb-5">
-          <span className="font-syne font-bold text-3xl text-teal-400">
+          <span className="font-syne font-bold text-3xl" style={{ color: '#1B4332' }}>
             {service.id === 'svc-9' ? '₹10' : `₹${service.price}`}
           </span>
-          {service.id === 'svc-9' && <span className="text-sm font-dm pb-1" style={{ color: '#A0A0A0' }}>/cloth</span>}
+          {service.id === 'svc-9' && <span className="text-sm font-dm pb-1" style={{ color: '#5C6B5E' }}>/cloth</span>}
         </div>
       )}
 
@@ -211,7 +219,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
             <button
               onClick={(e) => { e.stopPropagation(); if (quantity > 1) setQuantity(q => q - 1); }}
               className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
-              style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
+              style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.15)', color: '#1B4332', cursor: 'pointer' }}
             >-</button>
             <input
               type="number"
@@ -229,11 +237,11 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
             <button
               onClick={(e) => { e.stopPropagation(); if (quantity < 50) setQuantity(q => q + 1); }}
               className="w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-all"
-              style={{ background: 'rgba(10,255,230,0.08)', border: '1px solid rgba(10,255,230,0.2)', color: '#0AFFE6' }}
+              style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.15)', color: '#1B4332', cursor: 'pointer' }}
             >+</button>
-            <span className="text-xs font-dm" style={{ color: '#A0A0A0' }}>clothes</span>
+            <span className="text-xs font-dm" style={{ color: '#5C6B5E' }}>clothes</span>
           </div>
-          <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>
+          <p style={{ fontSize: '11px', color: 'rgba(27,67,50,0.6)', marginTop: '4px' }}>
             Min 1 • Max 50 cloths
           </p>
         </div>
@@ -242,8 +250,8 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       {/* Total for ironing */}
       {isIroning && (
         <div style={{ marginBottom: '16px' }}>
-          <span style={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 600 }}>Total: </span>
-          <span style={{ color: '#0AFFE6', fontWeight: 700, fontSize: '16px' }}>
+          <span style={{ color: '#0D2B1F', fontSize: '14px', fontWeight: 600 }}>Total: </span>
+          <span style={{ color: '#1B4332', fontWeight: 700, fontSize: '16px' }}>
             ₹{quantity * 10}
           </span>
         </div>
@@ -252,8 +260,22 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       {/* Add to cart */}
       <button
         onClick={handleAdd}
-        className={`w-full py-3 px-4 rounded-xl font-dm font-semibold text-sm transition-all duration-300 ripple flex items-center justify-center gap-2 ${!inCart ? 'btn-teal' : ''}`}
-        style={inCart ? { background: 'rgba(10,255,230,0.1)', color: '#0AFFE6', border: '1.5px solid rgba(10,255,230,0.35)', borderRadius: 12 } : {}}
+        onMouseEnter={() => setBtnHover(true)}
+        onMouseLeave={() => setBtnHover(false)}
+        className="w-full py-3 px-4 rounded-xl font-dm font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2"
+        style={inCart ? {
+          background: 'rgba(27,67,50,0.08)',
+          color: '#1B4332',
+          border: '1.5px solid rgba(27,67,50,0.2)',
+          borderRadius: 12,
+          cursor: 'pointer'
+        } : {
+          background: btnHover ? '#C9A84C' : '#1B4332',
+          color: '#FFFFFF',
+          border: 'none',
+          borderRadius: 12,
+          cursor: 'pointer'
+        }}
       >
         {inCart ? (
           <>
@@ -273,6 +295,37 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       </button>
     </motion.div>
     </>
+  );
+};
+
+const CategoryFilter: React.FC<{ active: string; onChange: (cat: string) => void }> = ({ active, onChange }) => {
+  const categories = ['All', 'Cleaning', 'Kitchen', 'Appliances', 'Laundry', 'Special'];
+  return (
+    <div className="flex flex-wrap gap-2 justify-center mb-10">
+      {categories.map(cat => {
+        const isActive = active === cat;
+        return (
+          <button
+            key={cat}
+            onClick={() => onChange(cat)}
+            style={{
+              padding: '8px 20px',
+              borderRadius: '100px',
+              border: isActive ? 'none' : '1.5px solid rgba(27,67,50,0.2)',
+              background: isActive ? '#1B4332' : 'transparent',
+              color: isActive ? '#FFFFFF' : '#5C6B5E',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+              boxShadow: isActive ? '0 4px 14px rgba(27,67,50,0.15)' : 'none'
+            }}
+          >
+            {cat}
+          </button>
+        );
+      })}
+    </div>
   );
 };
 
@@ -307,9 +360,9 @@ const ServicesSection: React.FC = () => {
   const closeModal = () => setSelectedService(null);
 
   return (
-    <section id="services" className="py-24 relative section-black">
+    <section id="services" className="py-24 relative" style={{ background: '#FFFFFF' }}>
       <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse at 50% 0%, rgba(10,255,230,0.05) 0%, transparent 60%)',
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(27,67,50,0.02) 0%, transparent 60%)',
         pointerEvents: 'none',
       }} />
 
@@ -323,13 +376,13 @@ const ServicesSection: React.FC = () => {
           className="text-center mb-12"
         >
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4"
-            style={{ background: 'rgba(10,255,230,0.1)', border: '1px solid rgba(10,255,230,0.3)' }}>
-            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>Our Services</span>
+            style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.2)' }}>
+            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#1B4332' }}>Our Services</span>
           </div>
-          <h2 className="section-heading text-4xl md:text-5xl gradient-text mb-4">
+          <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#0D2B1F' }}>
             Everything Your Home Needs
           </h2>
-          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#A0A0A0' }}>
+          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#5C6B5E' }}>
             Professional cleaning services with transparent pricing. No hidden fees, ever.
           </p>
         </motion.div>
@@ -337,8 +390,8 @@ const ServicesSection: React.FC = () => {
         <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
 
         <div style={{
-          background     : 'linear-gradient(135deg, rgba(10,255,230,0.1), rgba(10,255,230,0.05))',
-          border         : '1px solid rgba(10,255,230,0.3)',
+          background     : 'linear-gradient(135deg, rgba(27,67,50,0.08), rgba(27,67,50,0.03))',
+          border         : '1px solid rgba(27,67,50,0.15)',
           borderRadius   : '12px',
           padding        : '12px 24px',
           textAlign      : 'center',
@@ -347,7 +400,7 @@ const ServicesSection: React.FC = () => {
           alignItems     : 'center',
           justifyContent : 'center'
         }}>
-          <span style={{ color: '#0AFFE6', fontWeight: 600, fontSize: '15px' }}>
+          <span style={{ color: '#1B4332', fontWeight: 600, fontSize: '15px' }}>
             🎉 FLAT ₹100 OFF ON ALL CLEANING SERVICES! LIMITED TIME OFFER.
           </span>
         </div>
@@ -366,7 +419,7 @@ const ServicesSection: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(5px)' }}
+            style={{ backgroundColor: 'rgba(13,43,31,0.65)', backdropFilter: 'blur(5px)' }}
             onClick={closeModal}
           >
             <motion.div
@@ -374,13 +427,13 @@ const ServicesSection: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl z-10"
-              style={{ backgroundColor: '#111', border: '1px solid rgba(10,255,230,0.3)' }}
+              style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(27,67,50,0.15)' }}
               onClick={e => e.stopPropagation()}
             >
               {/* Close button */}
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black bg-opacity-50 text-white hover:text-teal-300 transition-colors"
+                className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black bg-opacity-50 text-white hover:text-green-600 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -389,16 +442,16 @@ const ServicesSection: React.FC = () => {
 
               <div className="flex flex-col md:flex-row">
                 {/* Image Section */}
-                <div className="w-full md:w-5/12 relative bg-[#1a1a1a] flex items-center justify-center border-b md:border-b-0 md:border-r" style={{ borderColor: 'rgba(10,255,230,0.2)' }}>
+                <div className="w-full md:w-5/12 relative bg-[#F5F0E8] flex items-center justify-center border-b md:border-b-0 md:border-r" style={{ borderColor: 'rgba(27,67,50,0.1)' }}>
                   {selectedService.image_url ? (
                     <img src={selectedService.image_url} alt={selectedService.name} className="w-full h-full object-cover max-h-[300px] md:max-h-none" loading="lazy" decoding="async" />
                   ) : (
-                    <div className="p-12 text-teal-400 opacity-50 flex items-center justify-center h-[200px] md:h-full">
+                    <div className="p-12 text-[#1B4332] opacity-50 flex items-center justify-center h-[200px] md:h-full">
                       <ServiceIcon name={selectedService.iconName} />
                     </div>
                   )}
                   {selectedService.highlight && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-teal-500 bg-opacity-90 text-black text-center py-2 px-3 font-bold text-sm">
+                    <div className="absolute bottom-0 left-0 right-0 bg-[#C9A84C] text-[#0D2B1F] text-center py-2 px-3 font-bold text-sm">
                       {selectedService.highlight}
                     </div>
                   )}
@@ -407,32 +460,32 @@ const ServicesSection: React.FC = () => {
                 {/* Content Section */}
                 <div className="w-full md:w-7/12 p-6 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-syne font-bold text-2xl mb-2 text-white">
+                    <h3 className="font-syne font-bold text-2xl mb-2 text-[#0D2B1F]">
                       {selectedService.name}
                     </h3>
                     
-                    <div className="inline-block px-3 py-1 rounded-full text-xs font-dm mb-4 bg-teal-500 bg-opacity-10 text-teal-300 border border-teal-500 border-opacity-30">
+                    <div className="inline-block px-3 py-1 rounded-full text-xs font-dm mb-4 bg-[#1B4332] bg-opacity-10 text-[#1B4332] border border-[#1B4332] border-opacity-30">
                       {selectedService.category} Service
                     </div>
 
                     {selectedService.description && (
-                      <p className="text-gray-400 font-dm text-sm mb-4 leading-relaxed">
+                      <p className="text-[#5C6B5E] font-dm text-sm mb-4 leading-relaxed">
                         {selectedService.description}
                       </p>
                     )}
 
                     {selectedService.features && selectedService.features.length > 0 && (
                       <div className="mb-6">
-                        <h4 className="text-white font-syne font-semibold mb-3 flex items-center gap-2">
-                          <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <h4 className="text-[#0D2B1F] font-syne font-semibold mb-3 flex items-center gap-2">
+                          <svg className="w-4 h-4 text-[#1B4332]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                           Key Features
                         </h4>
                         <ul className="space-y-2">
                           {selectedService.features.map((feature: string, idx: number) => (
-                            <li key={idx} className="flex items-start gap-2 text-sm text-gray-300 font-dm">
-                              <span className="text-teal-400 mt-0.5">•</span>
+                            <li key={idx} className="flex items-start gap-2 text-sm text-[#5C6B5E] font-dm">
+                              <span className="text-[#1B4332] mt-0.5">•</span>
                               {feature}
                             </li>
                           ))}
@@ -441,15 +494,15 @@ const ServicesSection: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="pt-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                  <div className="pt-4 border-t" style={{ borderColor: 'rgba(27,67,50,0.1)' }}>
                     <div className="flex items-end justify-between">
                       <div>
-                        <p className="text-sm text-gray-400 font-dm mb-1">Starting at</p>
+                        <p className="text-sm text-[#5C6B5E] font-dm mb-1">Starting at</p>
                         <div className="flex items-end gap-1">
-                          <span className="font-syne font-bold text-2xl text-teal-400">
+                          <span className="font-syne font-bold text-2xl" style={{ color: '#1B4332' }}>
                             {selectedService.id === 'svc-9' ? '₹10' : `₹${selectedService.price}`}
                           </span>
-                          <span className="text-sm font-dm pb-1 text-gray-400">
+                          <span className="text-sm font-dm pb-1 text-[#5C6B5E]">
                             {selectedService.id === 'svc-9' ? '/cloth' : selectedService.unit}
                           </span>
                         </div>

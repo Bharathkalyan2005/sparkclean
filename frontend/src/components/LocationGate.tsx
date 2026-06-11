@@ -92,7 +92,7 @@ export default function LocationGate({
     return (
       <div style={{
         minHeight      : '100vh',
-        background     : '#0A0A0A',
+        background     : '#F5F0E8',
         display        : 'flex',
         alignItems     : 'center',
         justifyContent : 'center',
@@ -103,20 +103,20 @@ export default function LocationGate({
           width        : '64px',
           height       : '64px',
           borderRadius : '50%',
-          border       : '3px solid rgba(10,255,230,0.2)',
-          borderTop    : '3px solid #0AFFE6',
+          border       : '3px solid rgba(27,67,50,0.15)',
+          borderTop    : '3px solid #1B4332',
           animation    : 'spin 1s linear infinite',
         }} />
         <div style={{ textAlign: 'center' }}>
           <p style={{
-            color     : '#FFFFFF',
+            color     : '#2D4A35',
             fontSize  : '18px',
             fontWeight: '600',
             fontFamily: 'Instrument Serif, serif',
           }}>
             Detecting your location...
           </p>
-          <p style={{ color: '#A0A0A0', fontSize: '14px' }}>
+          <p style={{ color: '#5C6B5E', fontSize: '14px' }}>
             Checking service availability in your area
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function LocationGate({
     return (
       <div style={{
         minHeight      : '100vh',
-        background     : '#0A0A0A',
+        background     : '#F5F0E8',
         display        : 'flex',
         alignItems     : 'center',
         justifyContent : 'center',
@@ -151,8 +151,8 @@ export default function LocationGate({
             width          : '80px',
             height         : '80px',
             borderRadius   : '50%',
-            background     : 'rgba(10,255,230,0.08)',
-            border         : '2px solid rgba(10,255,230,0.3)',
+            background     : 'rgba(27,67,50,0.08)',
+            border         : '2px solid rgba(27,67,50,0.3)',
             display        : 'flex',
             alignItems     : 'center',
             justifyContent : 'center',
@@ -164,7 +164,7 @@ export default function LocationGate({
           </div>
 
           <h1 style={{
-            color      : '#FFFFFF',
+            color      : '#1B4332',
             fontSize   : '28px',
             fontFamily : 'Instrument Serif, serif',
             fontWeight : '700',
@@ -176,45 +176,45 @@ export default function LocationGate({
           </h1>
 
           <p style={{
-            color      : '#A0A0A0',
+            color      : '#5C6B5E',
             fontSize   : '16px',
             lineHeight : '1.6',
             marginBottom: '8px',
           }}>
             SuciHome is currently live in
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               {' '}Bengaluru,{' '}
             </span>
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               Mumbai,{' '}
             </span>
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               Visakhapatnam,{' '}
             </span>
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               Hyderabad,{' '}
             </span>
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               Bhopal{' '}
             </span>
             and
             <span style={{
-              color      : '#0AFFE6',
+              color      : '#1B4332',
               fontWeight : '600',
             }}>
               {' '}Chennai
@@ -222,7 +222,7 @@ export default function LocationGate({
           </p>
 
           <p style={{
-            color      : '#A0A0A0',
+            color      : '#5C6B5E',
             fontSize   : '15px',
             lineHeight : '1.6',
             marginBottom: '32px',
@@ -235,20 +235,21 @@ export default function LocationGate({
           {/* Nearest area info */}
           {locationData?.nearestArea && (
             <div style={{
-              background   : 'rgba(255,255,255,0.03)',
-              border       : '1px solid rgba(255,255,255,0.08)',
+              background   : '#FFFFFF',
+              border       : '1px solid #EDE8DC',
               borderRadius : '12px',
               padding      : '16px',
               marginBottom : '24px',
+              boxShadow    : '0 4px 12px rgba(27,67,50,0.04)',
             }}>
               <p style={{
-                color   : '#A0A0A0',
+                color   : '#5C6B5E',
                 fontSize: '13px',
               }}>
                 Nearest service area from you
               </p>
               <p style={{
-                color     : '#FFFFFF',
+                color     : '#2D4A35',
                 fontWeight: '600',
                 fontSize  : '16px',
                 margin    : '4px 0',
@@ -257,8 +258,9 @@ export default function LocationGate({
                 {' '}{locationData.nearestArea.city}
               </p>
               <p style={{
-                color   : '#0AFFE6',
+                color   : '#1B4332',
                 fontSize: '14px',
+                fontWeight: '600',
               }}>
                 ~{locationData.distance} km away
               </p>
@@ -277,9 +279,9 @@ export default function LocationGate({
               'Delhi NCR', 'Pune', 'Kolkata'
             ].map(city => (
               <span key={city} style={{
-                background   : 'rgba(255,255,255,0.05)',
-                border       : '1px solid rgba(255,255,255,0.1)',
-                color        : '#A0A0A0',
+                background   : 'rgba(27,67,50,0.05)',
+                border       : '1px solid rgba(27,67,50,0.1)',
+                color        : '#5C6B5E',
                 borderRadius : '20px',
                 padding      : '4px 12px',
                 fontSize     : '13px',
@@ -309,6 +311,7 @@ export default function LocationGate({
               borderRadius   : '14px',
               textDecoration : 'none',
               marginBottom   : '12px',
+              boxShadow      : '0 4px 12px rgba(37,211,102,0.2)',
             }}
           >
             💬 Join Waitlist on WhatsApp
@@ -321,8 +324,8 @@ export default function LocationGate({
               width        : '100%',
               padding      : '14px',
               background   : 'transparent',
-              border       : '1px solid rgba(255,255,255,0.1)',
-              color        : 'rgba(255,255,255,0.4)',
+              border       : '1px solid rgba(27,67,50,0.15)',
+              color        : 'rgba(27,67,50,0.6)',
               fontSize     : '14px',
               borderRadius : '14px',
               cursor       : 'pointer',
@@ -333,8 +336,8 @@ export default function LocationGate({
 
           <style>{`
             @keyframes pulse {
-              0%, 100% { box-shadow: 0 0 0 0 rgba(10,255,230,0.3) }
-              50%       { box-shadow: 0 0 0 16px rgba(10,255,230,0) }
+              0%, 100% { box-shadow: 0 0 0 0 rgba(27,67,50,0.3) }
+              50%       { box-shadow: 0 0 0 16px rgba(27,67,50,0) }
             }
           `}</style>
         </div>
@@ -347,7 +350,7 @@ export default function LocationGate({
     return (
       <div style={{
         minHeight      : '100vh',
-        background     : '#0A0A0A',
+        background     : '#F5F0E8',
         display        : 'flex',
         alignItems     : 'center',
         justifyContent : 'center',
@@ -363,7 +366,7 @@ export default function LocationGate({
           </div>
 
           <h1 style={{
-            color      : '#FFFFFF',
+            color      : '#1B4332',
             fontSize   : '26px',
             fontFamily : 'Instrument Serif, serif',
             marginBottom: '12px',
@@ -373,7 +376,7 @@ export default function LocationGate({
           </h1>
 
           <p style={{
-            color      : '#A0A0A0',
+            color      : '#5C6B5E',
             fontSize   : '15px',
             lineHeight : '1.6',
             marginBottom: '28px',
@@ -400,6 +403,7 @@ export default function LocationGate({
               borderRadius  : '14px',
               textDecoration: 'none',
               marginBottom  : '12px',
+              boxShadow      : '0 4px 12px rgba(37,211,102,0.2)',
             }}
           >
              💬 Get Notified on WhatsApp
@@ -411,8 +415,8 @@ export default function LocationGate({
               width       : '100%',
               padding     : '12px',
               background  : 'transparent',
-              border      : '1px solid rgba(255,255,255,0.1)',
-              color       : 'rgba(255,255,255,0.4)',
+              border      : '1px solid rgba(27,67,50,0.15)',
+              color       : 'rgba(27,67,50,0.6)',
               fontSize    : '13px',
               borderRadius: '12px',
               cursor      : 'pointer',
@@ -430,7 +434,7 @@ export default function LocationGate({
     return (
       <div style={{
         minHeight      : '100vh',
-        background     : '#0A0A0A',
+        background     : '#F5F0E8',
         display        : 'flex',
         alignItems     : 'center',
         justifyContent : 'center',
@@ -445,7 +449,7 @@ export default function LocationGate({
             🔒
           </div>
           <h2 style={{
-            color      : '#FFFFFF',
+            color      : '#1B4332',
             fontSize   : '22px',
             fontFamily : 'Instrument Serif, serif',
             marginBottom: '10px',
@@ -453,7 +457,7 @@ export default function LocationGate({
             Location Access Denied
           </h2>
           <p style={{
-            color      : '#A0A0A0',
+            color      : '#5C6B5E',
             fontSize   : '14px',
             lineHeight : '1.6',
             marginBottom: '24px',
@@ -468,8 +472,8 @@ export default function LocationGate({
             style={{
               width        : '100%',
               padding      : '14px',
-              background   : '#0AFFE6',
-              color        : '#000',
+              background   : '#1B4332',
+              color        : '#FFFFFF',
               fontWeight   : '700',
               borderRadius : '12px',
               border       : 'none',
@@ -487,8 +491,8 @@ export default function LocationGate({
               width       : '100%',
               padding     : '12px',
               background  : 'transparent',
-              border      : '1px solid rgba(255,255,255,0.1)',
-              color       : 'rgba(255,255,255,0.4)',
+              border      : '1px solid rgba(27,67,50,0.15)',
+              color       : 'rgba(27,67,50,0.6)',
               fontSize    : '13px',
               borderRadius: '12px',
               cursor      : 'pointer',

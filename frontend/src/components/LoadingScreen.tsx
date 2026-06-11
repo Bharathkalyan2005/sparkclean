@@ -3,19 +3,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {
   onComplete?: () => void;
+  children?: React.ReactNode;
 }
 
-const LoadingScreen = ({ onComplete }: Props) => {
+const LoadingScreen = ({ onComplete, children }: Props) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // MAXIMUM 3 seconds - no exceptions
-    const timer = setTimeout(() => {
-      setVisible(false);
-      if (onComplete) onComplete();
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+    // Hard limit 2.5 seconds NO EXCEPTIONS
+    const hardStop = setTimeout(() => {
+      setVisible(false)
+      onComplete?.()
+    }, 2500)
+
+    return () => clearTimeout(hardStop)
+  }, [])
+
+  // Make sure when done it shows children:
+  if (!visible) return <>{children}</>
 
   return (
     <AnimatePresence>
@@ -27,7 +32,7 @@ const LoadingScreen = ({ onComplete }: Props) => {
           style={{
             position       : 'fixed',
             inset          : 0,
-            background     : '#0A0A0A',
+            background     : '#F5F0E8', // match new theme
             display        : 'flex',
             alignItems     : 'center',
             justifyContent : 'center',
@@ -41,29 +46,29 @@ const LoadingScreen = ({ onComplete }: Props) => {
             alt  ="SuciHome"
             style={{
               height   : '72px',
-              filter   : 'brightness(0) invert(1)',
               animation: 'pulse 1s infinite',
             }}
           />
           <p style={{
-            color        : '#0AFFE6',
+            color        : '#1B4332',
             letterSpacing: '4px',
             fontSize     : '12px',
             fontFamily   : 'Inter, sans-serif',
+            fontWeight   : '600',
           }}>
             LOADING...
           </p>
           <div style={{
             width       : '160px',
             height      : '2px',
-            background  : 'rgba(10,255,230,0.2)',
+            background  : 'rgba(27,67,50,0.2)',
             borderRadius: '10px',
             overflow    : 'hidden',
           }}>
             <div style={{
               height    : '100%',
-              background: '#0AFFE6',
-              animation : 'load 3s linear forwards',
+              background: '#1B4332',
+              animation : 'load 2.5s linear forwards',
             }} />
           </div>
           <style>{`

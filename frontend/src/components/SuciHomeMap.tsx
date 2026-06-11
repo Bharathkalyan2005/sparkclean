@@ -172,35 +172,35 @@ const locations = [
   },
 ]
 
-// Dark map style matching SuciHome theme
-const darkMapStyle = [
+// Light map style matching SuciHome theme
+const lightMapStyle = [
   { elementType: 'geometry',
-    stylers: [{ color: '#0a0a0a' }] },
+    stylers: [{ color: '#F5F0E8' }] },
   { elementType: 'labels.text.stroke',
-    stylers: [{ color: '#0a0a0a' }] },
+    stylers: [{ color: '#F5F0E8' }] },
   { elementType: 'labels.text.fill',
-    stylers: [{ color: '#746855' }] },
+    stylers: [{ color: '#2D4A35' }] },
   { featureType: 'road',
     elementType: 'geometry',
-    stylers: [{ color: '#1a1a1a' }] },
+    stylers: [{ color: '#FFFFFF' }] },
   { featureType: 'road',
     elementType: 'geometry.stroke',
-    stylers: [{ color: '#212121' }] },
+    stylers: [{ color: '#EDE8DC' }] },
   { featureType: 'road',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#9ca5b3' }] },
+    stylers: [{ color: '#5C6B5E' }] },
   { featureType: 'road.highway',
     elementType: 'geometry',
-    stylers: [{ color: '#1a1a2e' }] },
+    stylers: [{ color: '#EDE8DC' }] },
   { featureType: 'water',
     elementType: 'geometry',
-    stylers: [{ color: '#0a1628' }] },
+    stylers: [{ color: '#D2E2D7' }] },
   { featureType: 'water',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#515c6d' }] },
+    stylers: [{ color: '#2D4A35' }] },
   { featureType: 'administrative',
     elementType: 'geometry',
-    stylers: [{ color: '#757575' }] },
+    stylers: [{ color: '#5C6B5E' }] },
   { featureType: 'poi',
     stylers: [{ visibility: 'off' }] },
 ]
@@ -250,13 +250,13 @@ export default function SuciHomeMap() {
     return (
       <div style={{
         height        : dynamicHeight,
-        background    : 'rgba(255,255,255,0.03)',
-        border        : '1px solid rgba(255,255,255,0.08)',
+        background    : 'rgba(0,0,0,0.02)',
+        border        : '1px solid #EDE8DC',
         borderRadius  : '20px',
         display       : 'flex',
         alignItems    : 'center',
         justifyContent: 'center',
-        color         : '#A0A0A0',
+        color         : '#5C6B5E',
       }}>
         Map unavailable. Check API key.
       </div>
@@ -267,8 +267,8 @@ export default function SuciHomeMap() {
     return (
       <div style={{
         height        : dynamicHeight,
-        background    : 'rgba(10,255,230,0.03)',
-        border        : '1px solid rgba(10,255,230,0.1)',
+        background    : 'rgba(27,67,50,0.03)',
+        border        : '1px solid rgba(27,67,50,0.1)',
         borderRadius  : '20px',
         display       : 'flex',
         alignItems    : 'center',
@@ -282,11 +282,11 @@ export default function SuciHomeMap() {
           style={{ animation: 'spin 1s linear infinite' }}
         >
           <circle cx="12" cy="12" r="10"
-            stroke="#0AFFE6" strokeWidth="3"
+            stroke="#1B4332" strokeWidth="3"
             strokeDasharray="50 30"
           />
         </svg>
-        <p style={{ color: '#A0A0A0', fontSize: '14px' }}>
+        <p style={{ color: '#5C6B5E', fontSize: '14px' }}>
           Loading map...
         </p>
       </div>
@@ -299,7 +299,7 @@ export default function SuciHomeMap() {
       center           ={defaultCenter}
       zoom             ={5}
       options={{
-        styles          : darkMapStyle,
+        styles          : lightMapStyle,
         disableDefaultUI: false,
         zoomControl     : true,
         mapTypeControl  : false,
@@ -318,12 +318,10 @@ export default function SuciHomeMap() {
             path: window.google.maps.SymbolPath.CIRCLE,
             scale    : loc.status === 'LIVE' ? 10 : 7,
             fillColor: loc.status === 'LIVE'
-                       ? '#0AFFE6'
-                       : 'rgba(255,255,255,0.3)',
+                       ? '#1B4332'
+                       : '#C9A84C',
             fillOpacity  : 1,
-            strokeColor  : loc.status === 'LIVE'
-                           ? '#FFFFFF'
-                           : 'rgba(255,255,255,0.2)',
+            strokeColor  : '#FFFFFF',
             strokeWeight : 2,
           }}
         />
@@ -339,20 +337,22 @@ export default function SuciHomeMap() {
           onCloseClick={() => setSelectedPin(null)}
         >
           <div style={{
-            background  : '#111111',
+            background  : '#FFFFFF',
             padding     : '12px 16px',
             borderRadius: '10px',
             minWidth    : '200px',
             fontFamily  : 'Inter, sans-serif',
+            border      : '1px solid #EDE8DC',
+            boxShadow   : '0 4px 20px rgba(0,0,0,0.08)',
           }}>
             {/* Status badge */}
             <span style={{
               background   : selectedPin.status === 'LIVE'
-                             ? 'rgba(10,255,230,0.15)'
-                             : 'rgba(255,255,255,0.08)',
+                             ? 'rgba(27,67,50,0.1)'
+                             : 'rgba(201,168,76,0.15)',
               color        : selectedPin.status === 'LIVE'
-                             ? '#0AFFE6'
-                             : '#A0A0A0',
+                             ? '#1B4332'
+                             : '#C9A84C',
               borderRadius : '20px',
               padding      : '2px 10px',
               fontSize     : '11px',
@@ -364,7 +364,7 @@ export default function SuciHomeMap() {
 
             {/* City name */}
             <h3 style={{
-              color      : '#FFFFFF',
+              color      : '#2D4A35',
               fontSize   : '16px',
               fontWeight : '700',
               margin     : '8px 0 6px',
@@ -376,7 +376,7 @@ export default function SuciHomeMap() {
             <div style={{ marginBottom: '10px' }}>
               {selectedPin.areas.map(area => (
                 <p key={area} style={{
-                  color    : '#A0A0A0',
+                  color    : '#5C6B5E',
                   fontSize : '12px',
                   margin   : '2px 0',
                 }}>
@@ -391,8 +391,8 @@ export default function SuciHomeMap() {
                 href="/book"
                 style={{
                   display      : 'block',
-                  background   : '#0AFFE6',
-                  color        : '#000000',
+                  background   : '#1B4332',
+                  color        : '#FFFFFF',
                   textAlign    : 'center',
                   padding      : '8px',
                   borderRadius : '8px',
@@ -410,7 +410,7 @@ export default function SuciHomeMap() {
                 rel="noreferrer"
                 style={{
                   display      : 'block',
-                  background   : '#25D366',
+                  background   : '#C9A84C',
                   color        : '#FFFFFF',
                   textAlign    : 'center',
                   padding      : '8px',

@@ -37,7 +37,7 @@ const steps = [
 
 const HowItWorks: React.FC = () => {
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden section-dark">
+    <section id="how-it-works" className="py-24 relative overflow-hidden" style={{ background: '#EDE8DC' }}>
       <div className="max-w-7xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -47,24 +47,20 @@ const HowItWorks: React.FC = () => {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4"
-            style={{ background: 'rgba(10,255,230,0.1)', border: '1px solid rgba(10,255,230,0.3)' }}>
-            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>How It Works</span>
+            style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.2)' }}>
+            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#1B4332' }}>How It Works</span>
           </div>
-          <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
-            Clean in <span className="teal-gradient-text">3 Simple Steps</span>
+          <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#0D2B1F' }}>
+            Clean in <span style={{ color: '#1B4332' }}>3 Simple Steps</span>
           </h2>
-          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#A0A0A0' }}>
+          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#5C6B5E' }}>
             From booking to sparkling — it's as easy as 1, 2, 3.
           </p>
         </motion.div>
 
         <div className="relative">
           {/* Connector line (desktop) */}
-          <div className="hidden md:block absolute top-20 left-0 right-0 h-px" style={{ zIndex: 0, top: '56px' }}>
-            <svg viewBox="0 0 100 1" preserveAspectRatio="none" className="w-full h-px">
-              <line x1="16" y1="0" x2="84" y2="0" stroke="rgba(10,255,230,0.2)" strokeWidth="1" strokeDasharray="6 4"/>
-            </svg>
-          </div>
+          <div className="hidden md:block absolute left-[10%] right-[10%] h-[3px]" style={{ zIndex: 0, top: '90px', background: 'linear-gradient(90deg, #1B4332, #C9A84C)', opacity: 0.3 }} />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
             {steps.map((step, i) => (
@@ -75,23 +71,30 @@ const HowItWorks: React.FC = () => {
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.6, delay: i * 0.2 }}
                 className="text-center"
+                style={{
+                  background: '#FFFFFF',
+                  border: '1px solid rgba(27,67,50,0.1)',
+                  borderRadius: '20px',
+                  padding: '40px 24px',
+                  boxShadow: '0 4px 20px rgba(27,67,50,0.06)'
+                }}
               >
                 {/* Step icon circle */}
                 <div className="relative inline-flex mb-8">
-                  <div className="w-28 h-28 rounded-full flex items-center justify-center mx-auto"
-                    style={{ background: 'rgba(10,255,230,0.1)', border: '2px solid rgba(10,255,230,0.3)', color: '#0AFFE6', boxShadow: '0 0 30px rgba(10,255,230,0.15)' }}>
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto"
+                    style={{ background: 'rgba(27,67,50,0.08)', border: '2px solid rgba(27,67,50,0.15)', color: '#1B4332', boxShadow: '0 4px 20px rgba(27,67,50,0.04)' }}>
                     {step.icon}
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg,#0AFFE6,#00CDB7)', boxShadow: '0 2px 8px rgba(10,255,230,0.4)' }}>
-                    <span className="font-syne font-bold text-xs" style={{ color: '#000000' }}>
+                  <div className="absolute -top-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center"
+                    style={{ background: '#1B4332', color: '#FFFFFF', boxShadow: '0 2px 8px rgba(27,67,50,0.2)' }}>
+                    <span className="font-syne font-bold text-xs">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="font-syne font-bold text-2xl mb-3" style={{ color: '#FFFFFF' }}>{step.title}</h3>
-                <p className="font-dm text-base leading-relaxed max-w-xs mx-auto" style={{ color: '#A0A0A0' }}>{step.desc}</p>
+                <h3 className="font-syne font-bold text-2xl mb-3" style={{ color: '#0D2B1F' }}>{step.title}</h3>
+                <p className="font-dm text-base leading-relaxed max-w-xs mx-auto" style={{ color: '#5C6B5E' }}>{step.desc}</p>
               </motion.div>
             ))}
           </div>

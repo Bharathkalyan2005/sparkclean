@@ -41,7 +41,7 @@ const Particles = () => (
     {[...Array(20)].map((_, i) => (
       <motion.div
         key={i}
-        className="absolute bg-[#0AFFE6] rounded-full blur-[1px]"
+        className="absolute bg-[#C9A84C] rounded-full blur-[1px]"
         style={{ width: Math.random() * 4 + 2, height: Math.random() * 4 + 2 }}
         initial={{ x: `${Math.random() * 100}vw`, y: '100vh', opacity: Math.random() * 0.5 + 0.2 }}
         animate={{ y: '-10vh' }}
@@ -63,14 +63,14 @@ const PasswordStrength = ({ password }: { password?: string }) => {
   };
 
   const score = getStrength(password);
-  const colors = ['#333', '#FF4444', '#FFBB00', '#00FF00', '#0AFFE6'];
+  const colors = ['#E2E8F0', '#DC2626', '#D97706', '#16A34A', '#1B4332'];
   const activeColor = colors[score === 0 ? 0 : score];
 
   return (
     <div className="flex gap-1 mt-2">
       {[1, 2, 3, 4].map(idx => (
         <div key={idx} className="h-1 flex-1 rounded-full transition-all duration-300" 
-             style={{ backgroundColor: idx <= score ? activeColor : 'rgba(255,255,255,0.1)' }} />
+             style={{ backgroundColor: idx <= score ? activeColor : 'rgba(27,67,50,0.1)' }} />
       ))}
     </div>
   );
@@ -132,7 +132,7 @@ const AuthPage = () => {
       localStorage.setItem('user', JSON.stringify(result.user));
       
       toast.success("Welcome back! Redirecting...", {
-        style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' }
+        style: { background: '#1B4332', color: '#FFFFFF', fontWeight: 'semibold' }
       });
       
       const searchParams = new URLSearchParams(window.location.search);
@@ -174,7 +174,7 @@ const AuthPage = () => {
       }
 
       toast.success("Account created! Please log in.", {
-        style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' },
+        style: { background: '#1B4332', color: '#FFFFFF', fontWeight: 'semibold' },
         duration: 4000
       });
       setTimeout(() => setIsLogin(true), 2000);
@@ -203,7 +203,7 @@ const AuthPage = () => {
     setIsLoading(true);
     try {
       await api.post(`/auth/reset-password`, { email: data.email, newPassword: data.newPassword });
-      toast.success("Password reset successful! Please login.", { style: { background: '#0AFFE6', color: '#000', fontWeight: 'bold' } });
+      toast.success("Password reset successful! Please login.", { style: { background: '#1B4332', color: '#FFFFFF', fontWeight: 'semibold' } });
       setIsForgot(false);
       forgotForm.reset();
     } catch (err: any) {
@@ -214,9 +214,9 @@ const AuthPage = () => {
   };
 
   // Form input classes
-  const inputClass = "w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(10,255,230,0.2)] rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-[#0AFFE6] focus:ring-1 focus:ring-[#0AFFE6] transition-all duration-200 font-['Inter'] shadow-[0_0_0_rgba(10,255,230,0)] hover:border-[rgba(10,255,230,0.4)]";
-  const iconClass = "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#0AFFE6]";
-  const errorClass = "text-[#FF4444] text-xs font-['Inter'] mt-1 ml-1 font-medium";
+  const inputClass = "w-full bg-[#F5F0E8]/40 border border-[#EDE8DC] rounded-xl py-3.5 pl-11 pr-4 text-[#2D4A35] placeholder-[#5C6B5E]/50 focus:outline-none focus:border-[#1B4332] focus:ring-1 focus:ring-[#1B4332] transition-all duration-200 font-['Inter'] shadow-inner hover:border-[#1B4332]/40";
+  const iconClass = "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1B4332]";
+  const errorClass = "text-red-600 text-xs font-['Inter'] mt-1 ml-1 font-medium";
 
   const shakeVariants = {
     shake: { x: [-5, 5, -5, 5, 0], transition: { duration: 0.4 } }
@@ -224,10 +224,10 @@ const AuthPage = () => {
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
-    <div className="min-h-screen w-full flex bg-[#0A0A0A] font-['Inter'] overflow-hidden">
+    <div className="min-h-screen w-full flex bg-[#F5F0E8] font-['Inter'] overflow-hidden">
       
       {/* Left Panel - Hidden on mobile */}
-      <div className="hidden md:flex relative w-[60%] flex-col justify-between overflow-hidden border-r border-[#0AFFE6]/10">
+      <div className="hidden md:flex relative w-[60%] flex-col justify-between overflow-hidden border-r border-[#EDE8DC]">
         {/* Cinematic Background Image/Video representation */}
         <div className="absolute inset-0 w-full h-full bg-black">
           <img 
@@ -237,7 +237,7 @@ const AuthPage = () => {
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.6), transparent)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(13,43,31,0.85), rgba(13,43,31,0.3))' }} />
         </div>
         
         <Particles />
@@ -283,19 +283,19 @@ const AuthPage = () => {
           </div>
 
           <div>
-            <div className="flex gap-8 text-sm font-medium text-white/80 mb-8 border-b border-white/10 pb-8">
-              <div className="flex items-center gap-2"><span className="text-[#0AFFE6]">✦</span> 500+ Happy Customers</div>
-              <div className="flex items-center gap-2"><span className="text-[#0AFFE6]">✦</span> Same-Day Booking</div>
-              <div className="flex items-center gap-2"><span className="text-[#0AFFE6]">✦</span> Verified Staff</div>
+            <div className="flex gap-8 text-sm font-medium text-white/80 mb-8 border-b border-white/20 pb-8">
+              <div className="flex items-center gap-2"><span className="text-[#C9A84C]">✦</span> 500+ Happy Customers</div>
+              <div className="flex items-center gap-2"><span className="text-[#C9A84C]">✦</span> Same-Day Booking</div>
+              <div className="flex items-center gap-2"><span className="text-[#C9A84C]">✦</span> Verified Staff</div>
             </div>
             
             <div className="flex justify-between items-end">
               <div>
                 <p className="text-white/60 text-xs tracking-widest uppercase">India's Cleanest Choice</p>
-                <p className="text-[#0AFFE6]/60 text-[10px] mt-1">Serving India since 2026</p>
+                <p className="text-[#C9A84C]/80 text-[10px] mt-1">Serving India since 2026</p>
               </div>
               <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-                <ChevronDown className="w-6 h-6 text-[#0AFFE6]" />
+                <ChevronDown className="w-6 h-6 text-[#C9A84C]" />
               </motion.div>
             </div>
           </div>
@@ -310,7 +310,7 @@ const AuthPage = () => {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {/* Mobile Header indicator */}
-        <div className="md:hidden absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0AFFE6] to-transparent opacity-50" />
+        <div className="md:hidden absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#1B4332] to-transparent opacity-50" />
         
         <div className="w-full max-w-md z-10 relative">
           
@@ -330,11 +330,11 @@ const AuthPage = () => {
                 style={{
                   height : '48px',
                   width  : 'auto',
-                  filter : 'brightness(0) invert(1)',
+                  filter : 'none',
                 }}
               />
               <span style={{
-                color      : '#FFFFFF',
+                color      : '#1B4332',
                 fontSize   : '24px',
                 fontWeight : '700',
                 fontFamily : 'Instrument Serif, serif',
@@ -345,32 +345,32 @@ const AuthPage = () => {
           </div>
 
           {/* Form Card */}
-          <div className="backdrop-blur-xl bg-black/40 border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="backdrop-blur-xl bg-white border border-[#EDE8DC] rounded-3xl p-8 shadow-xl relative overflow-hidden">
             
             {/* Top Shine */}
-            <div className="absolute top-0 left-20 right-20 h-[1px] bg-gradient-to-r from-transparent via-[#0AFFE6]/50 to-transparent" />
+            <div className="absolute top-0 left-20 right-20 h-[1px] bg-gradient-to-r from-transparent via-[#1B4332]/25 to-transparent" />
 
             <div className="flex justify-center mb-8">
-              <div className="flex bg-white/5 p-1 rounded-xl">
+              <div className="flex bg-[#1B4332]/5 p-1 rounded-xl">
                 <button
                   onClick={() => setIsLogin(true)}
-                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${isLogin ? 'bg-[#0AFFE6]/10 text-[#0AFFE6] shadow-[inset_0_0_10px_rgba(10,255,230,0.2)]' : 'text-[#A0A0A0] hover:text-white'}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${isLogin ? 'bg-[#1B4332] text-white shadow-md' : 'text-[#5C6B5E] hover:text-[#2D4A35]'}`}
                 >
                   Login
                 </button>
                 <button
                   onClick={() => setIsLogin(false)}
-                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${!isLogin ? 'bg-[#0AFFE6]/10 text-[#0AFFE6] shadow-[inset_0_0_10px_rgba(10,255,230,0.2)]' : 'text-[#A0A0A0] hover:text-white'}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${!isLogin ? 'bg-[#1B4332] text-white shadow-md' : 'text-[#5C6B5E] hover:text-[#2D4A35]'}`}
                 >
                   Sign Up
                 </button>
               </div>
             </div>
 
-            <h2 className="text-3xl font-['Instrument_Serif'] text-white text-center mb-1">
+            <h2 className="text-3xl font-['Instrument_Serif'] text-[#2D4A35] text-center mb-1">
               {isForgot ? 'Reset password' : isLogin ? 'Welcome back' : 'Create account'}
             </h2>
-            <p className="text-[#A0A0A0] text-sm text-center mb-8">
+            <p className="text-[#5C6B5E] text-sm text-center mb-8">
               {isForgot ? 'Enter your email and a new password' : isLogin ? 'Book your next clean in seconds' : 'Join 500+ happy homeowners'}
             </p>
 
@@ -395,7 +395,7 @@ const AuthPage = () => {
                       <div className="relative">
                         <Lock className={iconClass} />
                         <input {...forgotForm.register('newPassword')} type={showPass ? "text" : "password"} placeholder="New Password" className={inputClass} />
-                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors">
+                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5C6B5E] hover:text-[#1B4332] transition-colors">
                           {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
@@ -405,11 +405,11 @@ const AuthPage = () => {
                     <button 
                       type="submit" 
                       disabled={isLoading}
-                      className="w-full h-[52px] mt-6 bg-[#0AFFE6] text-black font-semibold rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(10,255,230,0.4)] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full h-[52px] mt-6 bg-[#1B4332] text-white font-semibold rounded-xl hover:bg-[#0D2B1F] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-md"
                     >
-                      {isLoading ? <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" /> : "Reset Password"}
+                      {isLoading ? <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : "Reset Password"}
                     </button>
-                    <button type="button" onClick={() => setIsForgot(false)} className="w-full text-[#A0A0A0] text-sm hover:text-white mt-4 transition-colors">
+                    <button type="button" onClick={() => setIsForgot(false)} className="w-full text-[#5C6B5E] text-sm hover:text-[#2D4A35] mt-4 transition-colors">
                       Back to Login
                     </button>
                   </form>
@@ -431,30 +431,30 @@ const AuthPage = () => {
                       </div>
                       {loginForm.formState.errors.email && <p className={errorClass}>{loginForm.formState.errors.email.message}</p>}
                     </div>
-
+ 
                     <div>
                       <div className="relative">
                         <Lock className={iconClass} />
                         <input {...loginForm.register('password')} type={showPass ? "text" : "password"} placeholder="Password" className={inputClass} />
-                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors">
+                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5C6B5E] hover:text-[#1B4332] transition-colors">
                           {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
                       <div className="flex justify-between mt-1">
                         <div>{loginForm.formState.errors.password && <p className={errorClass}>{loginForm.formState.errors.password.message}</p>}</div>
-                        <button type="button" onClick={handleForgotPass} className="text-[#0AFFE6] text-[13px] hover:underline mt-1">Forgot password?</button>
+                        <button type="button" onClick={handleForgotPass} className="text-[#1B4332] text-[13px] hover:underline mt-1 font-medium">Forgot password?</button>
                       </div>
                     </div>
-
+ 
                     <button 
                       type="submit" 
                       disabled={isLoading}
-                      className="w-full h-[52px] mt-6 bg-[#0AFFE6] text-black font-semibold rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(10,255,230,0.4)] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full h-[52px] mt-6 bg-[#1B4332] text-white font-semibold rounded-xl hover:bg-[#0D2B1F] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-md"
                     >
                       {isLoading ? (
-                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                       ) : (
-                        <><span className="text-black group-hover:animate-pulse">✦</span> Login to SuciHome</>
+                        <><span className="text-white group-hover:animate-pulse">✦</span> Login to SuciHome</>
                       )}
                     </button>
                   </form>
@@ -467,7 +467,7 @@ const AuthPage = () => {
                   exit={{ opacity: 0, x: -20 }}
                   variants={shakeSignup ? shakeVariants : undefined}
                   transition={{ duration: 0.3 }}
-                  className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
+                  className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar"
                 >
                   <form onSubmit={signupForm.handleSubmit(onSignup)} className="space-y-4">
                     <div>
@@ -477,18 +477,18 @@ const AuthPage = () => {
                       </div>
                       {signupForm.formState.errors.fullName && <p className={errorClass}>{signupForm.formState.errors.fullName.message}</p>}
                     </div>
-
+ 
                     <div>
                       <div className="relative">
                         <Phone className={iconClass} />
-                        <div className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center border-r border-white/20 pr-2">
-                          <span className="text-xs text-white/80 font-semibold bg-white/10 px-1.5 py-0.5 rounded">+91</span>
+                        <div className="absolute left-10 top-1/2 -translate-y-1/2 flex items-center border-r border-[#EDE8DC] pr-2">
+                          <span className="text-xs text-[#2D4A35]/80 font-semibold bg-[#1B4332]/10 px-1.5 py-0.5 rounded">+91</span>
                         </div>
                         <input {...signupForm.register('phone')} type="tel" placeholder="Phone Number" className={`${inputClass} pl-[90px]`} />
                       </div>
                       {signupForm.formState.errors.phone && <p className={errorClass}>{signupForm.formState.errors.phone.message}</p>}
                     </div>
-
+ 
                     <div>
                       <div className="relative">
                         <Mail className={iconClass} />
@@ -496,19 +496,19 @@ const AuthPage = () => {
                       </div>
                       {signupForm.formState.errors.email && <p className={errorClass}>{signupForm.formState.errors.email.message}</p>}
                     </div>
-
+ 
                     <div>
                       <div className="relative">
                         <Lock className={iconClass} />
                         <input {...signupForm.register('password')} type={showConfirmPass ? "text" : "password"} placeholder="Password" className={inputClass} />
-                        <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors">
+                        <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5C6B5E] hover:text-[#1B4332] transition-colors">
                           {showConfirmPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
                       <PasswordStrength password={signupForm.watch('password')} />
                       {signupForm.formState.errors.password && <p className={errorClass}>{signupForm.formState.errors.password.message}</p>}
                     </div>
-
+ 
                     <div>
                       <div className="relative">
                         <Lock className={iconClass} />
@@ -516,38 +516,38 @@ const AuthPage = () => {
                       </div>
                       {signupForm.formState.errors.confirmPassword && <p className={errorClass}>{signupForm.formState.errors.confirmPassword.message}</p>}
                     </div>
-
+ 
                     <div className="flex items-center gap-3 pt-2">
                       <label className="relative flex items-center cursor-pointer">
                         <input type="checkbox" {...signupForm.register('terms')} className="sr-only peer" />
-                        <div className="w-5 h-5 border border-white/20 rounded peer-checked:bg-[#0AFFE6] peer-checked:border-[#0AFFE6] transition-colors flex items-center justify-center">
-                          <Check className="w-3 h-3 text-black opacity-0 peer-checked:opacity-100" />
+                        <div className="w-5 h-5 border border-[#EDE8DC] rounded peer-checked:bg-[#1B4332] peer-checked:border-[#1B4332] transition-colors flex items-center justify-center">
+                          <Check className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100" />
                         </div>
                       </label>
-                      <span className="text-xs text-[#A0A0A0]">I agree to Terms & Privacy Policy</span>
+                      <span className="text-xs text-[#5C6B5E]">I agree to Terms & Privacy Policy</span>
                     </div>
                     {signupForm.formState.errors.terms && <p className={errorClass}>{signupForm.formState.errors.terms.message}</p>}
                     
                     {signupForm.formState.errors.root && <p className={errorClass}>{signupForm.formState.errors.root.message}</p>}
-
+ 
                     <button 
                       type="submit" 
                       disabled={isLoading}
-                      className="w-full h-[52px] bg-[#0AFFE6] text-black font-semibold rounded-xl hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(10,255,230,0.4)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full h-[52px] bg-[#1B4332] text-white font-semibold rounded-xl hover:bg-[#0D2B1F] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-md"
                     >
-                      {isLoading ? <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" /> : "Create My Account"}
+                      {isLoading ? <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : "Create My Account"}
                     </button>
                   </form>
                 </motion.div>
               )}
             </AnimatePresence>
-
+ 
             <div className="flex items-center gap-4 my-8">
-              <div className="flex-1 h-[1px] bg-white/10" />
-              <span className="text-xs text-[#A0A0A0] uppercase tracking-wider font-semibold">or continue with</span>
-              <div className="flex-1 h-[1px] bg-white/10" />
+              <div className="flex-1 h-[1px] bg-[#EDE8DC]" />
+              <span className="text-xs text-[#5C6B5E] uppercase tracking-wider font-semibold">or continue with</span>
+              <div className="flex-1 h-[1px] bg-[#EDE8DC]" />
             </div>
-
+ 
             <button
                 onClick={() => {
                   const params = new URLSearchParams(window.location.search);
@@ -558,10 +558,10 @@ const AuthPage = () => {
                 style={{
                   width          : '100%',
                   padding        : '14px',
-                  background     : 'rgba(255,255,255,0.04)',
-                  border         : '1px solid rgba(255,255,255,0.12)',
+                  background     : '#FFFFFF',
+                  border         : '1px solid #EDE8DC',
                   borderRadius   : '12px',
-                  color          : '#FFFFFF',
+                  color          : '#2D4A35',
                   fontSize       : '15px',
                   fontWeight     : '500',
                   cursor         : 'pointer',
@@ -570,14 +570,15 @@ const AuthPage = () => {
                   justifyContent : 'center',
                   gap            : '12px',
                   transition     : 'all 0.2s',
+                  boxShadow      : '0 2px 8px rgba(0,0,0,0.02)',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.border = '1px solid rgba(10,255,230,0.3)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
+                  e.currentTarget.style.border = '1px solid #1B4332'
+                  e.currentTarget.style.background = 'rgba(27,67,50,0.02)'
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.12)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+                  e.currentTarget.style.border = '1px solid #EDE8DC'
+                  e.currentTarget.style.background = '#FFFFFF'
                 }}
               >
                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
@@ -588,12 +589,12 @@ const AuthPage = () => {
                 </svg>
                 Continue with Google
               </button>
-
-            <div className="mt-8 text-center text-sm text-[#A0A0A0]">
+ 
+            <div className="mt-8 text-center text-sm text-[#5C6B5E]">
               {isLogin ? (
-                <>Don't have an account? <button onClick={() => setIsLogin(false)} className="text-[#0AFFE6] hover:underline font-medium">Sign up</button></>
+                <>Don't have an account? <button onClick={() => setIsLogin(false)} className="text-[#1B4332] hover:underline font-semibold">Sign up</button></>
               ) : (
-                <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-[#0AFFE6] hover:underline font-medium">Login</button></>
+                <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-[#1B4332] hover:underline font-semibold">Login</button></>
               )}
             </div>
 

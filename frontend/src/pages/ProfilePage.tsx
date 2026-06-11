@@ -106,18 +106,18 @@ export default function ProfilePage() {
 
   if (initialLoading) {
     return (
-      <div className="min-h-screen bg-[#0A1628] flex items-center justify-center">
-        <Loader2 className="w-12 h-12 text-[#0AFFE6] animate-spin" />
+      <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center">
+        <Loader2 className="w-12 h-12 text-[#1B4332] animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0A1628] pt-24 pb-12 flex flex-col justify-center py-12 px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-[#F5F0E8] pt-24 pb-12 flex flex-col justify-center py-12 px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-gray-400 hover:text-[#0AFFE6] transition-colors mb-6"
+          className="flex items-center text-[#5C6B5E] hover:text-[#1B4332] transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
@@ -126,21 +126,21 @@ export default function ProfilePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#0D1D3E] py-8 px-6 shadow-2xl sm:rounded-2xl border border-white/5"
+          className="bg-white py-8 px-6 shadow-xl sm:rounded-2xl border border-[#EDE8DC]"
         >
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white tracking-tight">Your Profile</h2>
-            <p className="mt-2 text-sm text-gray-400">Update your personal details below</p>
+            <h2 className="text-3xl font-bold text-[#1B4332] tracking-tight">Your Profile</h2>
+            <p className="mt-2 text-sm text-[#5C6B5E]">Update your personal details below</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="fullName" className="block text-sm font-medium text-[#2D4A35]">
                 Full Name
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-[#5C6B5E]" />
                 </div>
                 <input
                   id="fullName"
@@ -149,19 +149,19 @@ export default function ProfilePage() {
                   required
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                  className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-3 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                   placeholder="John Doe"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="phone" className="block text-sm font-medium text-[#2D4A35]">
                 Phone Number
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
+                  <Phone className="h-5 w-5 text-[#5C6B5E]" />
                 </div>
                 <input
                   id="phone"
@@ -169,19 +169,19 @@ export default function ProfilePage() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                  className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-3 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                   placeholder="+1 (555) 000-0000"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="address" className="block text-sm font-medium text-[#2D4A35]">
                 Home Address
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MapPin className="h-5 w-5 text-gray-400" />
+                  <MapPin className="h-5 w-5 text-[#5C6B5E]" />
                 </div>
                 <input
                   id="address"
@@ -189,7 +189,7 @@ export default function ProfilePage() {
                   type="text"
                   value={formData.address}
                   onChange={handleChange}
-                  className="block w-full pl-10 bg-[#0A1628] border border-white/10 rounded-xl py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0AFFE6]/50 focus:border-transparent transition-all sm:text-sm"
+                  className="block w-full pl-10 bg-white border border-[#EDE8DC] rounded-xl py-3 text-[#2D4A35] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1B4332]/50 focus:border-[#1B4332] transition-all sm:text-sm"
                   placeholder="123 Main St, City, State 12345"
                 />
               </div>
@@ -199,7 +199,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-[#0A1628] bg-gradient-to-r from-[#0AFFE6] to-[#0A8FE6] hover:from-[#08E5CE] hover:to-[#087BD0] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0AFFE6] focus:ring-offset-[#0D1D3E] transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#1B4332] hover:bg-[#0D2B1F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1B4332] focus:ring-offset-white transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

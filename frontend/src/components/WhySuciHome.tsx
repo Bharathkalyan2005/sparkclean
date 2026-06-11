@@ -10,7 +10,7 @@ const features = [
     ),
     title: 'Trained & Verified Staff',
     desc: 'All cleaners are background-checked, trained, and certified before joining SuciHome.',
-    color: '#0AFFE6',
+    color: '#1B4332',
   },
   {
     icon: (
@@ -20,7 +20,7 @@ const features = [
     ),
     title: 'Eco-Friendly Products',
     desc: 'We use non-toxic, plant-based cleaning solutions safe for your kids and pets.',
-    color: '#4ADE80',
+    color: '#2E7D32',
   },
   {
     icon: (
@@ -30,7 +30,7 @@ const features = [
     ),
     title: 'On-Time Guarantee',
     desc: 'We respect your time. Our team arrives within the chosen slot — every single time.',
-    color: '#FACC15',
+    color: '#C9A84C',
   },
   {
     icon: (
@@ -40,7 +40,7 @@ const features = [
     ),
     title: 'Transparent ₹ Pricing',
     desc: 'Fixed pricing with zero hidden charges. What you see is exactly what you pay.',
-    color: '#A78BFA',
+    color: '#7B1FA2',
   },
   {
     icon: (
@@ -51,7 +51,7 @@ const features = [
     ),
     title: 'Pan-India Team',
     desc: 'We\'re a India-born business, serving our own community with pride and care.',
-    color: '#F97316',
+    color: '#D84315',
   },
   {
     icon: (
@@ -67,9 +67,9 @@ const features = [
 
 const WhySuciHome: React.FC = () => {
   return (
-    <section className="py-24 relative overflow-hidden section-black">
+    <section className="py-24 relative overflow-hidden bg-[#EDE8DC]">
       <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse at 30% 50%, rgba(10,255,230,0.06) 0%, transparent 60%)',
+        background: 'radial-gradient(ellipse at 30% 50%, rgba(27,67,50,0.06) 0%, transparent 60%)',
         pointerEvents: 'none',
       }} />
 
@@ -82,13 +82,13 @@ const WhySuciHome: React.FC = () => {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4"
-            style={{ background: 'rgba(10,255,230,0.1)', border: '1px solid rgba(10,255,230,0.3)' }}>
-            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#0AFFE6' }}>Why SuciHome</span>
+            style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.15)' }}>
+            <span className="text-xs font-medium font-dm tracking-wider uppercase" style={{ color: '#1B4332' }}>Why SuciHome</span>
           </div>
-          <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
-            The SuciHome <span className="teal-gradient-text">Difference</span>
+          <h2 className="section-heading text-4xl md:text-5xl mb-4" style={{ color: '#1B4332' }}>
+            The SuciHome <span className="text-[#C9A84C]">Difference</span>
           </h2>
-          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#A0A0A0' }}>
+          <p className="text-lg font-dm max-w-2xl mx-auto" style={{ color: '#5C6B5E' }}>
             We don't just clean your home — we care for it like our own.
           </p>
         </motion.div>
@@ -102,15 +102,15 @@ const WhySuciHome: React.FC = () => {
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ y: -6 }}
-              className="rounded-2xl p-6 group transition-all duration-300 card-glow"
-              style={{ background: '#161616', border: '1px solid rgba(10,255,230,0.18)', boxShadow: '0 2px 16px rgba(0,0,0,0.5)', borderLeft: `3px solid ${feat.color}` }}
+              className="rounded-2xl p-6 group transition-all duration-300 bg-white"
+              style={{ border: '1px solid #EDE8DC', boxShadow: '0 4px 20px rgba(27,67,50,0.03)', borderLeft: `3px solid ${feat.color}` }}
             >
               <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
                 style={{ background: `${feat.color}18`, color: feat.color }}>
                 {feat.icon}
               </div>
-              <h3 className="font-syne font-bold text-lg mb-2" style={{ color: '#FFFFFF' }}>{feat.title}</h3>
-              <p className="font-dm text-sm leading-relaxed" style={{ color: '#A0A0A0' }}>{feat.desc}</p>
+              <h3 className="font-syne font-bold text-lg mb-2" style={{ color: '#2D4A35' }}>{feat.title}</h3>
+              <p className="font-dm text-sm leading-relaxed" style={{ color: '#5C6B5E' }}>{feat.desc}</p>
 
               {/* Hover accent line */}
               <div className="h-0.5 mt-4 rounded-full transition-all duration-300 group-hover:w-full w-0"

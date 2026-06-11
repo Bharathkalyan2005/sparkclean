@@ -49,14 +49,14 @@ export default function AuthCallbackPage() {
   return (
     <div style={{
       minHeight      : '100vh',
-      background     : '#0A0A0A',
+      background     : '#F5F0E8',
       display        : 'flex',
       alignItems     : 'center',
       justifyContent : 'center',
       flexDirection  : 'column',
       gap            : '16px',
     }}>
-      {/* Teal spinning loader */}
+      {/* Dark green spinning loader */}
       <svg 
         width="48" height="48" 
         viewBox="0 0 48 48"
@@ -64,13 +64,13 @@ export default function AuthCallbackPage() {
       >
         <circle
           cx="24" cy="24" r="20"
-          fill="none" stroke="#0AFFE6"
+          fill="none" stroke="#1B4332"
           strokeWidth="4"
           strokeDasharray="80 40"
         />
       </svg>
       <p style={{ 
-        color      : '#A0A0A0', 
+        color      : '#5C6B5E', 
         fontFamily : 'Inter, sans-serif',
         fontSize   : '15px'
       }}>

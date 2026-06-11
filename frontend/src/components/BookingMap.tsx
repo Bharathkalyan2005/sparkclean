@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { DARK_TILES, CITY_CENTERS } from '../lib/mapConfig'
+import { LIGHT_TILES, CITY_CENTERS } from '../lib/mapConfig'
 import { homePin } from '../lib/mapIcons'
 
 interface BookingMapProps {
@@ -22,14 +22,14 @@ function MapViewUpdater({ lat, lng }: { lat: number; lng: number }) {
 
 export default function BookingMap({ centerLat, centerLng, homeLat, homeLng }: BookingMapProps) {
   return (
-    <div className="w-full h-full min-h-[300px] rounded-xl overflow-hidden border border-white/10 shadow-lg relative">
+    <div className="w-full h-full min-h-[300px] rounded-xl overflow-hidden border border-[#EDE8DC] shadow-md relative">
       <MapContainer
         center={[centerLat, centerLng]}
         zoom={12}
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
-        <TileLayer url={DARK_TILES.url} attribution={DARK_TILES.attribution} />
+        <TileLayer url={LIGHT_TILES.url} attribution={LIGHT_TILES.attribution} />
         
         <MapViewUpdater lat={centerLat} lng={centerLng} />
 
@@ -38,8 +38,8 @@ export default function BookingMap({ centerLat, centerLng, homeLat, homeLng }: B
         )}
       </MapContainer>
 
-      {/* Decorative overlay for the sci-fi clean look */}
-      <div className="absolute inset-0 pointer-events-none rounded-xl border border-[#0AFFE6]/20 shadow-[inset_0_0_20px_rgba(10,255,230,0.1)] z-[1000]"></div>
+      {/* Decorative overlay for the premium clean look */}
+      <div className="absolute inset-0 pointer-events-none rounded-xl border border-[#EDE8DC] shadow-[inset_0_0_20px_rgba(27,67,50,0.05)] z-[1000]"></div>
     </div>
   )
 }

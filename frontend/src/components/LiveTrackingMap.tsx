@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet'
 import L from 'leaflet'
-import { DARK_TILES, CITY_CENTERS } from '../lib/mapConfig'
+import { LIGHT_TILES, CITY_CENTERS } from '../lib/mapConfig'
 import { homePin, cleanerPin, tealPin } from '../lib/mapIcons'
 
 interface LiveTrackingMapProps {
@@ -64,24 +64,24 @@ export default function LiveTrackingMap({
   }, [cleanerLat, cleanerLng, homeLat, homeLng])
 
   return (
-    <div className="w-full h-full min-h-[400px] rounded-xl overflow-hidden border border-[#0AFFE6]/30 shadow-[0_0_20px_rgba(10,255,230,0.15)] relative">
+    <div className="w-full h-full min-h-[400px] rounded-xl overflow-hidden border border-[#EDE8DC] shadow-md relative">
       <MapContainer
         center={[homeLat, homeLng]}
         zoom={13}
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
-        <TileLayer url={DARK_TILES.url} attribution={DARK_TILES.attribution} />
+        <TileLayer url={LIGHT_TILES.url} attribution={LIGHT_TILES.attribution} />
 
         <Marker position={[homeLat, homeLng]} icon={homePin}>
-          <Popup className="dark-popup">
+          <Popup className="light-popup">
             <strong className="text-black">Your Home</strong>
           </Popup>
         </Marker>
 
         {cleanerLat && cleanerLng && (
           <Marker position={[cleanerLat, cleanerLng]} icon={cleanerPin}>
-            <Popup className="dark-popup">
+            <Popup className="light-popup">
               <strong className="text-black">Suci Homeer</strong>
               <br />
               <span className="text-gray-800 tracking-wider">ETA: {eta || 'Arriving Soon'}</span>
@@ -91,18 +91,18 @@ export default function LiveTrackingMap({
 
         {route.length > 0 && (
           <>
-            <Polyline positions={route} color="#0AFFE6" weight={4} dashArray="10, 10" className="animate-dash" />
+            <Polyline positions={route} color="#1B4332" weight={4} dashArray="10, 10" className="animate-dash" />
             <RouteUpdater route={route} />
           </>
         )}
       </MapContainer>
       
       {/* HUD Overlay */}
-      <div className="absolute top-4 left-4 z-[1000] bg-black/60 backdrop-blur-md border border-[#0AFFE6]/40 p-3 rounded-lg text-white font-mono text-sm tracking-widest shadow-[0_0_15px_rgba(10,255,230,0.2)]">
+      <div className="absolute top-4 left-4 z-[1000] bg-white/90 backdrop-blur-md border border-[#EDE8DC] p-3 rounded-lg text-[#2D4A35] font-mono text-sm tracking-widest shadow-md">
         <div>TRACKING ID: {bookingId.slice(0, 8)}</div>
-        {eta && <div className="text-[#0AFFE6] mt-1 font-bold">ETA: {eta} MIN</div>}
-        <div className="text-xs text-gray-400 mt-2 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#0AFFE6] animate-pulse"></span>
+        {eta && <div className="text-[#1B4332] mt-1 font-bold">ETA: {eta} MIN</div>}
+        <div className="text-xs text-[#5C6B5E] mt-2 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#1B4332] animate-pulse"></span>
           LIVE CONNECTION
         </div>
       </div>

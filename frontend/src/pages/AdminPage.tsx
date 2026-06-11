@@ -15,24 +15,24 @@ import {
 // Types
 
 const ADMIN_COLORS = {
-  bg: '#0A0A0A',
-  sidebar: '#111111',
-  card: '#161616',
-  accent: '#0AFFE6',
-  border: 'rgba(255,255,255,0.08)',
-  text: '#FFFFFF',
-  muted: '#A0A0A0',
-  emerald: '#22C55E',
-  amber: '#F59E0B',
-  blue: '#3B82F6',
-  purple: '#8B5CF6',
-  red: '#EF4444'
+  bg: '#F5F0E8',
+  sidebar: '#0D2B1F',
+  card: '#FFFFFF',
+  accent: '#1B4332',
+  border: '#EDE8DC',
+  text: '#2D4A35',
+  muted: '#5C6B5E',
+  emerald: '#2E7D32',
+  amber: '#C9A84C',
+  blue: '#0D47A1',
+  purple: '#7B1FA2',
+  red: '#C62828'
 };
 
 const roleBadgeColor: Record<string, { bg: string, text: string }> = {
-  CUSTOMER: { bg: 'rgba(59,130,246,0.15)', text: '#3B82F6' },
-  ADMIN: { bg: 'rgba(239,68,68,0.15)', text: '#EF4444' },
-  CLEANER: { bg: 'rgba(34,197,94,0.15)', text: '#22C55E' },
+  CUSTOMER: { bg: '#E3F2FD', text: '#0D47A1' },
+  ADMIN: { bg: '#FFEBEE', text: '#C62828' },
+  CLEANER: { bg: '#E8F5E9', text: '#2E7D32' },
 };
 
 const StatusBadge = ({ status }: { status: string }) => {
@@ -361,9 +361,9 @@ export default function AdminPage() {
           alignItems: 'center',
           gap: '12px',
           padding: '12px 16px',
-          background: isActive ? 'rgba(10,255,230,0.1)' : 'transparent',
-          borderLeft: isActive ? `3px solid ${ADMIN_COLORS.accent}` : '3px solid transparent',
-          color: isActive ? ADMIN_COLORS.accent : ADMIN_COLORS.muted,
+          background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+          borderLeft: isActive ? '3px solid #C9A84C' : '3px solid transparent',
+          color: isActive ? '#C9A84C' : '#A0B4A6',
           fontSize: '14px',
           fontWeight: '500',
           transition: 'all 0.2s',
@@ -380,7 +380,7 @@ export default function AdminPage() {
   if (!isAuthorized) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: ADMIN_COLORS.bg }}>
-        <Loader2 className="animate-spin" color={ADMIN_COLORS.accent} size={40} />
+        <Loader2 className="animate-spin" color="#1B4332" size={40} />
       </div>
     );
   }
@@ -390,21 +390,21 @@ export default function AdminPage() {
       
       {/* SIDEBAR */}
       <div style={{ width: '260px', background: ADMIN_COLORS.sidebar, borderRight: `1px solid ${ADMIN_COLORS.border}`, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '24px', borderBottom: `1px solid ${ADMIN_COLORS.border}` }}>
+        <div style={{ padding: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sparkles color={ADMIN_COLORS.accent} size={24} />
-            <span style={{ fontSize: '20px', fontWeight: 'bold', letterSpacing: '-0.5px' }}>SuciHome</span>
+            <Sparkles color="#C9A84C" size={24} />
+            <span style={{ fontSize: '20px', fontWeight: 'bold', letterSpacing: '-0.5px', color: '#F5F0E8' }}>SuciHome</span>
           </div>
-          <p style={{ color: ADMIN_COLORS.muted, fontSize: '12px', marginTop: '4px' }}>Admin Panel</p>
+          <p style={{ color: '#A0B4A6', fontSize: '12px', marginTop: '4px' }}>Admin Panel</p>
         </div>
         
-        <div style={{ padding: '16px', borderBottom: `1px solid ${ADMIN_COLORS.border}`, display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: ADMIN_COLORS.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 'bold' }}>
+        <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#C9A84C', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0D2B1F', fontWeight: 'bold' }}>
             {adminUser?.email?.[0]?.toUpperCase() || 'A'}
           </div>
           <div style={{ overflow: 'hidden' }}>
-            <p style={{ fontSize: '14px', fontWeight: '600' }}>Admin User</p>
-            <p style={{ fontSize: '12px', color: ADMIN_COLORS.muted, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{adminUser?.email}</p>
+            <p style={{ fontSize: '14px', fontWeight: '600', color: '#F5F0E8' }}>Admin User</p>
+            <p style={{ fontSize: '12px', color: '#A0B4A6', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{adminUser?.email}</p>
           </div>
         </div>
 
@@ -420,8 +420,8 @@ export default function AdminPage() {
           <SidebarItem id="settings" label="Settings" icon={Settings} />
         </div>
 
-        <div style={{ padding: '16px', borderTop: `1px solid ${ADMIN_COLORS.border}` }}>
-          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: ADMIN_COLORS.red, fontSize: '14px', fontWeight: '500', width: '100%', padding: '8px' }}>
+        <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FF8A80', fontSize: '14px', fontWeight: '500', width: '100%', padding: '8px' }}>
             <LogOut size={18} />
             Logout
           </button>
@@ -450,10 +450,10 @@ export default function AdminPage() {
 
             {/* KPI ROW */}
             <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-              <KPI title="Today's Bookings" value={stats.cards.todayBookings.value} subtext={`vs yesterday: ${stats.cards.todayBookings.diff > 0 ? '+' : ''}${stats.cards.todayBookings.diff}`} icon={<ClipboardList />} color={ADMIN_COLORS.accent} rgb="10,255,230" />
-              <KPI title="Today's Revenue" value={`₹${stats.cards.todayRevenue.value}`} subtext="collected today" icon={<IndianRupee />} color={ADMIN_COLORS.emerald} rgb="34,197,94" />
-              <KPI title="Pending Jobs" value={stats.cards.pendingJobs.value} subtext="Need attention" icon={<Loader2 />} color={ADMIN_COLORS.amber} rgb="245,158,11" />
-              <KPI title="Total Customers" value={stats.cards.totalCustomers.value} subtext={`+${stats.cards.totalCustomers.newThisWeek} this week`} icon={<Users />} color={ADMIN_COLORS.purple} rgb="139,92,246" />
+              <KPI title="Today's Bookings" value={stats.cards.todayBookings.value} subtext={`vs yesterday: ${stats.cards.todayBookings.diff > 0 ? '+' : ''}${stats.cards.todayBookings.diff}`} icon={<ClipboardList />} color={ADMIN_COLORS.accent} rgb="27,67,50" />
+              <KPI title="Today's Revenue" value={`₹${stats.cards.todayRevenue.value}`} subtext="collected today" icon={<IndianRupee />} color={ADMIN_COLORS.emerald} rgb="46,125,50" />
+              <KPI title="Pending Jobs" value={stats.cards.pendingJobs.value} subtext="Need attention" icon={<Loader2 />} color={ADMIN_COLORS.amber} rgb="201,168,76" />
+              <KPI title="Total Customers" value={stats.cards.totalCustomers.value} subtext={`+${stats.cards.totalCustomers.newThisWeek} this week`} icon={<Users />} color={ADMIN_COLORS.purple} rgb="123,31,162" />
             </div>
 
             {/* CHART ROW */}
@@ -461,12 +461,12 @@ export default function AdminPage() {
               <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: ADMIN_COLORS.muted }}>Revenue — Last 7 Days</h3>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={stats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                   <XAxis dataKey="date" stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                   <YAxis stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value}`} />
                   <Tooltip 
-                    cursor={{ fill: 'rgba(255,255,255,0.02)' }}
-                    contentStyle={{ background: '#000', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px' }}
+                    cursor={{ fill: 'rgba(0,0,0,0.02)' }}
+                    contentStyle={{ background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35' }}
                   />
                   <Bar dataKey="revenue" fill={ADMIN_COLORS.accent} radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -496,7 +496,7 @@ export default function AdminPage() {
                       <tr key={b.id} style={{ borderBottom: `1px solid ${ADMIN_COLORS.border}` }}>
                           <td style={{ padding: '12px 0' }}>
                             <span style={{
-                              color      : '#0AFFE6',
+                              color      : '#1B4332',
                               fontFamily : 'monospace',
                               fontSize   : '13px',
                               fontWeight : '600',
@@ -558,8 +558,8 @@ export default function AdminPage() {
                 <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Bookings Management</h1>
                 <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                <thead style={{ background: '#111' }}>
-                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                <thead style={{ background: '#EDE8DC' }}>
+                  <tr style={{ color: ADMIN_COLORS.text, textAlign: 'left' }}>
                     <th style={{ padding: '16px' }}>Booking ID</th>
                     <th style={{ padding: '16px' }}>Customer</th>
                     <th style={{ padding: '16px' }}>Phone</th>
@@ -575,7 +575,7 @@ export default function AdminPage() {
                     <tr key={b.id} style={{ borderTop: `1px solid ${ADMIN_COLORS.border}` }}>
                         <td style={{ padding: '16px' }}>
                           <span style={{
-                            color      : '#0AFFE6',
+                            color      : '#1B4332',
                             fontFamily : 'monospace',
                             fontSize   : '13px',
                             fontWeight : '600',
@@ -591,7 +591,7 @@ export default function AdminPage() {
                               background : 'transparent',
                               border     : 'none',
                               cursor     : 'pointer',
-                              color      : '#A0A0A0',
+                              color      : '#5C6B5E',
                               fontSize   : '12px',
                               padding    : '2px 6px',
                             }}
@@ -610,8 +610,8 @@ export default function AdminPage() {
                           value={b.status} 
                           onChange={(e) => handleStatusUpdate(b.id, e.target.value)}
                           style={{
-                            background: 'transparent', color: '#fff', border: `1px solid ${ADMIN_COLORS.border}`,
-                            padding: '4px', borderRadius: '4px'
+                            background: '#FFFFFF', color: '#2D4A35', border: `1px solid ${ADMIN_COLORS.border}`,
+                            padding: '4px', borderRadius: '4px', outline: 'none'
                           }}
                         >
                           <option value="PENDING">PENDING</option>
@@ -623,7 +623,7 @@ export default function AdminPage() {
                         </select>
                       </td>
                       <td style={{ padding: '16px' }}>
-                        <a href={`https://wa.me/91${b.customerPhone}`} target="_blank" rel="noreferrer" style={{ color: ADMIN_COLORS.emerald, fontSize: '13px' }}>WhatsApp</a>
+                        <a href={`https://wa.me/91${b.customerPhone}`} target="_blank" rel="noreferrer" style={{ color: ADMIN_COLORS.emerald, fontSize: '13px', fontWeight: '600' }}>WhatsApp</a>
                       </td>
                     </tr>
                   ))}
@@ -639,8 +639,8 @@ export default function AdminPage() {
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Customers</h1>
              <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                <thead style={{ background: '#111' }}>
-                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                <thead style={{ background: '#EDE8DC' }}>
+                  <tr style={{ color: ADMIN_COLORS.text, textAlign: 'left' }}>
                     <th style={{ padding: '16px' }}>Name</th>
                     <th style={{ padding: '16px' }}>Email</th>
                     <th style={{ padding: '16px' }}>Phone</th>
@@ -658,8 +658,8 @@ export default function AdminPage() {
                       <td style={{ padding: '16px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <span style={{
-                            background: roleBadgeColor[c.role]?.bg || 'rgba(255,255,255,0.1)',
-                            color: roleBadgeColor[c.role]?.text || '#FFF',
+                            background: roleBadgeColor[c.role]?.bg || '#EDE8DC',
+                            color: roleBadgeColor[c.role]?.text || '#2D4A35',
                             padding: '3px 10px',
                             borderRadius: '20px',
                             fontSize: '11px',
@@ -671,13 +671,14 @@ export default function AdminPage() {
                             value={c.role}
                             onChange={e => handleRoleChange(c.id, e.target.value)}
                             style={{
-                              background: '#1A1A1A',
-                              border: '1px solid rgba(255,255,255,0.1)',
-                              color: '#A0A0A0',
+                              background: '#FFFFFF',
+                              border: `1px solid ${ADMIN_COLORS.border}`,
+                              color: '#2D4A35',
                               borderRadius: '6px',
                               padding: '4px 8px',
                               fontSize: '12px',
                               cursor: 'pointer',
+                              outline: 'none'
                             }}
                           >
                             <option value="CUSTOMER">Customer</option>
@@ -700,16 +701,16 @@ export default function AdminPage() {
              <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Feedback Management</h1>
              
              <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-               <KPI title="Total Reviews" value={feedbacks.length} icon={<Star />} color={ADMIN_COLORS.accent} rgb="10,255,230" />
-               <KPI title="Avg Rating" value={(feedbacks.reduce((acc, curr) => acc + curr.rating, 0) / (feedbacks.length || 1)).toFixed(1)} icon={<Star />} color={ADMIN_COLORS.emerald} rgb="34,197,94" />
-               <KPI title="Pending Approval" value={feedbacks.filter(f => !f.isApproved).length} icon={<Settings />} color={ADMIN_COLORS.amber} rgb="245,158,11" />
-               <KPI title="5-Star Reviews" value={feedbacks.filter(f => f.rating === 5).length} icon={<Star />} color={ADMIN_COLORS.purple} rgb="139,92,246" />
+               <KPI title="Total Reviews" value={feedbacks.length} icon={<Star />} color={ADMIN_COLORS.accent} rgb="27,67,50" />
+               <KPI title="Avg Rating" value={(feedbacks.reduce((acc, curr) => acc + curr.rating, 0) / (feedbacks.length || 1)).toFixed(1)} icon={<Star />} color={ADMIN_COLORS.emerald} rgb="46,125,50" />
+               <KPI title="Pending Approval" value={feedbacks.filter(f => !f.isApproved).length} icon={<Settings />} color={ADMIN_COLORS.amber} rgb="201,168,76" />
+               <KPI title="5-Star Reviews" value={feedbacks.filter(f => f.rating === 5).length} icon={<Star />} color={ADMIN_COLORS.purple} rgb="123,31,162" />
              </div>
 
              <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                 <thead style={{ background: '#111' }}>
-                   <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                 <thead style={{ background: '#EDE8DC' }}>
+                   <tr style={{ color: ADMIN_COLORS.text, textAlign: 'left' }}>
                      <th style={{ padding: '16px' }}>Name</th>
                      <th style={{ padding: '16px' }}>Area/Service</th>
                      <th style={{ padding: '16px' }}>Rating</th>
@@ -726,7 +727,7 @@ export default function AdminPage() {
                          <div>{f.area}</div>
                          <div style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>{f.serviceName}</div>
                        </td>
-                       <td style={{ padding: '16px', color: '#FFD700' }}>{'★'.repeat(f.rating)}</td>
+                       <td style={{ padding: '16px', color: '#C9A84C' }}>{'★'.repeat(f.rating)}</td>
                        <td style={{ padding: '16px', maxWidth: '300px' }}>
                          <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                            {f.comment}
@@ -735,25 +736,25 @@ export default function AdminPage() {
                        <td style={{ padding: '16px' }}>
                          <span style={{ 
                            color: f.isApproved ? ADMIN_COLORS.emerald : ADMIN_COLORS.amber,
-                           background: f.isApproved ? 'rgba(34,197,94,0.1)' : 'rgba(245,158,11,0.1)',
-                           padding: '4px 8px', borderRadius: '4px', fontSize: '12px'
+                           background: f.isApproved ? 'rgba(46,125,50,0.1)' : 'rgba(201,168,76,0.1)',
+                           padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold'
                          }}>
                            {f.isApproved ? 'Approved' : 'Pending'}
                          </span>
                          {f.isFeatured && (
-                           <span style={{ marginLeft: '4px', color: ADMIN_COLORS.accent, background: 'rgba(10,255,230,0.1)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px' }}>Featured</span>
+                           <span style={{ marginLeft: '4px', color: ADMIN_COLORS.accent, background: 'rgba(27,67,50,0.1)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' }}>Featured</span>
                          )}
                        </td>
                        <td style={{ padding: '16px' }}>
                          <div style={{ display: 'flex', gap: '8px' }}>
                            {!f.isApproved && (
-                             <button onClick={() => handleFeedbackAction(f.id, 'approve')} style={{ color: ADMIN_COLORS.emerald }}>Approve</button>
+                             <button onClick={() => handleFeedbackAction(f.id, 'approve')} style={{ color: ADMIN_COLORS.emerald, fontWeight: 'bold' }}>Approve</button>
                            )}
                            {f.isApproved && !f.isFeatured && (
-                             <button onClick={() => handleFeedbackAction(f.id, 'feature')} style={{ color: ADMIN_COLORS.accent }}>Feature</button>
+                             <button onClick={() => handleFeedbackAction(f.id, 'feature')} style={{ color: ADMIN_COLORS.amber, fontWeight: 'bold' }}>Feature</button>
                            )}
-                           <button onClick={() => handleFeedbackAction(f.id, 'reject')} style={{ color: ADMIN_COLORS.amber }}>Reject</button>
-                           <button onClick={() => handleFeedbackAction(f.id, 'delete')} style={{ color: ADMIN_COLORS.red }}>Delete</button>
+                           <button onClick={() => handleFeedbackAction(f.id, 'reject')} style={{ color: '#E53935', fontWeight: 'bold' }}>Reject</button>
+                           <button onClick={() => handleFeedbackAction(f.id, 'delete')} style={{ color: ADMIN_COLORS.red, fontWeight: 'bold' }}>Delete</button>
                          </div>
                        </td>
                      </tr>
@@ -777,7 +778,7 @@ export default function AdminPage() {
                     background: ADMIN_COLORS.card, padding: '20px', borderRadius: '12px', 
                     border: `1px solid ${m.isRead ? ADMIN_COLORS.border : ADMIN_COLORS.accent}` 
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', justifycontent: 'space-between', marginBottom: '12px' }}>
                       <div>
                         <h3 style={{ fontWeight: 'bold', fontSize: '16px' }}>{m.name}</h3>
                         <p style={{ color: ADMIN_COLORS.muted, fontSize: '14px' }}>{m.email} • {m.phone}</p>
@@ -816,24 +817,24 @@ export default function AdminPage() {
               <div style={{ background: ADMIN_COLORS.card, padding: '24px', borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, height: 'fit-content' }}>
                 <h3 style={{ fontWeight: 'bold', marginBottom: '16px' }}>Create New Promo</h3>
                 <form onSubmit={handlePromoCreate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <input name="code" placeholder="Code (e.g. SUMMER20)" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff', textTransform: 'uppercase' }} />
+                  <input name="code" placeholder="Code (e.g. SUMMER20)" required style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', textTransform: 'uppercase', outline: 'none' }} />
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <select name="discountType" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }}>
-                      <option value="PERCENT" style={{color: '#000'}}>Percentage (%)</option>
-                      <option value="FIXED" style={{color: '#000'}}>Fixed Amount (₹)</option>
+                    <select name="discountType" required style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }}>
+                      <option value="PERCENT">Percentage (%)</option>
+                      <option value="FIXED">Fixed Amount (₹)</option>
                     </select>
-                    <input name="discountValue" type="number" placeholder="Value" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="discountValue" type="number" placeholder="Value" required style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
                   </div>
-                  <input name="minOrder" type="number" placeholder="Min Order Amount (Optional)" style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
-                  <input name="maxUses" type="number" placeholder="Max Uses (Default 100)" style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
-                  <button type="submit" style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>Create Promo</button>
+                  <input name="minOrder" type="number" placeholder="Min Order Amount (Optional)" style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
+                  <input name="maxUses" type="number" placeholder="Max Uses (Default 100)" style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
+                  <button type="submit" style={{ background: '#1B4332', color: '#FFFFFF', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', border: 'none' }}>Create Promo</button>
                 </form>
               </div>
 
               <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                <thead style={{ background: '#111' }}>
-                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                <thead style={{ background: '#EDE8DC' }}>
+                  <tr style={{ color: ADMIN_COLORS.text, textAlign: 'left' }}>
                     <th style={{ padding: '16px' }}>Code</th>
                     <th style={{ padding: '16px' }}>Discount</th>
                     <th style={{ padding: '16px' }}>Min Order</th>
@@ -850,7 +851,7 @@ export default function AdminPage() {
                       <td style={{ padding: '16px' }}>₹{p.minOrder}</td>
                       <td style={{ padding: '16px' }}>{p.usedCount} / {p.maxUses}</td>
                       <td style={{ padding: '16px' }}>
-                        <button onClick={() => handlePromoToggle(p.id, p.isActive)} style={{ padding: '4px 12px', background: p.isActive ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.1)', color: p.isActive ? ADMIN_COLORS.emerald : '#fff', borderRadius: '4px', fontSize: '12px' }}>
+                        <button onClick={() => handlePromoToggle(p.id, p.isActive)} style={{ padding: '4px 12px', background: p.isActive ? 'rgba(46,125,50,0.1)' : 'rgba(92,107,94,0.1)', color: p.isActive ? ADMIN_COLORS.emerald : '#5C6B5E', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
                           {p.isActive ? 'Active' : 'Inactive'}
                         </button>
                       </td>
@@ -875,28 +876,28 @@ export default function AdminPage() {
               <div style={{ background: ADMIN_COLORS.card, padding: '24px', borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, height: 'fit-content' }}>
                 <h3 style={{ fontWeight: 'bold', marginBottom: '16px' }}>Add New Service/Combo</h3>
                 <form onSubmit={handleServiceCreate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <input name="name" placeholder="Service Name (e.g. Minimal Magic)" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
-                  <textarea name="description" placeholder="Description & featured details..." style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff', minHeight: '80px' }} />
-                  <select name="category" required style={{ padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }}>
-                    <option value="INDIVIDUAL" style={{color: '#000'}}>Individual</option>
-                    <option value="COMBO" style={{color: '#000'}}>Combo</option>
+                  <input name="name" placeholder="Service Name (e.g. Minimal Magic)" required style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
+                  <textarea name="description" placeholder="Description & featured details..." style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', minHeight: '80px', outline: 'none' }} />
+                  <select name="category" required style={{ padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }}>
+                    <option value="INDIVIDUAL">Individual</option>
+                    <option value="COMBO">Combo</option>
                   </select>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <input name="price" type="number" placeholder="Price (₹)" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
-                    <input name="originalPrice" type="number" placeholder="Original Price (₹) (Optional)" style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="price" type="number" placeholder="Price (₹)" required style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
+                    <input name="originalPrice" type="number" placeholder="Original Price (₹) (Optional)" style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
                   </div>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <input name="unit" placeholder="Unit (e.g. per session)" style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
-                    <input name="iconName" placeholder="Icon Name (e.g. dust, bath, combo)" required style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                    <input name="unit" placeholder="Unit (e.g. per session)" style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
+                    <input name="iconName" placeholder="Icon Name (e.g. dust, bath, combo)" required style={{ flex: 1, padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
                   </div>
-                  <button type="submit" style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px', borderRadius: '8px', fontWeight: 'bold' }}>Add Service</button>
+                  <button type="submit" style={{ background: '#1B4332', color: '#FFFFFF', padding: '12px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>Add Service</button>
                 </form>
               </div>
 
               <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                <thead style={{ background: '#111' }}>
-                  <tr style={{ color: ADMIN_COLORS.muted, textAlign: 'left' }}>
+                <thead style={{ background: '#EDE8DC' }}>
+                  <tr style={{ color: ADMIN_COLORS.text, textAlign: 'left' }}>
                     <th style={{ padding: '16px' }}>Name</th>
                     <th style={{ padding: '16px' }}>Details Map</th>
                     <th style={{ padding: '16px' }}>Category</th>
@@ -917,12 +918,12 @@ export default function AdminPage() {
                         {s.unit ? <span style={{ color: ADMIN_COLORS.muted, fontSize: '12px' }}>/{s.unit}</span> : ''}
                       </td>
                       <td style={{ padding: '16px' }}>
-                        <button onClick={() => handleServiceToggle(s.id, s.isActive)} style={{ padding: '4px 12px', background: s.isActive ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.1)', color: s.isActive ? ADMIN_COLORS.emerald : '#fff', borderRadius: '4px', fontSize: '12px' }}>
+                        <button onClick={() => handleServiceToggle(s.id, s.isActive)} style={{ padding: '4px 12px', background: s.isActive ? 'rgba(46,125,50,0.1)' : 'rgba(92,107,94,0.1)', color: s.isActive ? ADMIN_COLORS.emerald : '#5C6B5E', borderRadius: '4px', fontSize: '12px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
                           {s.isActive ? 'Active' : 'Inactive'}
                         </button>
                       </td>
                       <td style={{ padding: '16px' }}>
-                        <button onClick={() => handleServiceDelete(s.id)} style={{ color: ADMIN_COLORS.red }}>Delete</button>
+                        <button onClick={() => handleServiceDelete(s.id)} style={{ color: ADMIN_COLORS.red, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -941,13 +942,13 @@ export default function AdminPage() {
             <div style={{ background: ADMIN_COLORS.card, borderRadius: '16px', border: `1px solid ${ADMIN_COLORS.border}`, padding: '24px', maxWidth: '600px' }}>
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', color: ADMIN_COLORS.muted }}>Admin Email</label>
-                <input type="text" disabled value={adminUser?.email || ''} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                <input type="text" disabled value={adminUser?.email || ''} style={{ width: '100%', padding: '12px', background: '#EDE8DC', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#5C6B5E', outline: 'none' }} />
               </div>
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', color: ADMIN_COLORS.muted }}>Change Password</label>
-                <input type="password" placeholder="New Password" style={{ width: '100%', padding: '12px', background: 'transparent', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#fff' }} />
+                <input type="password" placeholder="New Password" style={{ width: '100%', padding: '12px', background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35', outline: 'none' }} />
               </div>
-              <button style={{ background: ADMIN_COLORS.accent, color: '#000', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold' }}>Save Changes</button>
+              <button style={{ background: '#1B4332', color: '#FFFFFF', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>Save Changes</button>
             </div>
           </motion.div>
         } />
@@ -973,12 +974,12 @@ export default function AdminPage() {
                   <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: ADMIN_COLORS.muted }}>Detailed View — Last 7 Days</h3>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={stats.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                       <XAxis dataKey="date" stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
                       <YAxis stroke={ADMIN_COLORS.muted} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value}`} />
                       <Tooltip 
-                        cursor={{ fill: 'rgba(255,255,255,0.02)' }}
-                        contentStyle={{ background: '#000', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px' }}
+                        cursor={{ fill: 'rgba(0,0,0,0.02)' }}
+                        contentStyle={{ background: '#FFFFFF', border: `1px solid ${ADMIN_COLORS.border}`, borderRadius: '8px', color: '#2D4A35' }}
                       />
                       <Bar dataKey="revenue" fill={ADMIN_COLORS.emerald} radius={[4, 4, 0, 0]} />
                     </BarChart>
@@ -986,7 +987,7 @@ export default function AdminPage() {
                 </div>
               </div>
             ) : (
-               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}><Loader2 className="animate-spin" color={ADMIN_COLORS.emerald} /></div>
+               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}><Loader2 className="animate-spin" color={ADMIN_COLORS.accent} /></div>
             )}
           </motion.div>
         } />
@@ -1018,7 +1019,7 @@ const KPI = ({ title, value, subtext, icon, color, rgb }: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div>
         <p style={{ color: ADMIN_COLORS.muted, fontSize: '13px' }}>{title}</p>
-        <p style={{ color: '#FFFFFF', fontSize: '32px', fontWeight: '700', marginTop: '8px' }}>{value}</p>
+        <p style={{ color: ADMIN_COLORS.text, fontSize: '32px', fontWeight: '700', marginTop: '8px' }}>{value}</p>
         <p style={{ color, fontSize: '12px', marginTop: '4px' }}>{subtext}</p>
       </div>
       <div style={{
