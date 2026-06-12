@@ -189,9 +189,4 @@ const Testimonials: React.FC = () => {
   );
 };
 
-      </div>
-    </section>
-  );
-};
-
 export default Testimonials;

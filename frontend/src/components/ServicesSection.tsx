@@ -74,23 +74,6 @@ const ServiceIcon: React.FC<IconProps> = ({ name }) => {
   return icons[name] || icons['dust'];
 };
 
-const CategoryFilter: React.FC<{ active: string; onChange: (cat: string) => void }> = ({ active, onChange }) => {
-  const categories = ['All', 'Cleaning', 'Kitchen', 'Appliances', 'Laundry', 'Special'];
-  return (
-    <div className="flex flex-wrap gap-2 justify-center mb-10">
-      {categories.map(cat => (
-        <button
-          key={cat}
-          onClick={() => onChange(cat)}
-          className={`category-tab ${active === cat ? 'active' : ''}`}
-        >
-          {cat}
-        </button>
-      ))}
-    </div>
-  );
-};
-
 const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ service, onClick }) => {
   const { addItem, items } = useCart();
   const isIroning = service.id === 'svc-9';

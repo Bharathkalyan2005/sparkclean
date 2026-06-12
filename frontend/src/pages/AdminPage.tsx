@@ -778,7 +778,7 @@ export default function AdminPage() {
                     background: ADMIN_COLORS.card, padding: '20px', borderRadius: '12px', 
                     border: `1px solid ${m.isRead ? ADMIN_COLORS.border : ADMIN_COLORS.accent}` 
                   }}>
-                    <div style={{ display: 'flex', justifycontent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                       <div>
                         <h3 style={{ fontWeight: 'bold', fontSize: '16px' }}>{m.name}</h3>
                         <p style={{ color: ADMIN_COLORS.muted, fontSize: '14px' }}>{m.email} • {m.phone}</p>
