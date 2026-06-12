@@ -17,6 +17,7 @@ const LoadingScreen = ({ onComplete, children }: Props) => {
     }, 2500)
 
     return () => clearTimeout(hardStop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Make sure when done it shows children:
