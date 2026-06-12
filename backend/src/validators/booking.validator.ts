@@ -6,7 +6,7 @@ export const createBookingSchema = z.object({
                    .regex(/^[6-9]\d{9}$/, 
                      'Invalid Indian phone number'),
   customerEmail : z.string().email().optional().or(z.literal('')),
-  address       : z.string().min(10).max(500).trim(),
+  address       : z.string().min(3).max(500).trim(),
   area          : z.string().min(2).max(100),
   city          : z.string().min(2).max(100).default('India'),
   services      : z.array(z.object({

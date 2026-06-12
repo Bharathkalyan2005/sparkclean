@@ -451,10 +451,18 @@ const handlePayment = async () => {
       `${process.env.REACT_APP_API_URL || 'https://sparkclean-x3ze.onrender.com'}/api/health`
     ).catch(() => {})
 
+    // Sanitize phone number (remove spaces, dashes, leading +91 or 0)
+    let sanitizedPhone = form.phone.replace(/[\s\-+()]/g, '');
+    if (sanitizedPhone.startsWith('91') && sanitizedPhone.length === 12) {
+      sanitizedPhone = sanitizedPhone.substring(2);
+    } else if (sanitizedPhone.startsWith('0') && sanitizedPhone.length === 11) {
+      sanitizedPhone = sanitizedPhone.substring(1);
+    }
+
     // Step 1: Create booking
     const bookingRes = await api.post('/bookings', {
       customerName  : form.name,
-      customerPhone : form.phone,
+      customerPhone : sanitizedPhone,
       customerEmail : form.email || '',
       address       : form.address,
       area          : form.area,
@@ -592,7 +600,10 @@ const handlePayment = async () => {
       || error.message 
       || 'Something went wrong'
     
-    if (msg.includes('401') || 
+    if (error.response?.data?.issues && Array.isArray(error.response.data.issues)) {
+      const issueMsgs = error.response.data.issues.map((i: any) => `${i.field}: ${i.message}`).join(', ');
+      toast.error(`Validation failed: ${issueMsgs}`);
+    } else if (msg.includes('401') || 
         msg.includes('Unauthorized')) {
       toast.error('Session expired. Please login again.')
       navigate('/auth?redirect=/book')
@@ -613,9 +624,17 @@ const handlePayment = async () => {
 const handleCODBooking = async () => {
   setLoading(true)
   try {
+    // Sanitize phone number (remove spaces, dashes, leading +91 or 0)
+    let sanitizedPhone = form.phone.replace(/[\s\-+()]/g, '');
+    if (sanitizedPhone.startsWith('91') && sanitizedPhone.length === 12) {
+      sanitizedPhone = sanitizedPhone.substring(2);
+    } else if (sanitizedPhone.startsWith('0') && sanitizedPhone.length === 11) {
+      sanitizedPhone = sanitizedPhone.substring(1);
+    }
+
     const bookingRes = await api.post('/bookings', {
       customerName  : form.name,
-      customerPhone : form.phone,
+      customerPhone : sanitizedPhone,
       customerEmail : form.email,
       address       : form.address,
       area          : form.area,
@@ -641,7 +660,18 @@ const handleCODBooking = async () => {
     navigate(`/success?booking=${bookingId}&number=${bookingNumber}`)
 
   } catch (error: any) {
-    toast.error('Booking failed. Try again.')
+    console.error('COD Booking error:', error)
+    const msg = error.response?.data?.error 
+      || error.response?.data?.message
+      || error.message 
+      || 'Booking failed'
+
+    if (error.response?.data?.issues && Array.isArray(error.response.data.issues)) {
+      const issueMsgs = error.response.data.issues.map((i: any) => `${i.field}: ${i.message}`).join(', ');
+      toast.error(`Validation failed: ${issueMsgs}`);
+    } else {
+      toast.error(msg);
+    }
     setLoading(false)
   }
 }
