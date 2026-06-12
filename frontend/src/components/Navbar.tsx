@@ -244,7 +244,7 @@ const Navbar: React.FC = () => {
                 fontWeight  : '600',
               }}
             >
-              👤 {user.fullName.split(' ')[0]}
+              👤 {(user?.fullName || 'User').split(' ')[0]}
             </button>
           </div>
         ) : (
@@ -412,7 +412,7 @@ const Navbar: React.FC = () => {
                      color: '#1B4332',
                    }}
                  >
-                   My Profile ({user.fullName.split(' ')[0]})
+                    My Profile ({(user?.fullName || 'User').split(' ')[0]})
                  </button>
               </div>
             ) : (

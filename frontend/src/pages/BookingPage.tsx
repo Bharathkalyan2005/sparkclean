@@ -189,30 +189,34 @@ function BookingMap({ area, address }: BookingMapProps) {
       }}
     >
       {/* Main pin for selected area */}
-      <Marker
-        position={{ lat: coords.lat, lng: coords.lng }}
-        icon={{
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale       : 12,
-          fillColor   : '#1B4332',
-          fillOpacity : 1,
-          strokeColor : '#FFFFFF',
-          strokeWeight: 2,
-        }}
-      />
+      {isLoaded && window.google && window.google.maps && coords && (
+        <Marker
+          position={{ lat: coords.lat, lng: coords.lng }}
+          icon={{
+            path: window.google.maps.SymbolPath.CIRCLE,
+            scale       : 12,
+            fillColor   : '#1B4332',
+            fillOpacity : 1,
+            strokeColor : '#FFFFFF',
+            strokeWeight: 2,
+          }}
+        />
+      )}
 
       {/* Service radius circle ~2km */}
-      <Circle
-        center ={{ lat: coords.lat, lng: coords.lng }}
-        radius ={2000}
-        options={{
-          fillColor   : '#1B4332',
-          fillOpacity : 0.06,
-          strokeColor : '#1B4332',
-          strokeOpacity: 0.3,
-          strokeWeight: 1,
-        }}
-      />
+      {isLoaded && window.google && window.google.maps && coords && (
+        <Circle
+          center ={{ lat: coords.lat, lng: coords.lng }}
+          radius ={2000}
+          options={{
+            fillColor   : '#1B4332',
+            fillOpacity : 0.06,
+            strokeColor : '#1B4332',
+            strokeOpacity: 0.3,
+            strokeWeight: 1,
+          }}
+        />
+      )}
     </GoogleMap>
   )
 }
@@ -1291,10 +1295,10 @@ const handleCODBooking = async () => {
                       href={`https://www.google.com/maps/search/${
                         encodeURIComponent(
                           form.area + ' ' + 
-                          areaCoordinates[form.area]?.city
+                          (areaCoordinates[form.area]?.city || '')
                         )
-                      }/@${areaCoordinates[form.area]?.lat},${
-                        areaCoordinates[form.area]?.lng
+                      }/@${areaCoordinates[form.area]?.lat || 0},${
+                        areaCoordinates[form.area]?.lng || 0
                       },15z`}
                       target="_blank"
                       rel="noopener noreferrer"

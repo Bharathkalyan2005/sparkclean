@@ -2,66 +2,74 @@ import { Component, ReactNode } from 'react'
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
-  { hasError: boolean; error: any }
+  { hasError: boolean; error: any; errorInfo: any }
 > {
-  state = { hasError: false, error: null }
+  state = { hasError: false, error: null as any, errorInfo: null as any }
 
   static getDerivedStateFromError(error: any) {
     return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('=== APP CRASH ===')
+    console.error('Error:', error)
+    console.error('Message:', error.message)
+    console.error('Stack:', error.stack)
+    console.error('Component Stack:', errorInfo.componentStack)
+    this.setState({ errorInfo })
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div style={{
-          minHeight      : '100vh',
-          background     : '#F5F0E8',
-          display        : 'flex',
-          alignItems     : 'center',
-          justifyContent : 'center',
-          flexDirection  : 'column',
-          gap            : '16px',
-          fontFamily     : 'Inter, sans-serif',
-          padding        : '24px',
-          textAlign      : 'center',
+          minHeight: '100vh',
+          background: '#F5F0E8',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          textAlign: 'center',
+          fontFamily: 'Inter, sans-serif',
         }}>
-          <span style={{ fontSize: '48px' }}>⚠️</span>
-          <h2 style={{
-            color     : '#1B4332',
-            fontSize  : '24px',
-            fontFamily: 'Instrument Serif, serif',
-          }}>
+          <h2 style={{ color: '#1B4332' }}>
             Something went wrong
           </h2>
-          <p style={{ color: '#5C6B5E', fontSize: '15px' }}>
-            Please refresh the page or contact support
-          </p>
+
+          {/* TEMPORARY - shows the real error */}
+          <pre style={{
+            color: '#DC2626',
+            fontSize: '12px',
+            background: '#FFFFFF',
+            padding: '16px',
+            borderRadius: '8px',
+            maxWidth: '600px',
+            overflow: 'auto',
+            textAlign: 'left',
+            marginTop: '16px',
+            whiteSpace: 'pre-wrap',
+          }}>
+            {this.state.error?.toString()}
+            {'\n\n'}
+            {(this.state.errorInfo as any)?.componentStack}
+          </pre>
+
           <button
             onClick={() => window.location.reload()}
             style={{
-              padding      : '12px 28px',
-              background   : '#1B4332',
-              color        : '#FFFFFF',
-              fontWeight   : '700',
-              borderRadius : '12px',
-              border       : 'none',
-              cursor       : 'pointer',
-              fontSize     : '15px',
+              marginTop: '20px',
+              padding: '14px 32px',
+              background: '#1B4332',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
             }}
           >
             Refresh Page
           </button>
-          <a
-            href={`https://wa.me/919392420643?text=Hi SuciHome! The website has an error.`}
-            style={{
-              color         : '#1B4332',
-              fontSize      : '14px',
-              textDecoration: 'none',
-              fontWeight    : '600'
-            }}
-          >
-            💬 Contact Support
-          </a>
         </div>
       )
     }
@@ -70,3 +78,4 @@ class ErrorBoundary extends Component<
 }
 
 export default ErrorBoundary
+
