@@ -125,16 +125,16 @@ const lightMapStyle = [
 interface BookingMapProps {
   area     : string
   address  : string
+  mapsKey  : string
 }
 
 const libraries: any = ['places'];
 
-function BookingMap({ area, address }: BookingMapProps) {
+function BookingMap({ area, address, mapsKey }: BookingMapProps) {
   const coords = areaCoordinates[area]
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 
-      process.env.REACT_APP_GOOGLE_MAPS_KEY || '',
+    googleMapsApiKey: mapsKey,
     libraries,
   })
 
@@ -345,6 +345,14 @@ const BookingPage: React.FC = () => {
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   const [selectedCombo, setSelectedCombo] = useState<any | null>(null);
+
+  const [mapsKey, setMapsKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    import('../lib/config').then(m => m.getPublicConfig()).then(cfg => {
+      setMapsKey(cfg.googleMapsKey);
+    });
+  }, []);
 
   const [services, setServices] = useState<any[]>([]);
   const [combos, setCombos] = useState<any[]>([]);
@@ -1037,7 +1045,7 @@ const handleCODBooking = async () => {
                   )}
                 </div>
 
-                {form.area && areaCoordinates[form.area] && (
+                {form.area && areaCoordinates[form.area] && mapsKey && (
                   <div style={{ marginTop: '16px' }}>
                     {/* Map header */}
                     <div style={{
@@ -1101,6 +1109,7 @@ const handleCODBooking = async () => {
                         <BookingMap
                           area   ={form.area}
                           address={form.address}
+                          mapsKey={mapsKey}
                         />
                       </motion.div>
                     </AnimatePresence>
@@ -1237,7 +1246,7 @@ const handleCODBooking = async () => {
                 <div className="h-px bg-[#EDE8DC]" />
 
                 {/* Order Summary Map */}
-                {form.area && areaCoordinates[form.area] && (
+                {form.area && areaCoordinates[form.area] && mapsKey && (
                   <div className="bg-[#1B4332]/5 border border-[#EDE8DC] rounded-xl p-4 mb-4">
                     <p style={{
                       color        : '#1B4332',
@@ -1261,6 +1270,7 @@ const handleCODBooking = async () => {
                       <BookingMap
                         area   ={form.area}
                         address={form.address}
+                        mapsKey={mapsKey}
                       />
                     </div>
 

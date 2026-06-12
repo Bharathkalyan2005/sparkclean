@@ -210,41 +210,20 @@ const defaultCenter = { lat: 20.5937, lng: 78.9629 }
 
 const libraries: any = ['places'];
 
-export default function SuciHomeMap() {
-  const [selectedPin, setSelectedPin] = 
-    useState<typeof locations[0] | null>(null)
-  
-  const [mapsKey, setMapsKey] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+interface SuciHomeMapInnerProps {
+  mapsKey: string;
+  isMobile: boolean;
+  dynamicHeight: string;
+  dynamicMapContainerStyle: any;
+}
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const dynamicHeight = isMobile ? '300px' : '450px';
-
-  const dynamicMapContainerStyle = {
-    width       : '100%',
-    height      : dynamicHeight,
-    borderRadius: '20px',
-    overflow    : 'hidden',
-  }
-
-  useEffect(() => {
-    import('../lib/config').then(m => m.getPublicConfig()).then(cfg => {
-      setMapsKey(cfg.googleMapsKey);
-    });
-  }, []);
+function SuciHomeMapInner({ mapsKey, isMobile, dynamicHeight, dynamicMapContainerStyle }: SuciHomeMapInnerProps) {
+  const [selectedPin, setSelectedPin] = useState<typeof locations[0] | null>(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: mapsKey || '',
+    googleMapsApiKey: mapsKey,
     libraries,
-  })
-
-  // Prevent map from loading until key is fetched
-  if (!mapsKey) return null;
+  });
 
   if (loadError) {
     return (
@@ -260,7 +239,7 @@ export default function SuciHomeMap() {
       }}>
         Map unavailable. Check API key.
       </div>
-    )
+    );
   }
 
   if (!isLoaded) {
@@ -290,7 +269,7 @@ export default function SuciHomeMap() {
           Loading map...
         </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -427,5 +406,70 @@ export default function SuciHomeMap() {
         </InfoWindow>
       )}
     </GoogleMap>
-  )
+  );
+}
+
+export default function SuciHomeMap() {
+  const [mapsKey, setMapsKey] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const dynamicHeight = isMobile ? '300px' : '450px';
+
+  const dynamicMapContainerStyle = {
+    width       : '100%',
+    height      : dynamicHeight,
+    borderRadius: '20px',
+    overflow    : 'hidden',
+  }
+
+  useEffect(() => {
+    import('../lib/config').then(m => m.getPublicConfig()).then(cfg => {
+      setMapsKey(cfg.googleMapsKey);
+    });
+  }, []);
+
+  if (!mapsKey) {
+    return (
+      <div style={{
+        height        : dynamicHeight,
+        background    : 'rgba(27,67,50,0.03)',
+        border        : '1px solid rgba(27,67,50,0.1)',
+        borderRadius  : '20px',
+        display       : 'flex',
+        alignItems    : 'center',
+        justifyContent: 'center',
+        flexDirection : 'column',
+        gap           : '12px',
+      }}>
+        <svg
+          width="40" height="40"
+          viewBox="0 0 24 24" fill="none"
+          style={{ animation: 'spin 1s linear infinite' }}
+        >
+          <circle cx="12" cy="12" r="10"
+            stroke="#1B4332" strokeWidth="3"
+            strokeDasharray="50 30"
+          />
+        </svg>
+        <p style={{ color: '#5C6B5E', fontSize: '14px' }}>
+          Loading map...
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <SuciHomeMapInner
+      mapsKey={mapsKey}
+      isMobile={isMobile}
+      dynamicHeight={dynamicHeight}
+      dynamicMapContainerStyle={dynamicMapContainerStyle}
+    />
+  );
 }
