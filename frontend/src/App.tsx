@@ -8,6 +8,7 @@ import LocationGate from './components/LocationGate';
 import LaunchBanner from './components/LaunchBanner';
 import ErrorBoundary from './components/ErrorBoundary';
 import PageSkeleton from './components/PageSkeleton';
+import InstallBanner from './components/InstallBanner';
 // @ts-ignore
 import './index.css';
 
@@ -141,6 +142,7 @@ function App() {
             } />
           </Routes>
         </Suspense>
+        <InstallBanner />
       </CartProvider>
       </Router>
     </GoogleOAuthProvider>
