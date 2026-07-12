@@ -10,6 +10,7 @@ import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import CartSidebar from '../components/CartSidebar';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const HomePage: React.FC = () => {
   // Scroll progress bar
@@ -42,42 +43,7 @@ const HomePage: React.FC = () => {
       <Footer />
 
       {/* WhatsApp Floating Button */}
-      <a
-        href="https://wa.me/919392420643?text=Hi%20SuciHome%2C%20I%20want%20to%20book%20a%20service"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ textDecoration: 'none' }}
-      >
-        <div style={{
-          position    : 'fixed',
-          bottom      : '24px',
-          right       : '24px',
-          zIndex      : 9999,
-          display     : 'flex',
-          alignItems  : 'center',
-          gap         : '10px',
-          background  : '#25D366',
-          borderRadius: '50px',
-          padding     : '12px 20px',
-          boxShadow   : '0 4px 20px rgba(37,211,102,0.4)',
-          cursor      : 'pointer',
-        }}>
-          <span style={{ fontSize: '22px' }}>💬</span>
-          <div style={{ textAlign: 'left' }}>
-            <p style={{
-              color    : '#FFFFFF',
-              fontSize : '13px',
-              fontWeight:'700',
-              margin   : 0,
-            }}>Chat with us</p>
-            <p style={{
-              color  : 'rgba(255,255,255,0.8)',
-              fontSize:'11px',
-              margin : 0,
-            }}>We're here to help!</p>
-          </div>
-        </div>
-      </a>
+      <WhatsAppButton />
     </div>
   );
 };

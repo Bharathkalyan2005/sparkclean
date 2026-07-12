@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,133 +13,65 @@ const COLORS = {
 
 export default function Hero() {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
-    <section 
-      className="hero-section"
-      style={{
-        minHeight  : '100vh',
-        background : COLORS.cream,
-        display    : 'flex',
-        flexDirection: 'column',
-        paddingTop : '72px', // navbar height
-        overflow   : 'hidden',
-        position   : 'relative',
-        backgroundImage: isMobile ? "url('/images/hero-cleaner.png')" : "none",
-        backgroundSize: isMobile ? "cover" : "none",
-        backgroundPosition: isMobile ? "center right" : "none",
-      }}
-    >
-      {/* Mobile Dark Overlay for readability */}
-      {isMobile && (
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(245,240,232,0.85)',
-          zIndex: 1
-        }} />
-      )}
-
+    <section className="hero-section">
       {/* MAIN HERO CONTENT */}
-      <div 
-        className="hero-container"
-        style={{
-          flex          : 1,
-          display       : 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
-          maxWidth      : '1400px',
-          margin        : '0 auto',
-          width         : '100%',
-          padding       : isMobile ? '24px 20px' : '0 40px',
-          alignItems    : 'center',
-          minHeight     : 'calc(100vh - 72px)',
-          position      : 'relative',
-          zIndex        : 2,
-        }}
-      >
+      <div className="hero-grid">
         {/* LEFT — Text Content */}
         <motion.div
           className="hero-left"
           initial   ={{ opacity: 0, x: -30 }}
           animate   ={{ opacity: 1, x: 0   }}
           transition={{ duration: 0.7 }}
-          style={{ 
-            paddingRight: isMobile ? '0' : '40px',
-            zIndex: 2,
-          }}
         >
           {/* Top badges */}
-          <div style={{
-            display    : 'flex',
-            gap        : '10px',
-            marginBottom: '28px',
-            flexWrap   : 'wrap',
-          }}>
+          <div className="hero-badges">
             {/* SuciHome badge */}
-            <span style={{
-              display     : 'inline-flex',
-              alignItems  : 'center',
-              gap         : '6px',
-              background  : COLORS.green,
-              color       : '#FFFFFF',
-              borderRadius: '20px',
-              padding     : '6px 14px',
-              fontSize    : isMobile ? '11px' : '13px',
-              fontWeight  : '700',
-            }}>
+            <span 
+              className="hero-badge-pill"
+              style={{
+                display     : 'inline-flex',
+                alignItems  : 'center',
+                gap         : '6px',
+                background  : COLORS.green,
+                color       : '#FFFFFF',
+                borderRadius: '20px',
+                padding     : '6px 14px',
+                fontWeight  : '700',
+              }}
+            >
               ✦ SuciHome
             </span>
 
             {/* Trust badge */}
-            <span style={{
-              display     : 'inline-flex',
-              alignItems  : 'center',
-              background  : 'transparent',
-              color       : COLORS.darkText,
-              border      : '1px solid rgba(27,67,50,0.3)',
-              borderRadius: '20px',
-              padding     : '6px 14px',
-              fontSize    : isMobile ? '11px' : '13px',
-              fontWeight  : '500',
-            }}>
+            <span 
+              className="hero-badge-pill"
+              style={{
+                display     : 'inline-flex',
+                alignItems  : 'center',
+                background  : 'transparent',
+                color       : COLORS.darkText,
+                border      : '1px solid rgba(27,67,50,0.3)',
+                borderRadius: '20px',
+                padding     : '6px 14px',
+                fontWeight  : '500',
+              }}
+            >
               India's Most Trusted Home Cleaning Service
             </span>
           </div>
 
           {/* Main Heading */}
           <div style={{ marginBottom: '8px' }}>
-            <h1 style={{
-              margin    : 0,
-              lineHeight: '1.05',
-            }}>
+            <h1 className="hero-h1" style={{ margin: 0 }}>
               {/* Line 1: India's */}
-              <span style={{
-                display   : 'block',
-                color     : COLORS.darkText,
-                fontSize  : isMobile ? '48px' : '72px',
-                fontWeight: '800',
-                fontFamily: 'Instrument Serif, serif',
-              }}>
+              <span className="hero-india">
                 India's
               </span>
 
               {/* Line 2: Cleanest (green) */}
-              <span style={{
-                display   : 'block',
-                color     : COLORS.green,
-                fontSize  : isMobile ? '48px' : '72px',
-                fontWeight: '800',
-                fontFamily: 'Instrument Serif, serif',
-                position  : 'relative',
-                width     : 'max-content',
-              }}>
+              <span className="hero-cleanest" style={{ position: 'relative', width: 'max-content' }}>
                 Cleanest
                 {/* Gold sparkle */}
                 <span style={{
@@ -152,36 +84,17 @@ export default function Hero() {
               </span>
 
               {/* Line 3: Choice (gold) */}
-              <span style={{
-                display   : 'block',
-                color     : COLORS.gold,
-                fontSize  : isMobile ? '48px' : '72px',
-                fontWeight: '800',
-                fontFamily: 'Instrument Serif, serif',
-              }}>
+              <span className="hero-choice">
                 Choice
               </span>
             </h1>
 
             {/* Underline decoration */}
-            <div style={{
-              width       : '120px',
-              height      : '3px',
-              background  : `linear-gradient(90deg, 
-                             ${COLORS.green}, ${COLORS.gold})`,
-              borderRadius: '2px',
-              marginTop   : '8px',
-            }} />
+            <div className="hero-underline" />
           </div>
 
           {/* Subtext */}
-          <p style={{
-            color      : COLORS.mutedText,
-            fontSize   : isMobile ? '14px' : '16px',
-            lineHeight : '1.7',
-            margin     : '24px 0 32px',
-            maxWidth   : '480px',
-          }}>
+          <p className="hero-subtext">
             Professional home cleaning services 
             starting at{' '}
             <span style={{
@@ -202,11 +115,7 @@ export default function Hero() {
           </p>
 
           {/* CTA Buttons */}
-          <div style={{
-            display : 'flex',
-            gap     : '16px',
-            flexWrap: 'wrap',
-          }}>
+          <div className="hero-buttons">
             {/* Book a Cleaning — dark green */}
             <motion.button
               whileHover={{ 
@@ -215,6 +124,7 @@ export default function Hero() {
               }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/book')}
+              className="hero-btn-primary"
               style={{
                 display     : 'flex',
                 alignItems  : 'center',
@@ -239,6 +149,7 @@ export default function Hero() {
                 document.getElementById('services')
                   ?.scrollIntoView({ behavior: 'smooth' });
               }}
+              className="hero-btn-secondary"
               style={{
                 display     : 'flex',
                 alignItems  : 'center',
@@ -258,12 +169,7 @@ export default function Hero() {
           </div>
 
           {/* 4 Trust badges row */}
-          <div style={{
-            display        : 'grid',
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
-            gap            : '12px',
-            marginTop      : '40px',
-          }}>
+          <div className="hero-trust-grid">
             {[
               { icon: '👥', title: '500+',       sub: 'Happy Customers'  },
               { icon: '⚡', title: 'Same-Day',   sub: 'Booking'          },
@@ -272,6 +178,7 @@ export default function Hero() {
             ].map(badge => (
               <div
                 key  ={badge.title}
+                className="hero-trust-card"
                 style={{
                   background  : '#FFFFFF',
                   borderRadius: '14px',
@@ -287,7 +194,7 @@ export default function Hero() {
                   {badge.icon}
                 </span>
                 <div>
-                  <p style={{
+                  <p className="hero-trust-title" style={{
                     color     : COLORS.darkText,
                     fontSize  : '13px',
                     fontWeight: '700',
@@ -295,7 +202,7 @@ export default function Hero() {
                   }}>
                     {badge.title}
                   </p>
-                  <p style={{
+                  <p className="hero-trust-sub" style={{
                     color   : COLORS.mutedText,
                     fontSize: '11px',
                     margin  : '2px 0 0',
@@ -309,87 +216,31 @@ export default function Hero() {
         </motion.div>
 
         {/* RIGHT — Cleaner Photo */}
-        {!isMobile && (
-          <motion.div
-            className="hero-right"
-            initial   ={{ opacity: 0, x: 30 }}
-            animate   ={{ opacity: 1, x: 0  }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            style={{
-              position    : 'relative',
-              height      : 'calc(100vh - 120px)',
-              borderRadius: '32px',
-              overflow    : 'hidden',
-            }}
-          >
-            {/* Main hero image — uploaded cleaner photo */}
-            <img
-              src  ="/images/hero-cleaner.png"
-              alt  ="SuciHome Professional Cleaner"
-              loading="lazy"
-              decoding="async"
-              style={{
-                width        : '100%',
-                height       : '100%',
-                objectFit    : 'cover',
-                objectPosition: 'center top',
-                borderRadius : '32px',
-              }}
-            />
+        <motion.div
+          className="hero-right"
+          initial   ={{ opacity: 0, x: 30 }}
+          animate   ={{ opacity: 1, x: 0  }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          {/* Main hero image — uploaded cleaner photo */}
+          <img
+            src  ="/images/hero-cleaner.png"
+            alt  ="SuciHome Professional Cleaner"
+            loading="lazy"
+            decoding="async"
+          />
 
-            {/* Subtle green overlay at bottom */}
-            <div style={{
-              position  : 'absolute',
-              bottom    : 0,
-              left      : 0,
-              right     : 0,
-              height    : '200px',
-              background: 'linear-gradient(to top, rgba(13,43,31,0.3), transparent)',
-              borderRadius: '0 0 32px 32px',
-            }} />
-
-            {/* WhatsApp badge floating */}
-            <div style={{
-              position    : 'absolute',
-              bottom      : '24px',
-              right       : '24px',
-              background  : '#25D366',
-              borderRadius: '16px',
-              padding     : '12px 16px',
-              display     : 'flex',
-              alignItems  : 'center',
-              gap         : '10px',
-              boxShadow   : '0 4px 20px rgba(0,0,0,0.2)',
-              cursor      : 'pointer',
-            }}
-            onClick={() => window.open(
-              'https://wa.me/919392420643?text=' +
-              encodeURIComponent(
-                'Hi SuciHome! I want to book a service.'
-              )
-            )}
-            >
-              <span style={{ fontSize: '24px' }}>💬</span>
-              <div>
-                <p style={{
-                  color     : '#FFFFFF',
-                  fontSize  : '13px',
-                  fontWeight: '700',
-                  margin    : 0,
-                }}>
-                  Chat with us
-                </p>
-                <p style={{
-                  color  : 'rgba(255,255,255,0.85)',
-                  fontSize:'11px',
-                  margin : '2px 0 0',
-                }}>
-                  We're here to help!
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
+          {/* Subtle green overlay at bottom */}
+          <div style={{
+            position  : 'absolute',
+            bottom    : 0,
+            left      : 0,
+            right     : 0,
+            height    : '200px',
+            background: 'linear-gradient(to top, rgba(13,43,31,0.3), transparent)',
+            borderRadius: '0 0 32px 32px',
+          }} />
+        </motion.div>
       </div>
     </section>
   );

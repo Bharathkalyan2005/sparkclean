@@ -31,7 +31,7 @@ const Testimonials: React.FC = () => {
   if (reviews.length === 0) return null; // Hide if no approved reviews yet
 
   return (
-    <section className="py-24 relative overflow-hidden" style={{ background: '#F5F0E8' }}>
+    <section className="testimonials relative overflow-hidden">
       <div className="absolute inset-0" style={{
         background: 'radial-gradient(ellipse at 50% 50%, rgba(27,67,50,0.02) 0%, transparent 70%)',
         pointerEvents: 'none',
@@ -138,12 +138,12 @@ const Testimonials: React.FC = () => {
         </div>
 
         {/* Thumbnail row */}
-        <div className="flex gap-3 justify-center overflow-x-auto no-scrollbar pb-2">
+        <div className="testimonials-grid max-w-4xl mx-auto mb-8">
           {reviews.map((t, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className="flex-shrink-0 rounded-xl p-4 w-44 text-left transition-all duration-300"
+              className="w-full rounded-xl p-4 text-left transition-all duration-300"
               style={i === active
                 ? { background: 'rgba(27,67,50,0.06)', border: '1px solid rgba(27,67,50,0.2)' }
                 : { background: '#FFFFFF', border: '1px solid rgba(27,67,50,0.1)', opacity: 0.65 }}

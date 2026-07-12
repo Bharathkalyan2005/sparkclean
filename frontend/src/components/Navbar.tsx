@@ -82,21 +82,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className="fixed left-0 right-0 z-50 transition-all duration-500"
+      className="navbar fixed left-0 right-0 z-50 transition-all duration-500"
       style={{
-        position        : 'fixed',
         top             : bannerVisible ? '38px' : '0',
-        left            : '0',
-        right           : '0',
-        zIndex          : 1000,
         background      : scrolled ? 'rgba(245,240,232,0.95)' : 'rgba(245,240,232,0.85)',
-        backdropFilter  : 'blur(20px)',
-        borderBottom    : '1px solid rgba(27,67,50,0.1)',
-        padding         : scrolled ? '0 24px' : '0 40px',
-        height          : '72px',
-        display         : 'flex',
-        alignItems      : 'center',
-        justifyContent  : 'space-between',
       }}
     >
       {/* Logo */}
@@ -118,20 +107,20 @@ const Navbar: React.FC = () => {
         />
         <div>
           <div style={{ lineHeight: 1 }}>
-            <span style={{
+            <span className="navbar-logo-text" style={{
               color     : '#1B4332',
               fontSize  : '22px',
               fontWeight: '800',
               fontFamily: 'Instrument Serif, serif',
             }}>Suci</span>
-            <span style={{
+            <span className="navbar-logo-text" style={{
               color     : '#C9A84C',
               fontSize  : '22px',
               fontWeight: '800',
               fontFamily: 'Instrument Serif, serif',
             }}>Home</span>
           </div>
-          <p style={{
+          <p className="navbar-logo-sub" style={{
             color        : '#C9A84C',
             fontSize     : '9px',
             letterSpacing: '2px',
@@ -145,7 +134,7 @@ const Navbar: React.FC = () => {
       </Link>
 
       {/* Desktop Nav */}
-      <div className="hidden md:flex items-center gap-6">
+      <div className="navbar-links">
         {navLinks.map(link => (
           <button
             key={link.id}
@@ -185,7 +174,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-3">
+      <div className="navbar-right">
         {/* Cart */}
         <button
           onClick={() => setIsOpen(true)}
@@ -227,7 +216,7 @@ const Navbar: React.FC = () => {
 
         {/* Conditional User / Sign In */}
         {user ? (
-          <div className="hidden md:flex items-center gap-4">
+          <div className="user-btn">
             <button 
               onClick={() => setProfileModalOpen(true)} 
               style={{
@@ -250,6 +239,7 @@ const Navbar: React.FC = () => {
         ) : (
           <button
             onClick={() => navigate('/auth')}
+            className="user-btn"
             style={{
               background  : 'transparent',
               border      : 'none',
@@ -267,6 +257,7 @@ const Navbar: React.FC = () => {
         {isAdmin && (
           <button
             onClick={() => navigate('/admin')}
+            className="admin-btn"
             style={{
               display     : 'flex',
               alignItems  : 'center',
@@ -295,6 +286,7 @@ const Navbar: React.FC = () => {
             }
             navigate('/book');
           }}
+          className="book-now-btn"
           style={{
             display     : 'flex',
             alignItems  : 'center',
@@ -315,8 +307,7 @@ const Navbar: React.FC = () => {
         {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden p-2 rounded-xl transition-all"
-          style={{ background: 'rgba(27,67,50,0.08)', border: '1px solid rgba(27,67,50,0.2)' }}
+          className="hamburger-btn"
           aria-label="Toggle menu"
         >
           <div className="w-5 h-4 flex flex-col justify-between">
@@ -334,18 +325,9 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden px-4 py-4 flex flex-col gap-4"
+            className="mobile-menu open"
             style={{
-              position: 'absolute',
-              top: '72px',
-              left: 0,
-              right: 0,
-              background: 'rgba(245,240,232,0.98)',
-              borderTop: '1px solid rgba(27,67,50,0.15)',
-              borderBottom: '1px solid rgba(27,67,50,0.15)',
-              backdropFilter: 'blur(20px)',
-              maxHeight: 'calc(100vh - 72px)',
-              overflowY: 'auto',
+              top: '64px',
             }}
           >
             {/* Mobile menu brand header logo */}
@@ -386,6 +368,9 @@ const Navbar: React.FC = () => {
                   border: 'none',
                   color: '#2D4A35',
                   cursor: 'pointer',
+                  padding: '14px 16px',
+                  display: 'block',
+                  width: '100%',
                 }}
               >
                 {link.label}
@@ -396,7 +381,7 @@ const Navbar: React.FC = () => {
               href="/track"
               onClick={() => setMenuOpen(false)}
               className="text-left text-sm font-medium font-dm transition-colors"
-              style={{ color: '#2D4A35', textDecoration: 'none' }}
+              style={{ color: '#2D4A35', textDecoration: 'none', padding: '14px 16px', display: 'block' }}
             >
               Track Order
             </a>
@@ -410,6 +395,7 @@ const Navbar: React.FC = () => {
                      background: 'rgba(27,67,50,0.08)',
                      border: '1px solid rgba(27,67,50,0.15)',
                      color: '#1B4332',
+                     padding: '14px 16px',
                    }}
                  >
                     My Profile ({(user?.fullName || 'User').split(' ')[0]})
@@ -419,7 +405,7 @@ const Navbar: React.FC = () => {
               <button
                 onClick={() => { navigate('/auth'); setMenuOpen(false); }}
                 className="text-left text-sm font-medium font-dm transition-colors"
-                style={{ color: '#1B4332', background: 'transparent', border: 'none', cursor: 'pointer' }}
+                style={{ color: '#1B4332', background: 'transparent', border: 'none', cursor: 'pointer', padding: '14px 16px', display: 'block', width: '100%' }}
               >
                 Sign In
               </button>
@@ -436,15 +422,9 @@ const Navbar: React.FC = () => {
                 }
                 navigate('/book');
               }}
+              className="book-btn-mobile"
               style={{
-                background  : '#C9A84C',
-                border      : 'none',
-                borderRadius: '24px',
-                padding     : '12px',
-                color       : '#FFFFFF',
-                cursor      : 'pointer',
-                fontSize    : '15px',
-                fontWeight  : '700',
+                width       : '100%',
               }}
             >
               Book Now

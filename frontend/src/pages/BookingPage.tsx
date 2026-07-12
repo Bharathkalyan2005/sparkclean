@@ -142,9 +142,7 @@ function BookingMap({ area, address, mapsKey }: BookingMapProps) {
 
   if (!isLoaded) {
     return (
-      <div style={{
-        height        : '220px',
-        borderRadius  : '14px',
+      <div className="booking-map" style={{
         background    : 'rgba(27,67,50,0.02)',
         border        : '1px solid #EDE8DC',
         display       : 'flex',
@@ -171,9 +169,9 @@ function BookingMap({ area, address, mapsKey }: BookingMapProps) {
 
   return (
     <GoogleMap
+      mapContainerClassName="booking-map"
       mapContainerStyle={{
         width       : '100%',
-        height      : '220px',
         borderRadius: '14px',
       }}
       center ={{ lat: coords.lat, lng: coords.lng }}
@@ -760,14 +758,14 @@ const handleCODBooking = async () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="booking-container px-4">
         {/* Progress Steps */}
-        <div className="flex items-center justify-center mb-10">
+        <div className="step-bar">
           {STEPS.map((label, i) => (
             <React.Fragment key={i}>
               <div className="flex items-center gap-2">
                 <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center font-syne font-bold text-sm transition-all duration-300`}
+                  className={`step-circle w-9 h-9 rounded-full flex items-center justify-center font-syne font-bold text-sm transition-all duration-300`}
                   style={{
                     background: step > i + 1 ? 'rgba(27,67,50,0.1)' : step === i + 1 ? 'linear-gradient(135deg,#1B4332,#0D2B1F)' : 'rgba(27,67,50,0.03)',
                     border: `2px solid ${step >= i + 1 ? '#1B4332' : '#EDE8DC'}`,
@@ -780,11 +778,11 @@ const handleCODBooking = async () => {
                     </svg>
                   ) : i + 1}
                 </div>
-                <span className={`text-sm font-dm hidden sm:block`}
+                <span className={`step-label text-sm font-dm hidden sm:block`}
                   style={{ color: step === i + 1 ? '#2D4A35' : '#5C6B5E' }}>{label}</span>
               </div>
               {i < STEPS.length - 1 && (
-                <div className="flex-1 h-0.5 mx-3 transition-all duration-500 rounded-full"
+                <div className="step-line flex-1 h-0.5 mx-3 transition-all duration-500 rounded-full"
                   style={{ background: step > i + 1 ? 'linear-gradient(90deg,#1B4332,#0D2B1F)' : '#EDE8DC' }} />
               )}
             </React.Fragment>
@@ -885,23 +883,23 @@ const handleCODBooking = async () => {
               <h2 className="font-syne font-bold text-2xl mb-6 text-[#2D4A35]">Your Details</h2>
 
               <div className="space-y-5 bg-white p-6 md:p-8 rounded-2xl border border-[#EDE8DC] shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="form-row-2col gap-4">
                   <div>
                     <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Full Name *</label>
                     <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                      placeholder="Your full name" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" required />
+                      placeholder="Your full name" className="form-input" required />
                   </div>
                   <div>
                     <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Phone Number *</label>
                     <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-                      placeholder="10-digit mobile" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" required />
+                      placeholder="10-digit mobile" className="form-input" required />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-dm mb-1.5 text-[#5C6B5E]">Email (optional — for payment receipt)</label>
                   <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                    placeholder="your@email.com" className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner" />
+                    placeholder="your@email.com" className="form-input" />
                 </div>
 
                 <div>
@@ -961,7 +959,7 @@ const handleCODBooking = async () => {
                     </button>
                   </div>
                   <textarea value={form.address} onChange={e => setForm({ ...form, address: e.target.value })}
-                    placeholder="House/flat no., street, landmark..." className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner min-h-[80px]" required />
+                    placeholder="House/flat no., street, landmark..." className="form-input min-h-[80px]" required />
                 </div>
 
                 <div>
@@ -978,17 +976,7 @@ const handleCODBooking = async () => {
                         city: selectedArea?.city || 'India'
                       })
                     }}
-                    style={{
-                      width        : '100%',
-                      padding      : '14px 16px',
-                      background   : 'white',
-                      border       : '1.5px solid #EDE8DC',
-                      borderRadius : '12px',
-                      fontSize     : '15px',
-                      color        : '#2D4A35',
-                      cursor       : 'pointer',
-                      outline      : 'none',
-                    }}
+                    className="form-input"
                     required
                   >
                     <option value="" disabled>Select your area</option>
@@ -1066,7 +1054,7 @@ const handleCODBooking = async () => {
                       <input
                         type="text"
                         placeholder="Enter your custom area or city"
-                        className="w-full bg-white text-[#2D4A35] border border-[#EDE8DC] rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1B4332] font-dm transition-all shadow-inner"
+                        className="form-input"
                         value={customArea}
                         onChange={(e) => setCustomArea(e.target.value)}
                         required
@@ -1129,10 +1117,9 @@ const handleCODBooking = async () => {
                         animate    ={{ opacity: 1, y: 0,  scale: 1    }}
                         exit       ={{ opacity: 0, y: -10             }}
                         transition ={{ duration: 0.3, ease: 'easeOut' }}
+                        className="booking-map"
                         style={{
                           border      : '1px solid #EDE8DC',
-                          borderRadius: '14px',
-                          overflow    : 'hidden',
                           boxShadow   : '0 4px 20px rgba(27,67,50,0.03)',
                         }}
                       >
@@ -1208,7 +1195,7 @@ const handleCODBooking = async () => {
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="booking-nav">
                 <button onClick={() => setStep(1)} className="flex-1 py-4 rounded-xl font-dm transition-colors bg-white hover:bg-gray-50"
                   style={{ border: '1.5px solid #EDE8DC', color: '#5C6B5E' }}>
                   ← Back
@@ -1290,11 +1277,7 @@ const handleCODBooking = async () => {
                     </p>
 
                     {/* Mini map */}
-                    <div style={{
-                      height      : '160px',
-                      borderRadius: '10px',
-                      overflow    : 'hidden',
-                      marginBottom: '10px',
+                    <div className="booking-map" style={{
                       border      : '1px solid #EDE8DC',
                     }}>
                       <BookingMap

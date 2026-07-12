@@ -37,7 +37,7 @@ const steps = [
 
 const HowItWorks: React.FC = () => {
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden" style={{ background: '#EDE8DC' }}>
+    <section id="how-it-works" className="how-it-works relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -60,9 +60,9 @@ const HowItWorks: React.FC = () => {
 
         <div className="relative">
           {/* Connector line (desktop) */}
-          <div className="hidden md:block absolute left-[10%] right-[10%] h-[3px]" style={{ zIndex: 0, top: '90px', background: 'linear-gradient(90deg, #1B4332, #C9A84C)', opacity: 0.3 }} />
+          <div className="steps-connector" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+          <div className="steps-grid">
             {steps.map((step, i) => (
               <motion.div
                 key={i}
@@ -70,7 +70,7 @@ const HowItWorks: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.6, delay: i * 0.2 }}
-                className="text-center"
+                className="step-card text-center"
                 style={{
                   background: '#FFFFFF',
                   border: '1px solid rgba(27,67,50,0.1)',
@@ -80,21 +80,23 @@ const HowItWorks: React.FC = () => {
                 }}
               >
                 {/* Step icon circle */}
-                <div className="relative inline-flex mb-8">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto"
+                <div className="relative inline-flex mb-0 md:mb-8 flex-shrink-0">
+                  <div className="step-number w-24 h-24 rounded-full flex items-center justify-center mx-auto"
                     style={{ background: 'rgba(27,67,50,0.08)', border: '2px solid rgba(27,67,50,0.15)', color: '#1B4332', boxShadow: '0 4px 20px rgba(27,67,50,0.04)' }}>
                     {step.icon}
                   </div>
-                  <div className="absolute -top-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center"
+                  <div className="absolute -top-1 -right-1 w-5 h-5 md:w-8 md:h-8 rounded-full flex items-center justify-center"
                     style={{ background: '#1B4332', color: '#FFFFFF', boxShadow: '0 2px 8px rgba(27,67,50,0.2)' }}>
-                    <span className="font-syne font-bold text-xs">
+                    <span className="font-syne font-bold text-[9px] md:text-xs">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="font-syne font-bold text-2xl mb-3" style={{ color: '#0D2B1F' }}>{step.title}</h3>
-                <p className="font-dm text-base leading-relaxed max-w-xs mx-auto" style={{ color: '#5C6B5E' }}>{step.desc}</p>
+                <div>
+                  <h3 className="font-syne font-bold text-2xl mb-3" style={{ color: '#0D2B1F' }}>{step.title}</h3>
+                  <p className="font-dm text-base leading-relaxed max-w-xs mx-auto" style={{ color: '#5C6B5E' }}>{step.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>

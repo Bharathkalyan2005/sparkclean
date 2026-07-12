@@ -19,24 +19,18 @@ export default function LaunchBanner() {
   if (!visible) return null;
 
   return (
-    <div style={{
-      background     : '#0D2B1F',
-      color          : '#FFFFFF',
-      textAlign      : 'center',
-      padding        : '10px 16px',
-      fontSize       : '14px',
-      position       : 'fixed',
-      top            : 0,
-      left           : 0,
-      right          : 0,
-      height         : '38px',
-      zIndex         : 9999,
-      display        : 'flex',
-      alignItems     : 'center',
-      justifyContent : 'center',
-      gap            : '12px',
-      boxSizing      : 'border-box',
-    }}>
+    <div 
+      className="launch-banner"
+      style={{
+        position       : 'fixed',
+        top            : 0,
+        left           : 0,
+        right          : 0,
+        height         : '38px',
+        zIndex         : 9999,
+        boxSizing      : 'border-box',
+      }}
+    >
       <span style={{ color: '#C9A84C' }}>✦</span>
       <span>
         SuciHome now live in 6 cities! 
@@ -44,7 +38,7 @@ export default function LaunchBanner() {
       </span>
       
       {/* Gold Book Now button */}
-      <a href="/book" style={{
+      <a href="/book" className="launch-banner-btn" style={{
         background   : '#C9A84C',
         color        : '#FFFFFF',
         padding      : '4px 18px',

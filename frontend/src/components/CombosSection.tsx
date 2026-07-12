@@ -64,7 +64,7 @@ const ComboCard: React.FC<{ combo: ComboCardProps; index: number }> = ({ combo, 
             : '1px solid rgba(27,67,50,0.15)',
           boxShadow: '0 4px 20px rgba(27,67,50,0.06)',
         }}
-        className="relative rounded-2xl p-8 h-full"
+        className="combo-card relative rounded-2xl p-8 h-full"
       >
         {/* Popular badge */}
         {combo.is_popular && (
@@ -121,7 +121,7 @@ const ComboCard: React.FC<{ combo: ComboCardProps; index: number }> = ({ combo, 
                 ₹{combo.originalPrice}
               </span>
               <div className="flex items-end gap-2">
-                <div className="font-syne font-bold text-5xl" style={{ color: combo.is_popular ? '#FFFFFF' : '#1B4332' }}>
+                <div className="combo-price font-syne font-bold text-5xl" style={{ color: combo.is_popular ? '#FFFFFF' : '#1B4332' }}>
                   ₹{combo.price}
                 </div>
                 <div className="text-sm font-dm pb-2" style={{ color: combo.is_popular ? 'rgba(255,255,255,0.7)' : '#5C6B5E' }}>/ visit</div>
@@ -143,7 +143,7 @@ const ComboCard: React.FC<{ combo: ComboCardProps; index: number }> = ({ combo, 
           </div>
         ) : (
           <div className="flex items-end gap-2 my-5">
-            <div className="font-syne font-bold text-5xl" style={{ color: combo.is_popular ? '#FFFFFF' : '#1B4332' }}>
+            <div className="combo-price font-syne font-bold text-5xl" style={{ color: combo.is_popular ? '#FFFFFF' : '#1B4332' }}>
               ₹{combo.price}
             </div>
             <div className="text-sm font-dm pb-2" style={{ color: combo.is_popular ? 'rgba(255,255,255,0.7)' : '#5C6B5E' }}>/ visit</div>
@@ -277,7 +277,7 @@ const CombosSection: React.FC = () => {
   });
 
   return (
-    <section id="combos" className="py-24 relative overflow-hidden" style={{ background: '#EDE8DC' }}>
+    <section id="combos" className="combos-section relative overflow-hidden">
       {/* Decorative orb */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full opacity-20"
         style={{ background: 'radial-gradient(circle, rgba(27,67,50,0.08) 0%, transparent 70%)', filter: 'blur(60px)' }} />
@@ -304,7 +304,7 @@ const CombosSection: React.FC = () => {
         </motion.div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div className="combos-grid">
           {formattedCombos.map((combo, i) => (
             <ComboCard key={combo.id} combo={combo as any} index={i} />
           ))}

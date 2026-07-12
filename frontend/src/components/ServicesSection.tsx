@@ -105,7 +105,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5 }}
-      className="rounded-2xl p-6 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+      className="service-card rounded-2xl p-6 transition-all duration-300 cursor-pointer group relative overflow-hidden"
       style={{
         background: '#FFFFFF',
         border: hovered ? '1px solid rgba(27,67,50,0.3)' : '1px solid rgba(27,67,50,0.1)',
@@ -143,7 +143,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
       </div>
 
       {/* Info */}
-      <h3 className="font-syne font-bold text-lg mb-1" style={{ color: '#0D2B1F' }}>{service.name}</h3>
+      <h3 className="name font-syne font-bold text-lg mb-1" style={{ color: '#0D2B1F' }}>{service.name}</h3>
       <p className="text-xs font-dm mb-4" style={{ color: '#5C6B5E' }}>{service.unit}</p>
 
       {/* Price */}
@@ -159,7 +159,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
           </span>
 
           {/* New discounted price */}
-          <span style={{
+          <span className="price" style={{
             color      : '#1B4332',
             fontSize   : '28px',
             fontWeight : '700',
@@ -188,7 +188,7 @@ const ServiceCard: React.FC<{ service: Service, onClick: () => void }> = ({ serv
         </div>
       ) : (
         <div className="flex items-end gap-1 mt-2 mb-5">
-          <span className="font-syne font-bold text-3xl" style={{ color: '#1B4332' }}>
+          <span className="price font-syne font-bold text-3xl" style={{ color: '#1B4332' }}>
             {service.id === 'svc-9' ? '₹10' : `₹${service.price}`}
           </span>
           {service.id === 'svc-9' && <span className="text-sm font-dm pb-1" style={{ color: '#5C6B5E' }}>/cloth</span>}
@@ -343,7 +343,7 @@ const ServicesSection: React.FC = () => {
   const closeModal = () => setSelectedService(null);
 
   return (
-    <section id="services" className="py-24 relative" style={{ background: '#FFFFFF' }}>
+    <section id="services" className="services-section relative">
       <div className="absolute inset-0" style={{
         background: 'radial-gradient(ellipse at 50% 0%, rgba(27,67,50,0.02) 0%, transparent 60%)',
         pointerEvents: 'none',
@@ -388,7 +388,7 @@ const ServicesSection: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="services-grid">
           {filtered.map(service => (
             <ServiceCard key={service.id} service={service} onClick={() => setSelectedService(service)} />
           ))}

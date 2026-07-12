@@ -39,10 +39,10 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative" style={{ background: '#0D2B1F', borderTop: '1px solid rgba(201,168,76,0.3)' }}>
+    <footer className="footer relative">
       {/* Top footer */}
       <div className="max-w-7xl mx-auto px-4 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="footer-grid">
           {/* Brand */}
           <div className="col-span-1">
             <div style={{
@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
               India's most trusted home cleaning service. Trained staff, transparent pricing, instant booking.
             </p>
             {/* Social Icons */}
-            <div className="flex gap-3">
+            <div className="social-icons">
               <a href="https://wa.me/919392420643" target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors hover:border-[#C9A84C]/80 hover:text-[#C9A84C]"
                 style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -225,8 +225,8 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Bottom strip */}
-      <div className="py-5" style={{ borderTop: '1px solid rgba(201,168,76,0.15)' }}>
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="py-5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="footer-bottom max-w-7xl mx-auto px-4">
           <p className="font-dm text-sm text-center md:text-left" style={{ color: '#A3B899' }}>
             Serving India with ❤️ | © 2026 SuciHome by VRC Pvt Ltd
           </p>
